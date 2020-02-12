@@ -21,6 +21,18 @@ const FrontPage = ({ url = 'https://hacker-news.firebaseio.com/v0/topstories.jso
   }, [url]);
 
   useEffect(() => {
+    // TODO change to calculating on this document vs. App div
+    const moreEmptyRroom = document.documentElement.getBoundingClientRect().height < window.innerHeight;
+
+    if (moreEmptyRroom) {
+      setStoriesToShow(e => {
+        if (e > 0 && e === stories.length) setDone(true); // TODO
+        return Math.min(e + LOAD_INCREMENT, stories.length);
+      })
+    }
+  }, [storiesToShow, stories]);
+
+  useEffect(() => {
     const onScroll = () => {
       const atBottom =
         (window.innerHeight + document.documentElement.scrollTop) === document.documentElement.offsetHeight;
