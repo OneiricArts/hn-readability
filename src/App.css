@@ -29,3 +29,12 @@ body {
 .clickable {
   cursor: pointer;
 }
+
+
+.item--border {
+  border-bottom: 0.01em solid gray;
+}
+
+.collapsed {
+  background-color: #F0F0F0;
+}

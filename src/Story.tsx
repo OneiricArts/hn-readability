@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Container } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 interface HNItem {
   title: string;
@@ -47,14 +48,14 @@ const Story = ({ id, rank }: { id: number, rank: number }) => {
             #{rank}&emsp;↑{storyData.score}
           </span>
         </a>
-        <a
+        <Link
           className="col-sm-1 col-2 pl-1 pr-1 story--comments"
-          href={`https://news.ycombinator.com/item?id=${id}`}
+          to={`/item?id=${id}`}
         >
           <span className="float-right align-middle small">
             <span className={loadingClassName}>{storyData.descendants}</span> 💬
           </span>
-        </a>
+        </Link>
       </Row>
     </Container>
   );
