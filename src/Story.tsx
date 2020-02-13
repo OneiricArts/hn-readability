@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card } from 'reactstrap';
+import { Row, Col, Container } from 'reactstrap';
 
 interface HNItem {
   title: string;
@@ -14,7 +14,7 @@ type HNItemPlaceHolder = Partial<HNItem>;
 const Story = ({ id, rank }: { id: number, rank: number }) => {
   const [storyData, setStoryData] = useState<HNItemPlaceHolder | HNItem>({
     title: 'This is the placeholder story with appr length',
-    descendants: 55,
+    descendants: 555,
     url: ''
   });
 
@@ -36,30 +36,31 @@ const Story = ({ id, rank }: { id: number, rank: number }) => {
   const loadingClassName = isLoading ? 'loading-skeleton' : '';
 
   return (
-    <div className="p-2">
-      <Card className="container-fluid">
-        <div className="row clickable">
-          <div
-            className="col-10 px-2"
-            // TODO Change to item view
-            onClick={() => window.open(storyData.url || `https://news.ycombinator.com/item?id=${id}`)}
-          >
-            <div className={loadingClassName}>{storyData.title}</div>
-            <div className="text-muted story--info">#{rank}&emsp;↑{storyData.score}</div>
-          </div>
-          <div
-            className="col-2 pl-1 pr-1 story--comments"
-            onClick={() => window.open(`https://news.ycombinator.com/item?id=${id}`)}
-          >
-            <span className="float-right align-middle small">
-              <span className={loadingClassName}>
-                {storyData.descendants}
-              </span> 💬
-            </span>
-          </div>
-        </div>
-      </Card>
-    </div>
+    <Container fluid className="story--container">
+      <Row>
+        <Col
+          sm={11}
+          xs={10}
+          className="px-2 pt-2 clickable"
+          onClick={() => window.open(storyData.url || `https://news.ycombinator.com/item?id=${id}`)}
+        >
+          <div className={loadingClassName}>{storyData.title}</div>
+          <span className={`${loadingClassName} text-muted story--info pt-1`}>
+            #{rank}&emsp;↑{storyData.score}
+          </span>
+        </Col>
+        <Col
+          sm={1}
+          xs={2}
+          className="pl-1 pr-1 story--comments clickable"
+          onClick={() => window.open(`https://news.ycombinator.com/item?id=${id}`)}
+        >
+          <span className="float-right align-middle small">
+            <span className={loadingClassName}>{storyData.descendants}</span> 💬
+          </span>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

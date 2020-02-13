@@ -2,12 +2,17 @@
   max-width: 650px;
 }
 
+.story--container {
+  border-bottom: 0.1rem solid #F0F0F0;
+}
+
 .story--comments {
   background-color: #F0F0F0;
+  /* border-left: 0.1rem solid #F0F0F0; */
 }
 
 .story--info {
-  font-size: small;
+  font-size: x-small;
 }
 
 /* utils */
