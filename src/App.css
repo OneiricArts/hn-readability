@@ -1,3 +1,16 @@
 .front-page--container {
   max-width: 650px;
 }
+
+.story--comments {
+  background-color: #F0F0F0;
+}
+
+.story--info {
+  font-size: small;
+}
+
+/* utils */
+.clickable {
+  cursor: pointer;
+}

@@ -6,10 +6,10 @@ interface HNItem {
   descendants: number;
   type: 'job' | 'story' | 'comment' | 'poll' | 'pollopt';
   url: string;
+  score?: number;
 }
 
-type HNItemPlaceHolder = Pick<HNItem, 'title' | 'descendants' | 'url'>;
-// type HNItemPlaceHolder = Partial<HNItem>;
+type HNItemPlaceHolder = Partial<HNItem>;
 
 const Story = ({ id, rank }: { id: number, rank: number }) => {
   const [storyData, setStoryData] = useState<HNItemPlaceHolder | HNItem>({
@@ -33,31 +33,29 @@ const Story = ({ id, rank }: { id: number, rank: number }) => {
     getItem();
   }, [id]);
 
+  const loadingClassName = isLoading ? 'loading-skeleton' : '';
+
   return (
     <div className="p-2">
-      <Card>
-        <div className="container-fluid w-100">
-          <div className="row">
-            <div
-              className="col-10"
-              onClick={() => window.open(storyData.url)}
-              style={{ cursor: 'pointer' }}
-            >
-              <span className={(isLoading && 'loading-skeleton') || ''}>{rank}. {storyData.title}</span>
-            </div>
-            <div
-              className="col-2 pl-1 pr-1"
-              style={{ backgroundColor: '#F0F0F0', cursor: 'pointer' }}
-              onClick={() => window.open(`https://news.ycombinator.com/item?id=${id}`)}
-            >
-              <small>
-                <span className="float-right align-middle">
-                  <span className={(isLoading && 'loading-skeleton') || ''}>
-                    {storyData.descendants}
-                  </span> 💬
-                </span>
-              </small>
-            </div>
+      <Card className="container-fluid">
+        <div className="row clickable">
+          <div
+            className="col-10 px-2"
+            // TODO Change to item view
+            onClick={() => window.open(storyData.url || `https://news.ycombinator.com/item?id=${id}`)}
+          >
+            <div className={loadingClassName}>{storyData.title}</div>
+            <div className="text-muted story--info">#{rank}&emsp;↑{storyData.score}</div>
+          </div>
+          <div
+            className="col-2 pl-1 pr-1 story--comments"
+            onClick={() => window.open(`https://news.ycombinator.com/item?id=${id}`)}
+          >
+            <span className="float-right align-middle small">
+              <span className={loadingClassName}>
+                {storyData.descendants}
+              </span> 💬
+            </span>
           </div>
         </div>
       </Card>
