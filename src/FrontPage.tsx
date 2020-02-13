@@ -50,7 +50,7 @@ const FrontPage = ({ url = 'https://hacker-news.firebaseio.com/v0/topstories.jso
   }, [stories]);
 
   return (
-    <div className="p-2 mx-auto" style={{ maxWidth: '600px' }}>
+    <div className="p-2 mx-auto front-page--container">
       {stories.slice(0, storiesToShow).map((id, index) => <Story key={id} id={id} rank={index + 1} />)}
       {doneLoading && <div>All Done, time to go outside.</div>}
     </div>
