@@ -1,3 +1,7 @@
+body {
+  user-select: none;
+}
+
 .front-page--container {
   max-width: 650px;
 }
