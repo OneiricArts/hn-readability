@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Container } from 'reactstrap';
+import { Row, Container } from 'reactstrap';
 
 interface HNItem {
   title: string;
@@ -38,27 +38,23 @@ const Story = ({ id, rank }: { id: number, rank: number }) => {
   return (
     <Container fluid className="story--container">
       <Row>
-        <Col
-          sm={11}
-          xs={10}
-          className="px-2 pt-2 clickable"
-          onClick={() => window.open(storyData.url || `https://news.ycombinator.com/item?id=${id}`)}
+        <a
+          className="px-2 pt-2 col-sm-11 col-10"
+          href={storyData.url || `https://news.ycombinator.com/item?id=${id}`}
         >
           <div className={loadingClassName}>{storyData.title}</div>
           <span className={`${loadingClassName} text-muted story--info pt-1`}>
             #{rank}&emsp;↑{storyData.score}
           </span>
-        </Col>
-        <Col
-          sm={1}
-          xs={2}
-          className="pl-1 pr-1 story--comments clickable"
-          onClick={() => window.open(`https://news.ycombinator.com/item?id=${id}`)}
+        </a>
+        <a
+          className="col-sm-1 col-2 pl-1 pr-1 story--comments"
+          href={`https://news.ycombinator.com/item?id=${id}`}
         >
           <span className="float-right align-middle small">
             <span className={loadingClassName}>{storyData.descendants}</span> 💬
           </span>
-        </Col>
+        </a>
       </Row>
     </Container>
   );

@@ -1,5 +1,6 @@
 body {
   user-select: none;
+  color: black;
 }
 
 .front-page--container {
@@ -13,6 +14,11 @@ body {
 .story--comments {
   background-color: #F0F0F0;
   /* border-left: 0.1rem solid #F0F0F0; */
+}
+
+.story--container a {
+  color: inherit;
+  text-decoration: inherit;
 }
 
 .story--info {
