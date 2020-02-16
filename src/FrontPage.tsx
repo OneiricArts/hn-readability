@@ -34,10 +34,10 @@ const FrontPage = ({ url = 'https://hacker-news.firebaseio.com/v0/topstories.jso
 
   useEffect(() => {
     const onScroll = () => {
-      const atBottom =
-        (window.innerHeight + document.documentElement.scrollTop) === document.documentElement.offsetHeight;
+      const nearBottom =
+        (document.documentElement.offsetHeight - (window.innerHeight + document.documentElement.scrollTop)) < 400;
 
-      if (atBottom) {
+      if (nearBottom) {
         setStoriesToShow(e => {
           if (e > 0 && e === stories.length) setDone(true); // TODO
           return Math.min(e + LOAD_INCREMENT, stories.length);
