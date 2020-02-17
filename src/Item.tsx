@@ -15,6 +15,12 @@ interface HNItem {
   by?: string; // required?
 }
 
+export const ItemPage = ({ id }: { id: string }) => (
+  <div className="mx-auto item--container">
+    <Item id={id} />
+  </div>
+);
+
 const Item = ({ id, level = 1 }: { id: string, level?: 0 | 1 | 2 | 3 | 4 | 5 }) => {
   const [data, setData] = useState<HNItem>({
     // title: 'This is the placeholder story with appr length',

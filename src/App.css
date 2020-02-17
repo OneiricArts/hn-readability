@@ -31,6 +31,10 @@ body {
 }
 
 
+.item--container {
+  max-width: 650px;
+}
+
 .item--border {
   border-bottom: 0.01em solid gray;
 }
