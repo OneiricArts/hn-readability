@@ -15,7 +15,7 @@ const FrontPage = ({ url = 'https://hacker-news.firebaseio.com/v0/topstories.jso
       const response = await fetch(url);
       const data: number[] = await response.json();
 
-      setStories(data);
+      setStories(data.slice(0,10));
     }
 
     getStories();

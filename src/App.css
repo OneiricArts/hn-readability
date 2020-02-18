@@ -1,14 +1,20 @@
 body {
+  /* background-color: red; */
+}
+
+.hn-readability-container {
+  background-color: white;
   user-select: none;
   color: black;
 }
 
 .front-page--container {
   max-width: 650px;
+  background-color: rgb(247, 247, 235);
 }
 
 .story--container {
-  border-bottom: 0.1rem solid #F0F0F0;
+  border-top: 0.1rem solid #F0F0F0;
 }
 
 .story--comments {
@@ -30,13 +36,29 @@ body {
   cursor: pointer;
 }
 
-
 .item--container {
   max-width: 650px;
+  background-color: rgb(247, 247, 235);
+}
+
+.level-indicator-gray {
+  border-left: solid rgb(189, 186, 186);
+}
+
+.level-indicator-blue {
+  border-left: solid rgba(102, 102, 221, 0.801);
+}
+
+.level-indicator-red {
+  border-left: solid rgb(230, 151, 151);
+}
+
+.level-indicator-green {
+  border-left: solid rgba(23, 216, 184, 0.616);
 }
 
 .item--border {
-  border-bottom: 0.01em solid gray;
+  border-top: 0.01em solid gray;
 }
 
 .collapsed {

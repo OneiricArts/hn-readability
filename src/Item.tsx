@@ -67,12 +67,12 @@ const Item = ({ id, level = 1 }: { id: string, level?: 0 | 1 | 2 | 3 | 4 | 5 }) 
   }
 
   const levelCollorIndicators = {
-    0: 'gray',
+    // 0: 'gray',
     1: 'red',
     2: 'blue',
     3: 'gray',
-    4: 'purple',
-    5: 'black'
+    4: 'red',
+    5: 'green'
   }
 
   const hnDirectLink = `https://news.ycombinator.com/item?id=${id}`;
@@ -108,25 +108,24 @@ const Item = ({ id, level = 1 }: { id: string, level?: 0 | 1 | 2 | 3 | 4 | 5 }) 
 
   const collapsedClassName = isOpen ? '' : 'collapsed';
 
+  //@ts-ignore
+  const levelBorderIndicator = level > 2 ? `level-indicator-${levelCollorIndicators[level]}` : '';
   return (
     <div
-      className={`py-0 ${!data.title && 'pl-2'} pr-0 item--border ${collapsedClassName}`}
       ref={containerEl}
+      className={`py-0 ${!data.title && level > 2 && 'ml-1'} pr-0 item--border ${collapsedClassName} ${levelBorderIndicator}`}
       onClick={toggle}
-      style={{ borderLeft: `solid ${levelCollorIndicators[level]}`}}
     >
-      {/* <div> {data.title} </div> */}
+      <div className={`${!data.title && level > 2 &&  'pl-3'}`}>
       {data.by && <div className="text-muted small py-1">
-        {data.by} <span className="float-right">{isOpen ? String.fromCharCode(8593) : String.fromCharCode(8595)} </span>
+        {data.by}/ {level} <span className="float-right">{isOpen ? String.fromCharCode(8593) : String.fromCharCode(8595)} </span>
       </div>}
-
-      {/* {!isOpen && <div className="py-2" style={{background: 'gray'}}></div>} */}
 
       <Collapse isOpen={isOpen}>
         {data.deleted && <div>[deleted]</div>}
 
         <div
-          className={`${(isLoading && 'loading-skeleton') || ''} ${showingChildren ? 'item--border' : ''} pb-2`}
+          className={`${(isLoading && 'loading-skeleton') || ''} ${showingChildren ? 'item--border= ' : ''} pb-2 px-2`}
           style={{wordBreak: 'break-word'}}
           dangerouslySetInnerHTML={{ '__html' : DOMPurify.sanitize(data.text || '')}}
         >
@@ -139,6 +138,7 @@ const Item = ({ id, level = 1 }: { id: string, level?: 0 | 1 | 2 | 3 | 4 | 5 }) 
           <Item id={itemId} level={level + 1} />
         ))}
       </Collapse>
+      </div>
     </div>
   );
 }
