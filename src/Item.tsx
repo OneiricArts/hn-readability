@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import DOMPurify from 'dompurify';
 import { Collapse, Button, CardBody, Card } from 'reactstrap';
@@ -47,10 +47,23 @@ const Item = ({ id, level = 1 }: { id: string, level?: 0 | 1 | 2 | 3 | 4 | 5 }) 
     getItem();
   }, [id]);
 
+  const containerEl = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(true);
   const toggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
     setIsOpen(!isOpen);
+
+    // containerEl.current?.scrollIntoView({
+    //   behavior: 'smooth',
+    //   block: 'start'
+    // });
+
+    if (containerEl.current) {
+      const top = containerEl.current.getBoundingClientRect().top;
+      if (top < 0) { // user is collapsing an item that is above the screen
+        window.scrollTo({ top: containerEl.current.offsetTop - 10, behavior: 'smooth' });
+      }
+    }
   }
 
   const levelCollorIndicators = {
@@ -98,6 +111,7 @@ const Item = ({ id, level = 1 }: { id: string, level?: 0 | 1 | 2 | 3 | 4 | 5 }) 
   return (
     <div
       className={`py-0 ${!data.title && 'pl-2'} pr-0 item--border ${collapsedClassName}`}
+      ref={containerEl}
       onClick={toggle}
       style={{ borderLeft: `solid ${levelCollorIndicators[level]}`}}
     >
