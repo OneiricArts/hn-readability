@@ -48,7 +48,7 @@ const Story = ({ id, rank }: { id: number, rank: number }) => {
           </span>
         </a>
         <a
-          className="col-sm-1 col-2 pl-1 pr-1 story--comments"
+          className="col-sm-1 col-2 pl-1 pr-1 pt-2 story--comments"
           href={`https://news.ycombinator.com/item?id=${id}`}
         >
           <span className="float-right align-middle small">
