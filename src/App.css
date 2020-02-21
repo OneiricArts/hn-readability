@@ -12,8 +12,8 @@ body {
 }
 
 .story--comments {
-  background-color: #F0F0F0;
-  /* border-left: 0.1rem solid #F0F0F0; */
+  /* background-color: #F0F0F0; */
+  border-left: 0.1rem solid #F0F0F0;
 }
 
 .story--container a {
