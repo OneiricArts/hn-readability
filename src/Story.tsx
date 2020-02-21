@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Container } from 'reactstrap';
+import ChatBubbles from './icons/ChatBubbles';
 
 interface HNItem {
   title: string;
@@ -48,11 +49,11 @@ const Story = ({ id, rank }: { id: number, rank: number }) => {
           </span>
         </a>
         <a
-          className="col-sm-1 col-2 pl-1 pr-1 story--comments"
+          className="col-sm-1 col-2 pl-1 pr-1 pt-2 story--comments"
           href={`https://news.ycombinator.com/item?id=${id}`}
         >
           <span className="float-right align-middle small">
-            <span className={loadingClassName}>{storyData.descendants}</span> 💬
+            <span className={loadingClassName}>{storyData.descendants}</span> <ChatBubbles />
           </span>
         </a>
       </Row>
