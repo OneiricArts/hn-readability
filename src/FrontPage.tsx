@@ -4,7 +4,7 @@ import Sun from './icons/Sun';
 
 const LOAD_INCREMENT = 30;
 
-const FrontPage = ({ url = 'https://hacker-news.firebaseio.com/v0/topstories.json' }) => {
+const FrontPage = ({ url = 'https://hacker-news.firebaseio.com/v0/topstories.json', selectComment, hide }: { url?: any, selectComment: any, hide: any}) => {
   const [stories, setStories] = useState<number[]>([]);
   const [storiesToShow, setStoriesToShow] = useState<number>(LOAD_INCREMENT);
 
@@ -15,7 +15,7 @@ const FrontPage = ({ url = 'https://hacker-news.firebaseio.com/v0/topstories.jso
       const response = await fetch(url);
       const data: number[] = await response.json();
 
-      setStories(data.slice(0,10));
+      setStories(data);
     }
 
     getStories();
@@ -50,9 +50,10 @@ const FrontPage = ({ url = 'https://hacker-news.firebaseio.com/v0/topstories.jso
     return () => window.removeEventListener('scroll', onScroll);
   }, [stories]);
 
+  console.log('rerender')
   return (
-    <div className="p-2 mx-auto front-page--container">
-      {stories.slice(0, storiesToShow).map((id, index) => <Story key={id} id={id} rank={index + 1} />)}
+    <div className={`p-2 mx-auto front-page--container ${hide ? 'd-none' : ''}`}>
+      {stories.slice(0, storiesToShow).map((id, index) => <Story key={id} id={id} rank={index + 1} selectComment={selectComment} />)}
       {doneLoading &&
         <div>
           All Done, time to go outside.
