@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import Story from './Story';
 
 const LOAD_INCREMENT = 30;
@@ -50,10 +50,10 @@ const FrontPage = ({ url = 'https://hacker-news.firebaseio.com/v0/topstories.jso
   }, [stories]);
 
   return (
-    <div className="p-2 mx-auto front-page--container">
+    <Fragment>
       {stories.slice(0, storiesToShow).map((id, index) => <Story key={id} id={id} rank={index + 1} />)}
       {doneLoading && <div>All Done, time to go outside.</div>}
-    </div>
+    </Fragment>
   );
 }
 

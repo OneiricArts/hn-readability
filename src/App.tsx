@@ -6,7 +6,7 @@ import FrontPage from './FrontPage';
 
 const App = () => {
   return (
-    <div>
+    <div className="app-container mx-auto">
       <Router>
         <Switch>
           <Route exact path="/">

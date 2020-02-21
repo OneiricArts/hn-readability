@@ -1,9 +1,6 @@
-body {
+.app-container {
   user-select: none;
   color: black;
-}
-
-.front-page--container {
   max-width: 650px;
 }
 
