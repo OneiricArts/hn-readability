@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import DOMPurify from 'dompurify';
+import { Collapse } from 'reactstrap';
 
 // https://github.com/HackerNews/API#items
 interface HNItem {
@@ -68,20 +69,35 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
     getItem();
   }, [id]);
 
+  const [isOpen, setIsOpen] = useState(true);
+  const toggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation();
+    setIsOpen(!isOpen);
+  };
+
   const isLoadingClassName = isLoading ? 'loading-skeleton' : '';
   const commentCss = level > 1 ? 'level-indicator-gray ml-3' : '';
   const topLevel = level === 0;
 
   return (
-    <div className={`${commentCss} ${level > 0 ? 'border-top' : ''} px-0 `}>
-      <div className={`${isLoadingClassName} py-1 px-2`} style={{ wordBreak: 'break-word' }}>
-        {data.deleted && '[deleted]'}
-        {data.title && <h4>{data.title}</h4>}
-        {data.type === 'poll' && <p>Polls are not supported yet!</p>}
-        <div dangerouslySetInnerHTML={{ '__html': DOMPurify.sanitize(data.text || '') }} />
+    <div className={`${commentCss} ${level > 0 ? 'border-top' : ''} px-0 `} onClick={toggle}>
+      <div className={`${isLoadingClassName} text-muted small py-1 px-2`}>
+        {data.by || '[deleted]'} {/* TODO: Verify what it means if this is empty */}
+        <span className="float-right">
+          {isOpen ? String.fromCharCode(8593) : String.fromCharCode(8595)}
+        </span>
       </div>
-      {topLevel && <div className="p-2 gray-background border-top"><LinkToHN id={id} /></div>}
-      {data.kids?.map(itemId => <Item id={itemId} key={itemId} level={level + 1} />)}
+
+      <Collapse isOpen={isOpen}>
+        <div className={`${isLoadingClassName} py-1 px-2`} style={{ wordBreak: 'break-word' }}>
+          {data.deleted && '[deleted]'}
+          {data.title && <h4>{data.title}</h4>}
+          {data.type === 'poll' && <p>Polls are not supported yet!</p>}
+          <div dangerouslySetInnerHTML={{ '__html': DOMPurify.sanitize(data.text || '') }} />
+        </div>
+        {topLevel && <div className="p-2 gray-background border-top"><LinkToHN id={id} /></div>}
+        {data.kids?.map(itemId => <Item id={itemId} key={itemId} level={level + 1} />)}
+      </Collapse>
     </div>
   );
 }
