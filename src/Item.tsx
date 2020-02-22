@@ -39,7 +39,18 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
 
       ReactDOM.unstable_batchedUpdates(() => {
         setIsLoading(false);
-        setData(data);
+        /**
+         * Sometimes HN returns null for an item, need this so entire page doesn't break
+         * TODO error boundry?
+         * comment page for: https://news.ycombinator.com/item?id=22359574
+         * - https://hacker-news.firebaseio.com/v0/item/22360822.json returns null
+         * - https://news.ycombinator.com/item?id=22360822 shows a valid comment
+         * (┛ಠ_ಠ)┛彡┻━┻
+         */
+        setData(data || {
+          text: `API error :( <a href="https://news.ycombinator.com/item?id=${id}">view on hn</a>`,
+          type: 'comment'
+        });
       })
     }
 
