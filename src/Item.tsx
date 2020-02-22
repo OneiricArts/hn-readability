@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, RefObject } from 'react';
 import ReactDOM from 'react-dom';
 import DOMPurify from 'dompurify';
 import { Collapse } from 'reactstrap';
@@ -69,10 +69,22 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
     getItem();
   }, [id]);
 
+  const topOfElIsVisible = (el: RefObject<HTMLElement>) => {
+    const top = el.current?.getBoundingClientRect().top;
+    if (top === undefined) return false;
+    return top < 0;
+  }
+
+  const containerEl = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(true);
   const toggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (level === 0) return;
+
     e.stopPropagation();
     setIsOpen(!isOpen);
+
+    if (containerEl?.current && topOfElIsVisible(containerEl))
+      window.scrollTo({ top: containerEl.current.offsetTop - 10, behavior: 'smooth' });
   };
 
   const isLoadingClassName = isLoading ? 'loading-skeleton' : '';
@@ -80,12 +92,12 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
   const topLevel = level === 0;
 
   return (
-    <div className={`${commentCss} ${level > 0 ? 'border-top' : ''} px-0 `} onClick={toggle}>
+    <div ref={containerEl} className={`${commentCss} ${level > 0 ? 'border-top' : ''} px-0 `} onClick={toggle}>
       <div className={`${isLoadingClassName} text-muted small py-1 px-2`}>
         {data.by || '[deleted]'} {/* TODO: Verify what it means if this is empty */}
-        <span className="float-right">
+        {!topLevel && <span className="float-right">
           {isOpen ? String.fromCharCode(8593) : String.fromCharCode(8595)}
-        </span>
+        </span>}
       </div>
 
       <Collapse isOpen={isOpen}>
