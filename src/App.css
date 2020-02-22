@@ -1,5 +1,5 @@
 .app-container {
-  user-select: none;
+  /* user-select: none; // only for frontpage? */
   color: black;
   max-width: 650px;
 }
