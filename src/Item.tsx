@@ -21,10 +21,21 @@ interface HNItem {
   descendants?: number;
 }
 
+const LinkToHN = ({ id }: { id: number }) => (
+  <a
+    className="btn btn-sm btn-outline-dark py-0 px-1"
+    role="button"
+    href={`https://news.ycombinator.com/item?id=${id}`}
+  >
+    @ HN
+  </a>
+);
+
 const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
   const [data, setData] = useState<HNItem>({
     id: id,
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    title: 'Lorem ipsum dolor sit amet',
     descendants: 55,
     url: '',
     type: 'comment'
@@ -59,15 +70,17 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
 
   const isLoadingClassName = isLoading ? 'loading-skeleton' : '';
   const commentCss = level > 1 ? 'level-indicator-gray ml-3' : '';
+  const topLevel = level === 0;
 
   return (
-    <div className={`${commentCss} ${level > 0 ? 'item--border' : ''} px-0 `}>
+    <div className={`${commentCss} ${level > 0 ? 'border-top' : ''} px-0 `}>
       <div className={`${isLoadingClassName} py-1 px-2`} style={{ wordBreak: 'break-word' }}>
         {data.deleted && '[deleted]'}
         {data.title && <h4>{data.title}</h4>}
         {data.type === 'poll' && <p>Polls are not supported yet!</p>}
         <div dangerouslySetInnerHTML={{ '__html': DOMPurify.sanitize(data.text || '') }} />
       </div>
+      {topLevel && <div className="p-2 gray-background border-top"><LinkToHN id={id} /></div>}
       {data.kids?.map(itemId => <Item id={itemId} key={itemId} level={level + 1} />)}
     </div>
   );
