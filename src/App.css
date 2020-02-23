@@ -22,8 +22,28 @@
   font-size: x-small;
 }
 
-.level-indicator-gray {
-  border-left: solid gainsboro;
+.level-border-orange {
+  border-left: .16rem solid rgb(252, 183, 127);
+}
+
+.level-border-red {
+  border-left: .16rem solid rgb(230, 151, 151);
+}
+
+.level-border-blue {
+  border-left: .16rem solid rgba(102, 102, 221, 0.801);
+}
+
+.level-border-gray {
+  border-left: .16rem solid rgb(189, 186, 186);
+}
+
+.level-border-purple {
+  border-left: .16rem solid rgb(208, 151, 230);
+}
+
+.level-border-green {
+  border-left: 1rem rgba(23, 216, 184, 0.616);
 }
 
 /* utils */

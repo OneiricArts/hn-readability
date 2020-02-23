@@ -87,8 +87,20 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
       window.scrollTo({ top: containerEl.current.offsetTop - 10, behavior: 'smooth' });
   };
 
+  const levelToColorMap = {
+    0: 'orange',
+    1: 'red',
+    2: 'blue',
+    3: 'gray',
+    4: 'purple',
+    5: 'green'
+  }
+
+  // @ts-ignore
+  const levelBorderColor = () => `level-border-${levelToColorMap[level % 5]}`;
+
   const isLoadingClassName = isLoading ? 'loading-skeleton' : '';
-  const commentCss = level > 1 ? 'level-indicator-gray ml-3' : '';
+  const commentCss = level > 1 ? `${levelBorderColor()} ml-3` : '';
   const topLevel = level === 0;
 
   return (
