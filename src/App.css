@@ -1,9 +1,6 @@
-body {
-  user-select: none;
+.app-container {
+  /* user-select: none; // only for frontpage? */
   color: black;
-}
-
-.front-page--container {
   max-width: 650px;
 }
 
@@ -25,7 +22,39 @@ body {
   font-size: x-small;
 }
 
+.level-border-orange {
+  border-left: .16rem solid rgb(252, 183, 127);
+}
+
+.level-border-red {
+  border-left: .16rem solid rgb(230, 151, 151);
+}
+
+.level-border-blue {
+  border-left: .16rem solid rgba(102, 102, 221, 0.801);
+}
+
+.level-border-gray {
+  border-left: .16rem solid rgb(189, 186, 186);
+}
+
+.level-border-purple {
+  border-left: .16rem solid rgb(208, 151, 230);
+}
+
+.level-border-green {
+  border-left: 1rem rgba(23, 216, 184, 0.616);
+}
+
 /* utils */
 .clickable {
   cursor: pointer;
+}
+
+.border-top {
+  border-top: 0.01em solid gainsboro;
+}
+
+.gray-background {
+  background-color: #F0F0F0;
 }
