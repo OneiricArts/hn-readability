@@ -50,6 +50,18 @@
   border-left: 1rem rgba(23, 216, 184, 0.616);
 }
 
+.link-card {
+  border: .05rem solid gainsboro;
+  border-radius: 0.7em;
+}
+
+.link-card--text {
+  border-left: .05rem solid gainsboro;
+
+  color: gray;
+  text-decoration: none;
+}
+
 /* utils */
 .clickable {
   cursor: pointer;
