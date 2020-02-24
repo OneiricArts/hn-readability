@@ -117,7 +117,7 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
           {data.deleted && '[deleted]'}
           {data.title && <h4>{data.title}</h4>}
           {data.type === 'poll' && <p>Polls are not supported yet!</p>}
-          <div dangerouslySetInnerHTML={{ '__html': DOMPurify.sanitize(data.text || '') }} />
+          <div className="item--hn-text" dangerouslySetInnerHTML={{ '__html': DOMPurify.sanitize(data.text || '') }} />
         </div>
         {topLevel && <div className="p-2 gray-background border-top"><LinkToHN id={id} /></div>}
         {data.kids?.map(itemId => <Item id={itemId} key={itemId} level={level + 1} />)}
