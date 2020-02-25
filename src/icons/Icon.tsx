@@ -68,6 +68,56 @@ const getPath = (name: string, color: string) => {
           ></path>
         </Fragment>
       );
+    case 'share':
+      return (
+        <Fragment>
+          <path
+            fill="none"
+            stroke={color}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="32"
+            d="M336 192h40a40 40 0 0140 40v192a40 40 0 01-40 40H136a40 40 0 01-40-40V232a40 40 0 0140-40h40"
+          ></path>
+          <path
+            fill="none"
+            stroke={color}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="32"
+            d="M336 128L256 48 176 128"
+          ></path>
+          <path
+            fill="none"
+            stroke={color}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="32"
+            d="M256 321L256 48"
+          ></path>
+        </Fragment>
+      );
+    case 'link':
+      return (
+        <Fragment>
+          <path
+            fill="none"
+            stroke={color}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="36"
+            d="M208 352h-64a96 96 0 010-192h64M304 160h64a96 96 0 010 192h-64"
+          ></path>
+          <path
+            fill="none"
+            stroke={color}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="36"
+            d="M163.29 256L350.71 256"
+          ></path>
+        </Fragment>
+      );
     default:
       return <path />;
   }
@@ -76,10 +126,10 @@ const getPath = (name: string, color: string) => {
 interface IconProps {
   size?: number;
   color?: string;
-  name: 'compass'|'chat-bubbles'
+  name: 'compass' | 'chat-bubbles' | 'share' | 'link';
 }
 // size is in em
-function Icon({ size = 1.1, color = "#000", name }:IconProps) {
+function Icon({ size = 1.1, color = "#000", name }: IconProps) {
   return (
     <Fragment>
       {/* <span
