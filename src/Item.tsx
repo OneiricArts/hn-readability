@@ -23,15 +23,42 @@ interface HNItem {
   descendants?: number;
 }
 
+const hNItemLink = (id: number) => `https://news.ycombinator.com/item?id=${id}`;
+
 const LinkToHN = ({ id }: { id: number }) => (
   <a
     className="btn btn-sm btn-outline-dark py-0 px-1"
     role="button"
-    href={`https://news.ycombinator.com/item?id=${id}`}
+    href={hNItemLink(id)}
   >
     @ HN
   </a>
 );
+
+const Share = ({ title, url }: { title?: string, url: string }) => {
+  //@ts-ignore
+  if (!navigator?.share) return null;
+
+  const shareTo = async () => {
+    try {
+      //@ts-ignore
+      await navigator.share({ title, url });
+      console.log('shared!')
+    } catch (e) {
+      if (e.name === 'AbortError') console.log('Share aborted')
+      else console.log(e);
+    }
+  };
+
+  return (
+    <div
+      className="d-inline-flex align-items-center py-2 px-2 border-right clickable"
+      onClick={shareTo}
+    >
+      <Icon name="share" size={1.5} />
+    </div>
+  );
+};
 
 const LinkUrlCard = ({ url }: { url: string }) => (
   <a href={url} className="p-1 mb-2 link-card d-flex align-items-center">
@@ -68,7 +95,7 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
          * (┛ಠ_ಠ)┛彡┻━┻
          */
         setData(data || {
-          text: `API error :( <a href="https://news.ycombinator.com/item?id=${id}">view on hn</a>`,
+          text: `API error :( <a href="${hNItemLink(id)}">view on hn</a>`,
           type: 'comment'
         });
       })
@@ -132,7 +159,13 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
           {data.type === 'poll' && <p>Polls are not supported yet!</p>}
           <div className="item--hn-text" dangerouslySetInnerHTML={{ '__html': DOMPurify.sanitize(data.text || '') }} />
         </div>
-        {topLevel && <div className="p-2 gray-background border-top"><LinkToHN id={id} /></div>}
+        {
+          topLevel &&
+          <div className="gray-background border-top d-flex align-items-center">
+            <LinkToHN id={id} />
+            <Share title={data.title} url={hNItemLink(id)} />
+          </div>
+        }
         {data.kids?.map(itemId => <Item id={itemId} key={itemId} level={level + 1} />)}
       </Collapse>
     </div>
