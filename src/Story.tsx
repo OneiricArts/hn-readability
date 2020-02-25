@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Container } from 'reactstrap';
-import ChatBubbles from './icons/ChatBubbles';
 import { Link } from 'react-router-dom';
+import Icon from './icons/Icon';
 
 interface HNItem {
   title: string;
@@ -53,8 +53,8 @@ const Story = ({ id, rank }: { id: number, rank: number }) => {
           className="col-sm-1 col-2 pl-1 pr-1 pt-2 story--comments"
           to={`/item?id=${id}`}
         >
-          <span className="float-right align-middle small">
-            <span className={loadingClassName}>{storyData.descendants}</span> <ChatBubbles />
+          <span className="float-right small" style={{ display:'flex', alignItems: 'center' }}>
+            {storyData.descendants}&nbsp;<Icon name="chat-bubbles" />
           </span>
         </Link>
       </Row>

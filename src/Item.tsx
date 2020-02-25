@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, RefObject } from 'react';
 import ReactDOM from 'react-dom';
 import DOMPurify from 'dompurify';
 import { Collapse } from 'reactstrap';
-import Compass from './icons/Compass';
+import Icon from './icons/Icon';
 
 // https://github.com/HackerNews/API#items
 interface HNItem {
@@ -35,7 +35,7 @@ const LinkToHN = ({ id }: { id: number }) => (
 
 const LinkUrlCard = ({ url }: { url: string }) => (
   <a href={url} className="p-1 mb-2 link-card d-flex align-items-center">
-    <Compass size={2} color="gray" />
+    <Icon size={2} color="gray" name="compass" />
     <span className="pl-2 ml-2 pr-2 link-card--text text-truncate" style={{ flex: '1' }}>{url}</span>
   </a>
 );
