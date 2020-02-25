@@ -25,12 +25,10 @@ interface HNItem {
 
 const hNItemLink = (id: number) => `https://news.ycombinator.com/item?id=${id}`;
 
+const buttonBarClasses = "d-inline-flex align-items-center py-2 px-2";
+
 const LinkToHN = ({ id }: { id: number }) => (
-  <a
-    className="d-inline-flex align-items-center py-2 px-2 border-right"
-    role="button"
-    href={hNItemLink(id)}
-  >
+  <a className={`${buttonBarClasses}`} role="button" href={hNItemLink(id)}>
     <Icon name="link" size={1.5} />
   </a>
 );
@@ -51,10 +49,7 @@ const Share = ({ title, url }: { title?: string, url: string }) => {
   };
 
   return (
-    <div
-      className="d-inline-flex align-items-center py-2 px-2 border-right clickable"
-      onClick={shareTo}
-    >
+    <div className={`${buttonBarClasses} clickable`} onClick={shareTo}>
       <Icon name="share" size={1.5} />
     </div>
   );
