@@ -27,11 +27,11 @@ const hNItemLink = (id: number) => `https://news.ycombinator.com/item?id=${id}`;
 
 const LinkToHN = ({ id }: { id: number }) => (
   <a
-    className="btn btn-sm btn-outline-dark py-0 px-1"
+    className="d-inline-flex align-items-center py-2 px-2 border-right"
     role="button"
     href={hNItemLink(id)}
   >
-    @ HN
+    <Icon name="link" size={1.5} />
   </a>
 );
 
