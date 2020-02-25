@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, RefObject } from 'react';
 import ReactDOM from 'react-dom';
 import DOMPurify from 'dompurify';
 import { Collapse } from 'reactstrap';
+import Icon from './icons/Icon';
 
 // https://github.com/HackerNews/API#items
 interface HNItem {
@@ -29,6 +30,13 @@ const LinkToHN = ({ id }: { id: number }) => (
     href={`https://news.ycombinator.com/item?id=${id}`}
   >
     @ HN
+  </a>
+);
+
+const LinkUrlCard = ({ url }: { url: string }) => (
+  <a href={url} className="p-1 mb-2 link-card d-flex align-items-center">
+    <Icon size={2} color="gray" name="compass" />
+    <span className="pl-2 ml-2 pr-2 link-card--text text-truncate" style={{ flex: '1' }}>{url}</span>
   </a>
 );
 
@@ -120,6 +128,7 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
         <div className={`${isLoadingClassName} py-1 px-2`} style={{ wordBreak: 'break-word' }}>
           {data.deleted && '[deleted]'}
           {data.title && <h4>{data.title}</h4>}
+          {data.url && <LinkUrlCard url={data.url} />}
           {data.type === 'poll' && <p>Polls are not supported yet!</p>}
           <div className="item--hn-text" dangerouslySetInnerHTML={{ '__html': DOMPurify.sanitize(data.text || '') }} />
         </div>
