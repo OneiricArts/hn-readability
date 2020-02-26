@@ -4,7 +4,7 @@ import smoothscroll from 'smoothscroll-polyfill';
 import './App.css';
 import './skeleton.css';
 import FrontPage from './FrontPage';
-import Item from './Item';
+import ItemPage from './Item';
 
 smoothscroll.polyfill();
 
@@ -19,7 +19,7 @@ const App = () => {
           <Route path="/item" render={({ location }) => {
             const searchParams = new URLSearchParams(location.search);
             const id = searchParams.get('id');
-            if (id) return <Item id={parseInt(id, 10)} />;
+            if (id) return <ItemPage id={parseInt(id, 10)} />;
             return <div>No item id specified</div>
           }}>
           </Route>

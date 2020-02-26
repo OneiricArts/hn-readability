@@ -63,6 +63,13 @@
   text-decoration: none;
 }
 
+.floating-button {
+  position: fixed;
+  bottom: 30px;
+  right: 10px;
+  z-index: 99;
+}
+
 /* utils */
 .clickable {
   cursor: pointer;
