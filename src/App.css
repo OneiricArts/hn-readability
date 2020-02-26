@@ -1,4 +1,7 @@
 :root {
+  --body-background-color: white;
+
+  --app-container-background-color:white;
   --app-container-color: black;
 
   --story-cotainer-border-color: #F0F0F0;
@@ -8,8 +11,13 @@
   --link-card-text-color: gray;
 }
 
+body {
+  background-color: var(--body-background-color);
+}
+
 .app-container {
   /* user-select: none; // only for frontpage? */
+  background-color: var(--app-container-background-color);
   color: var(--app-container-color);
   max-width: 650px;
   touch-action: manipulation;
