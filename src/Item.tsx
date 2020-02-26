@@ -128,16 +128,16 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
   };
 
   const levelToColorMap = {
-    0: 'orange',
-    1: 'red',
     2: 'blue',
     3: 'gray',
     4: 'purple',
-    5: 'green'
+    5: 'green',
+    0: 'orange', // use %, so 0 is last (6th)
+    1: 'red' // level 1 does not show any, so this is first used on level 7
   }
 
   // @ts-ignore
-  const levelBorderColor = () => `level-border-${levelToColorMap[level % 5]}`;
+  const levelBorderColor = () => `level-border-${levelToColorMap[level % 6]}`;
 
   const isLoadingClassName = isLoading ? 'loading-skeleton' : '';
   const commentCss = level > 1 ? `${levelBorderColor()} ml-3` : '';
