@@ -1,17 +1,27 @@
+:root {
+  --app-container-color: black;
+
+  --story-cotainer-border-color: #F0F0F0;
+  --story-border-color: gainsboro;
+  --story-background-color: #F0F0F0;
+
+  --link-card-text-color: gray;
+}
+
 .app-container {
   /* user-select: none; // only for frontpage? */
-  color: black;
+  color: var(--app-container-color);
   max-width: 650px;
   touch-action: manipulation;
 }
 
 .story--container {
-  border-bottom: 0.1rem solid #F0F0F0;
+  border-bottom: 0.1rem solid var(--story-cotainer-border-color);
 }
 
 .story--comments {
   /* background-color: #F0F0F0; */
-  border-left: 0.1rem solid #F0F0F0;
+  border-left: 0.1rem solid var(--story-cotainer-border-color);
 }
 
 .story--container a {
@@ -52,14 +62,14 @@
 }
 
 .link-card {
-  border: .05rem solid gainsboro;
+  border: .05rem solid var(--story-border-color);
   border-radius: 0.7em;
 }
 
 .link-card--text {
-  border-left: .05rem solid gainsboro;
+  border-left: .05rem solid var(--story-border-color);
 
-  color: gray;
+  color: var(--link-card-text-color);
   text-decoration: none;
 }
 
@@ -76,13 +86,13 @@
 }
 
 .border-top {
-  border-top: 0.01em solid gainsboro;
+  border-top: 0.01em solid var(--story-border-color);
 }
 
 .h-border-right {
-  border-right: 0.01em solid gainsboro;
+  border-right: 0.01em solid var(--story-border-color);
 }
 
-.gray-background {
-  background-color: #F0F0F0;
+.button-bar-background {
+  background-color:var(--story-cotainer-border-color);
 }
