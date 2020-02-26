@@ -1,9 +1,12 @@
 import React from 'react';
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
+import smoothscroll from 'smoothscroll-polyfill';
 import './App.css';
 import './skeleton.css';
 import FrontPage from './FrontPage';
 import Item from './Item';
+
+smoothscroll.polyfill();
 
 const App = () => {
   return (
