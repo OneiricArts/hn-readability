@@ -2,6 +2,7 @@
   /* user-select: none; // only for frontpage? */
   color: black;
   max-width: 650px;
+  touch-action: manipulation;
 }
 
 .story--container {
