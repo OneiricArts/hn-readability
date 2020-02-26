@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef, RefObject } from 'react';
+import React, { useEffect, useState, useRef, RefObject, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import DOMPurify from 'dompurify';
-import { Collapse } from 'reactstrap';
+import { Collapse, Button } from 'reactstrap';
 import Icon from './icons/Icon';
 
 // https://github.com/HackerNews/API#items
@@ -25,7 +25,15 @@ interface HNItem {
 
 const hNItemLink = (id: number) => `https://news.ycombinator.com/item?id=${id}`;
 
-const buttonBarClasses = "d-inline-flex align-items-center py-2 px-2";
+const buttonBarClasses = "d-inline-flex align-items-center h-border-right py-2 px-2";
+
+const topLevelCommentRefs: RefObject<HTMLElement>[] = [];
+
+const topOfElIsVisible = (el: RefObject<HTMLElement>, buffer = 0) => {
+  const top = el.current?.getBoundingClientRect().top;
+  if (top === undefined) return false;
+  return top < buffer;
+}
 
 const LinkToHN = ({ id }: { id: number }) => (
   <a className={`${buttonBarClasses}`} role="button" href={hNItemLink(id)}>
@@ -99,13 +107,9 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
     getItem();
   }, [id]);
 
-  const topOfElIsVisible = (el: RefObject<HTMLElement>) => {
-    const top = el.current?.getBoundingClientRect().top;
-    if (top === undefined) return false;
-    return top < 0;
-  }
-
   const containerEl = useRef<HTMLDivElement>(null);
+  if (level === 1) topLevelCommentRefs.push(containerEl);
+
   const [isOpen, setIsOpen] = useState(true);
   const toggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (level === 0) return;
@@ -167,4 +171,24 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
   );
 }
 
-export default Item;
+const ItemPage = ({ id }: { id: number }) => {
+  const goToNextComment = () => {
+    const firstCommentWithTopVisible = topLevelCommentRefs.filter(e => !topOfElIsVisible(e, 5))[0];
+
+    if (firstCommentWithTopVisible && firstCommentWithTopVisible?.current) {
+      window.scrollTo({ top: firstCommentWithTopVisible.current.offsetTop, behavior: 'smooth' });
+    }
+  }
+
+  return (
+    <>
+      <Item id={id} />
+      <Button size="lg" color="dark" className="rounded-circle floating-button d-md-none" onClick={goToNextComment}>
+        &darr;
+      </Button>
+      <div className="d-md-none" style={{ paddingBottom: '80px' }}></div>
+    </>
+  );
+};
+
+export default ItemPage;

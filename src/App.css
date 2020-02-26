@@ -2,6 +2,7 @@
   /* user-select: none; // only for frontpage? */
   color: black;
   max-width: 650px;
+  touch-action: manipulation;
 }
 
 .story--container {
@@ -62,6 +63,13 @@
   text-decoration: none;
 }
 
+.floating-button {
+  position: fixed;
+  bottom: 30px;
+  right: 10px;
+  z-index: 99;
+}
+
 /* utils */
 .clickable {
   cursor: pointer;
@@ -71,7 +79,7 @@
   border-top: 0.01em solid gainsboro;
 }
 
-.border-right {
+.h-border-right {
   border-right: 0.01em solid gainsboro;
 }
 
