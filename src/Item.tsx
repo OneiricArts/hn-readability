@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, RefObject, Fragment } from 'react';
+import React, { useEffect, useState, useRef, RefObject } from 'react';
 import ReactDOM from 'react-dom';
 import DOMPurify from 'dompurify';
 import { Collapse, Button } from 'reactstrap';
