@@ -53,7 +53,7 @@ const Story = ({ id, rank }: { id: number, rank: number }) => {
           className="col-sm-1 col-2 pl-1 pr-1 pt-2 story--comments"
           to={`/item?id=${id}`}
         >
-          <span className="float-right small" style={{ display:'flex', alignItems: 'center' }}>
+          <span className={`${loadingClassName} float-right small`} style={{ display:'flex', alignItems: 'center' }}>
             {storyData.descendants}&nbsp;<Icon name="chat-bubbles" />
           </span>
         </Link>
