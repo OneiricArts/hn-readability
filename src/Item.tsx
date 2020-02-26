@@ -25,7 +25,7 @@ interface HNItem {
 
 const hNItemLink = (id: number) => `https://news.ycombinator.com/item?id=${id}`;
 
-const buttonBarClasses = "d-inline-flex align-items-center py-2 px-2";
+const buttonBarClasses = "d-inline-flex align-items-center h-border-right py-2 px-2";
 
 const LinkToHN = ({ id }: { id: number }) => (
   <a className={`${buttonBarClasses}`} role="button" href={hNItemLink(id)}>
