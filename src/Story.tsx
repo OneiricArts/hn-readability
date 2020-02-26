@@ -43,6 +43,7 @@ const Story = ({ id, rank }: { id: number, rank: number }) => {
         <a
           className="px-2 pt-2 col-sm-11 col-10"
           href={storyData.url || `https://news.ycombinator.com/item?id=${id}`}
+          rel="noopener noreferrer" target="_blank"
         >
           <div className={loadingClassName}>{storyData.title}</div>
           <span className={`${loadingClassName} text-muted story--info pt-1`}>
@@ -52,6 +53,7 @@ const Story = ({ id, rank }: { id: number, rank: number }) => {
         <Link
           className="col-sm-1 col-2 pl-1 pr-1 pt-2 story--comments"
           to={`/item?id=${id}`}
+          rel="noopener noreferrer" target="_blank"
         >
           <span className={`${loadingClassName} float-right small`} style={{ display:'flex', alignItems: 'center' }}>
             {storyData.descendants}&nbsp;<Icon name="chat-bubbles" />
