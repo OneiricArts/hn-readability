@@ -36,7 +36,7 @@ const topOfElIsVisible = (el: RefObject<HTMLElement>, buffer = 0) => {
 }
 
 const LinkToHN = ({ id }: { id: number }) => (
-  <a className={`${buttonBarClasses}`} role="button" href={hNItemLink(id)}>
+  <a className={`${buttonBarClasses} hnr-inherit-color`} role="button" href={hNItemLink(id)}>
     <Icon name="link" size={1.5} />
   </a>
 );
@@ -65,7 +65,7 @@ const Share = ({ title, url }: { title?: string, url: string }) => {
 
 const LinkUrlCard = ({ url }: { url: string }) => (
   <a href={url} className="p-1 mb-2 link-card d-flex align-items-center">
-    <Icon size={2} color="gray" name="compass" />
+    <Icon size={2} name="compass" />
     <span className="pl-2 ml-2 pr-2 link-card--text text-truncate" style={{ flex: '1' }}>{url}</span>
   </a>
 );

@@ -45,6 +45,7 @@ body {
 .link-card {
   border: .05rem solid var(--story-border-color);
   border-radius: 0.7em;
+  color: var(--link-card-text-color)
 }
 
 .link-card--text {
@@ -63,6 +64,8 @@ body {
 
 /* utils */
 .clickable { cursor: pointer }
+
+.hnr-inherit-color { color: inherit }
 
 .border-top { border-top: 0.01em solid var(--story-border-color) }
 
