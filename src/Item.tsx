@@ -87,6 +87,8 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
       const response = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`);
       const data = await response.json();
 
+      if (level === 0) document.title = `${data.title} | Dapper`;
+
       ReactDOM.unstable_batchedUpdates(() => {
         setIsLoading(false);
         /**
