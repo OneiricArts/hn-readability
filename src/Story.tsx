@@ -37,6 +37,12 @@ const Story = ({ id, rank }: { id: number, rank: number }) => {
 
   const loadingClassName = isLoading ? 'loading-skeleton' : '';
 
+  let urlHostName: string|undefined;
+  if (storyData.url) {
+    const url = new URL(storyData.url);
+    urlHostName = url.hostname;
+  }
+
   return (
     <Container fluid className="story--container">
       <Row>
@@ -47,7 +53,7 @@ const Story = ({ id, rank }: { id: number, rank: number }) => {
         >
           <div className={loadingClassName}>{storyData.title}</div>
           <span className={`${loadingClassName} text-muted story--info pt-1`}>
-            #{rank}&emsp;↑{storyData.score}
+            #{rank}&emsp;↑{storyData.score}&emsp;{urlHostName}
           </span>
         </a>
         <Link
