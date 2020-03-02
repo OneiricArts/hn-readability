@@ -34,6 +34,7 @@ body {
 .story--info { font-size: x-small }
 
 .item--hn-text p:last-of-type { margin-bottom: 0 }
+.item--hn-text pre { color: inherit }
 
 .level-border-orange  { border-left: .16rem solid rgb(252, 183, 127) }
 .level-border-red     { border-left: .16rem solid rgb(230, 151, 151) }
