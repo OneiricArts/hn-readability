@@ -1,14 +1,28 @@
 :root {
   --body-background-color: white;
 
-  --app-container-background-color:white;
+  --app-container-background-color:rgb(246, 246, 239);;
   --app-container-color: black;
 
   --story-cotainer-border-color: #F0F0F0;
   --story-border-color: gainsboro;
-  --story-background-color: #F0F0F0;
 
   --link-card-text-color: gray;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --body-background-color: rgb(21, 32, 43);
+
+    --app-container-background-color:rgb(25, 39, 52);;
+    --app-container-color: white;
+
+    --story-cotainer-border-color: rgb(47, 48, 49);
+    --story-border-color: rgb(80, 76, 76);
+
+
+    --link-card-text-color: rgb(69, 151, 240);
+  }
 }
 
 body {
@@ -68,8 +82,6 @@ body {
 
 .hnr-inherit-color { color: inherit }
 
-.border-top { border-top: 0.01em solid var(--story-border-color) }
+.h-border-top { border-top: 0.01em solid var(--story-border-color) }
 
 .h-border-right { border-right: 0.01em solid var(--story-border-color) }
-
-.button-bar-background { background-color: var(--story-cotainer-border-color) }

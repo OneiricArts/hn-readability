@@ -162,7 +162,7 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
         </div>
         {
           topLevel &&
-          <div className="button-bar-background border-top d-flex align-items-center">
+          <div className="h-border-top d-flex align-items-center">
             <LinkToHN id={id} />
             <Share title={data.title} url={hNItemLink(id)} />
           </div>
