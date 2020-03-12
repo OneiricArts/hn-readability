@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, RefObject, Fragment } from 'react';
+import React, { useEffect, useState, useRef, RefObject } from 'react';
 import ReactDOM from 'react-dom';
 import DOMPurify from 'dompurify';
 import { Collapse, Button } from 'reactstrap';
@@ -36,7 +36,7 @@ const topOfElIsVisible = (el: RefObject<HTMLElement>, buffer = 0) => {
 }
 
 const LinkToHN = ({ id }: { id: number }) => (
-  <a className={`${buttonBarClasses}`} role="button" href={hNItemLink(id)}>
+  <a className={`${buttonBarClasses} hnr-inherit-color`} role="button" href={hNItemLink(id)}>
     <Icon name="link" size={1.5} />
   </a>
 );
@@ -65,7 +65,7 @@ const Share = ({ title, url }: { title?: string, url: string }) => {
 
 const LinkUrlCard = ({ url }: { url: string }) => (
   <a href={url} className="p-1 mb-2 link-card d-flex align-items-center">
-    <Icon size={2} color="gray" name="compass" />
+    <Icon size={2} name="compass" />
     <span className="pl-2 ml-2 pr-2 link-card--text text-truncate" style={{ flex: '1' }}>{url}</span>
   </a>
 );
@@ -128,16 +128,16 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
   };
 
   const levelToColorMap = {
-    0: 'orange',
-    1: 'red',
     2: 'blue',
     3: 'gray',
     4: 'purple',
-    5: 'green'
+    5: 'green',
+    0: 'orange', // use %, so 0 is last (6th)
+    1: 'red' // level 1 does not show any, so this is first used on level 7
   }
 
   // @ts-ignore
-  const levelBorderColor = () => `level-border-${levelToColorMap[level % 5]}`;
+  const levelBorderColor = () => `level-border-${levelToColorMap[level % 6]}`;
 
   const isLoadingClassName = isLoading ? 'loading-skeleton' : '';
   const commentCss = level > 1 ? `${levelBorderColor()} ml-3` : '';
@@ -162,7 +162,7 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
         </div>
         {
           topLevel &&
-          <div className="gray-background border-top d-flex align-items-center">
+          <div className="h-border-top d-flex align-items-center">
             <LinkToHN id={id} />
             <Share title={data.title} url={hNItemLink(id)} />
           </div>
