@@ -144,7 +144,7 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
   const topLevel = level === 0;
 
   return (
-    <div ref={containerEl} className={`${commentCss} ${level > 0 ? 'border-top' : ''} px-0 `} onClick={toggle}>
+    <div ref={containerEl} className={`${commentCss} ${level > 0 ? 'h-border-top' : ''} px-0 `} onClick={toggle}>
       <div className={`${isLoadingClassName} text-muted small py-1 px-2`}>
         {data.by || '[deleted]'} {/* TODO: Verify what it means if this is empty */}
         {!topLevel && <span className="float-right">

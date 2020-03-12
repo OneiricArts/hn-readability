@@ -48,6 +48,7 @@ body {
 .story--info { font-size: x-small }
 
 .item--hn-text p:last-of-type { margin-bottom: 0 }
+.item--hn-text p:first-of-type { margin-top: 1rem }
 .item--hn-text pre { color: inherit }
 
 .level-border-orange  { border-left: .16rem solid rgb(252, 183, 127) }
