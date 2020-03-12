@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import DOMPurify from 'dompurify';
 import { Row, Container } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import Icon from './icons/Icon';
@@ -51,7 +52,7 @@ const Story = ({ id, rank }: { id: number, rank: number }) => {
           href={storyData.url || `https://news.ycombinator.com/item?id=${id}`}
           rel="noopener noreferrer" target="_blank"
         >
-          <div className={loadingClassName}>{storyData.title}</div>
+          <div className={loadingClassName} dangerouslySetInnerHTML={{ '__html': DOMPurify.sanitize(storyData.title || '') }} />
           <span className={`${loadingClassName} text-muted story--info pt-1`}>
             #{rank}&emsp;↑{storyData.score}&emsp;{urlHostName}
           </span>

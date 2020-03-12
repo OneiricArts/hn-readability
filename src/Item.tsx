@@ -163,7 +163,7 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
       <Collapse isOpen={isOpen}>
         <div className={`${isLoadingClassName} py-1 px-2`} style={{ wordBreak: 'break-word' }}>
           {data.deleted && '[deleted]'}
-          {data.title && <h4>{data.title}</h4>}
+          {data.title && <h4 dangerouslySetInnerHTML={{ '__html': DOMPurify.sanitize(data.title) }} />}
           {data.url && <LinkUrlCard url={data.url} />}
           {data.type === 'poll' && <p>Polls are not supported yet!</p>}
           <div className="item--hn-text" dangerouslySetInnerHTML={{ '__html': DOMPurify.sanitize(data.text || '') }} />
