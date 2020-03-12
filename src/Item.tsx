@@ -123,7 +123,7 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
 
     // do not collapse comment if clicking on link inside div (HTML from api)
     const target = e.target as HTMLElement;
-    if (target.nodeName === 'A') return;
+    if (target.nodeName === 'A' || target.nodeName === 'svg') return;
 
     e.stopPropagation();
     setIsOpen(!isOpen);
