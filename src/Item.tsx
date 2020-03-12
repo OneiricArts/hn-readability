@@ -116,6 +116,10 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
   const toggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (level === 0) return;
 
+    // do not collapse comment if user is selecting text
+    const selection = window.getSelection();
+    if (selection?.type === 'Range') return;
+
     // do not collapse comment if clicking on link inside div (HTML from api)
     const target = e.target as HTMLElement;
     if (target.nodeName === 'A') return;
