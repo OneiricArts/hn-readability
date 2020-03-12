@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import DOMPurify from 'dompurify';
 import { Collapse, Button } from 'reactstrap';
 import Icon from './icons/Icon';
+import { Link } from 'react-router-dom';
 
 // https://github.com/HackerNews/API#items
 interface HNItem {
@@ -152,6 +153,9 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
       <div className={`${isLoadingClassName} text-muted small py-1 px-2`}>
         {data.by || '[deleted]'} {/* TODO: Verify what it means if this is empty */}
         {!topLevel && <span className="float-right">
+          <Link to={`/item?id=${data.id}`} className="mr-3 hnr-inherit-color">
+            <Icon name="link" svgClassName="ignore"/>
+          </Link>
           {isOpen ? String.fromCharCode(8593) : String.fromCharCode(8595)}
         </span>}
       </div>
