@@ -86,9 +86,20 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
   useEffect(() => {
     async function getItem() {
       const response = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`);
-      const data = await response.json();
+      const data:HNItem = await response.json();
 
-      if (level === 0) document.title = `${data.title} | Dapper`;
+      if (level === 0) {
+        if (data.title) {
+          document.getElementsByTagName('title')[0].innerHTML = `${DOMPurify.sanitize(data.title)} | Dapper`;
+        } else if (data.text) {
+          const div = document.createElement("div");
+          div.innerHTML = DOMPurify.sanitize(data.text);
+          let title = div.textContent;
+
+          if (title && title?.length > 90) { document.title = `${title.substring(0, 90)}... | Dapper`; }
+          else { document.title = `${title} | Dapper`; }
+        }
+      }
 
       ReactDOM.unstable_batchedUpdates(() => {
         setIsLoading(false);
@@ -108,7 +119,7 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
     }
 
     getItem();
-  }, [id]);
+  }, [id, level]);
 
   const containerEl = useRef<HTMLDivElement>(null);
   if (level === 1) topLevelCommentRefs.push(containerEl);
