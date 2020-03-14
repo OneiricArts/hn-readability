@@ -108,7 +108,7 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
     }
 
     getItem();
-  }, [id]);
+  }, [id, level]);
 
   const containerEl = useRef<HTMLDivElement>(null);
   if (level === 1) topLevelCommentRefs.push(containerEl);
