@@ -86,3 +86,11 @@ body {
 .h-border-top { border-top: 0.01em solid var(--story-border-color) }
 
 .h-border-right { border-right: 0.01em solid var(--story-border-color) }
+
+.hnr-hide-button {
+  width: 2.5em;
+  height: 2.5em;
+  border-radius: 2.5em;
+  font-size: 1.5em;
+  color: white;
+}
