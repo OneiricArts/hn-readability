@@ -1,5 +1,7 @@
 import React, { useEffect, useState, Fragment } from 'react';
+import { Button } from 'reactstrap';
 import Story from './Story';
+import Icon from './icons/Icon';
 
 const LOAD_INCREMENT = 30;
 
@@ -8,6 +10,15 @@ const FrontPage = ({ url = 'https://hacker-news.firebaseio.com/v0/topstories.jso
   const [storiesToShow, setStoriesToShow] = useState<number>(LOAD_INCREMENT);
 
   const [doneLoading, setDone] = useState(false); // TODO add reason & check before showing more
+
+  const [viewedStories, setViewedStories] = useState<number[]>(() => {
+    const cache = localStorage.getItem('HNR_VIEWED_STORIES_CACHE');
+    if (cache) return JSON.parse(cache);
+    return [];
+  });
+
+  const [storiesToHide, setStoriesToHide] = useState<number[]>([]);
+  const hideViewedStories = () => setStoriesToHide(viewedStories);
 
   useEffect(() => {
     async function getStories() {
@@ -30,7 +41,7 @@ const FrontPage = ({ url = 'https://hacker-news.firebaseio.com/v0/topstories.jso
         return Math.min(e + LOAD_INCREMENT, stories.length);
       })
     }
-  }, [storiesToShow, stories]);
+  }, [storiesToShow, stories, storiesToHide]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -49,10 +60,34 @@ const FrontPage = ({ url = 'https://hacker-news.firebaseio.com/v0/topstories.jso
     return () => window.removeEventListener('scroll', onScroll);
   }, [stories]);
 
+  const onStoryClick = (id:number) => {
+    const currViewedStories = viewedStories;
+
+    if (currViewedStories.length > 50) currViewedStories.pop();
+    if (currViewedStories.indexOf(id) < 0) setViewedStories([id, ...currViewedStories]);
+  }
+
+  useEffect(() => localStorage.setItem('HNR_VIEWED_STORIES_CACHE', JSON.stringify(viewedStories)), [viewedStories]);
+
+  const viewedStory = (id:number) => viewedStories.indexOf(id) > -1;
+
   return (
     <Fragment>
-      {stories.slice(0, storiesToShow).map((id, index) => <Story key={id} id={id} rank={index + 1} />)}
+      {stories.slice(0, storiesToShow)
+        .map((id, index) =>
+          storiesToHide.indexOf(id) < 0 &&
+          <Story key={id} id={id} rank={index + 1} onStoryClick={onStoryClick} viewedStory={viewedStory(id)} />
+        )
+      }
       {doneLoading && <div>All Done, time to go outside.</div>}
+      <Button
+        size="lg"
+        color="primary"
+        className="floating-button hnr-hide-button ml-auto d-inline-flex"
+        onClick={hideViewedStories}
+      >
+        <Icon name="eye-off" />
+      </Button>
     </Fragment>
   );
 }
