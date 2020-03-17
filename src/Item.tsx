@@ -4,9 +4,10 @@ import DOMPurify from 'dompurify';
 import { Collapse, Button } from 'reactstrap';
 import Icon from './icons/Icon';
 import { Link } from 'react-router-dom';
+import Parent from './Parent';
 
 // https://github.com/HackerNews/API#items
-interface HNItem {
+export interface HNItem {
   id: number;
   deleted?: boolean;
   type?: 'job' | 'story' | 'comment' | 'poll' | 'pollopt';
@@ -168,6 +169,9 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
             <Icon name="link" svgClassName="ignore"/>
           </Link>
           {isOpen ? String.fromCharCode(8593) : String.fromCharCode(8595)}
+        </span>}
+        {topLevel && <span className="float-right">
+          {data.parent && <Parent parent={data.parent} />}
         </span>}
       </div>
 
