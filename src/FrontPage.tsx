@@ -83,7 +83,7 @@ const FrontPage = ({ url = 'https://hacker-news.firebaseio.com/v0/topstories.jso
       <Button
         size="lg"
         color="primary"
-        className="floating-button hnr-hide-button ml-auto d-inline-flex"
+        className="hnr-floating-button ml-auto d-inline-flex"
         onClick={hideViewedStories}
       >
         <Icon name="eye-off" />

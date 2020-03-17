@@ -204,7 +204,7 @@ const ItemPage = ({ id }: { id: number }) => {
   return (
     <>
       <Item id={id} />
-      <Button size="lg" color="dark" className="rounded-circle floating-button d-md-none" onClick={goToNextComment}>
+      <Button size="lg" color="primary" className="hnr-floating-button d-md-none" onClick={goToNextComment}>
         &darr;
       </Button>
       <div className="d-md-none" style={{ paddingBottom: '80px' }}></div>
