@@ -131,6 +131,78 @@ const getPath = (name: string) => {
           />
         </>
       );
+    case 'return-up':
+      return (
+        <>
+          <path
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="32"
+            d="M400 160L464 224 400 288"
+          />
+          <path
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="32"
+            d="M448 224H154c-58.76 0-106 49.33-106 108v20"
+          />
+        </>
+      );
+    case 'merge':
+      return (
+        <>
+          <circle
+            cx="129"
+            cy="96"
+            r="48"
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="32"
+          />
+          <circle
+            cx="129"
+            cy="416"
+            r="48"
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="32"
+          />
+          <path
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="32"
+            d="M129 144L129 368"
+          />
+          <circle
+            cx="385"
+            cy="288"
+            r="48"
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="32"
+          />
+          <path
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="32"
+            d="M129 144c0 96 112 144 208 144"
+          />
+        </>
+      );
     default:
       return <path />;
   }
@@ -139,7 +211,7 @@ const getPath = (name: string) => {
 interface IconProps {
   size?: number;
   svgClassName?: string;
-  name: 'compass' | 'chat-bubbles' | 'share' | 'link' | 'eye-off';
+  name: 'compass' | 'chat-bubbles' | 'share' | 'link' | 'eye-off' |'return-up' | 'merge';
 }
 // size is in em
 // can use className to color icons, eg: .svgClassName { color: blue }
