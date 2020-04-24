@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { HNItem } from "./HNApiTypes";
-import Icon from "./icons/Icon";
+import { HNItem } from "../HNApiTypes";
+import Icon from "../icons/Icon";
 
 // TODO track max level?
 async function getOnComment(id: number): Promise<HNItem | null> {

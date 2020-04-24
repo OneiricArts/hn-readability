@@ -2,10 +2,10 @@ import React, { useEffect, useState, useRef, RefObject } from 'react';
 import ReactDOM from 'react-dom';
 import DOMPurify from 'dompurify';
 import { Collapse, Button } from 'reactstrap';
-import Icon from './icons/Icon';
+import Icon from '../icons/Icon';
 import { Link } from 'react-router-dom';
 import Parent from './Parent';
-import { HNItem } from './HNApiTypes';
+import { HNItem } from '../HNApiTypes';
 
 const hNItemLink = (id: number) => `https://news.ycombinator.com/item?id=${id}`;
 
