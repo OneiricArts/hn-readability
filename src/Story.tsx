@@ -3,14 +3,7 @@ import DOMPurify from 'dompurify';
 import { Row, Container } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import Icon from './icons/Icon';
-
-interface HNItem {
-  title: string;
-  descendants: number;
-  type: 'job' | 'story' | 'comment' | 'poll' | 'pollopt';
-  url: string;
-  score?: number;
-}
+import { HNItem } from './HNApiTypes';
 
 type HNItemPlaceHolder = Partial<HNItem>;
 
