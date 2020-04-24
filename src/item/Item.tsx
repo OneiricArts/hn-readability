@@ -6,18 +6,11 @@ import Icon from '../icons/Icon';
 import { Link } from 'react-router-dom';
 import Parent from './Parent';
 import { HNItem } from '../HNApiTypes';
+import { topOfElIsVisible } from './helpers';
 
 const hNItemLink = (id: number) => `https://news.ycombinator.com/item?id=${id}`;
 
 const buttonBarClasses = "d-inline-flex align-items-center h-border-right py-2 px-2";
-
-const topLevelCommentRefs: RefObject<HTMLElement>[] = [];
-
-const topOfElIsVisible = (el: RefObject<HTMLElement>, buffer = 0) => {
-  const top = el.current?.getBoundingClientRect().top;
-  if (top === undefined) return false;
-  return top < buffer;
-}
 
 const LinkToHN = ({ id }: { id: number }) => (
   <a className={`${buttonBarClasses} hnr-inherit-color`} role="button" href={hNItemLink(id)}>
@@ -54,7 +47,7 @@ const LinkUrlCard = ({ url }: { url: string }) => (
   </a>
 );
 
-const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
+const Item = ({ id, level = 0, addTopLevelCommentRef}: { id: number, level?: number, addTopLevelCommentRef: (r:RefObject<HTMLElement>) => void }) => {
   const [data, setData] = useState<HNItem>({
     id: id,
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -105,7 +98,7 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
   }, [id, level]);
 
   const containerEl = useRef<HTMLDivElement>(null);
-  if (level === 1) topLevelCommentRefs.push(containerEl);
+  if (level === 1) addTopLevelCommentRef(containerEl);
 
   const [isOpen, setIsOpen] = useState(true);
   const toggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -172,13 +165,19 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
             <Share title={data.title} url={hNItemLink(id)} />
           </div>
         }
-        {data.kids?.map(itemId => <Item id={itemId} key={itemId} level={level + 1} />)}
+        {data.kids?.map(itemId => <Item id={itemId} key={itemId} level={level + 1} addTopLevelCommentRef={addTopLevelCommentRef} />)}
       </Collapse>
     </div>
   );
 }
 
 const ItemPage = ({ id }: { id: number }) => {
+  const topLevelCommentRefs: RefObject<HTMLElement>[] = [];
+  const addTopLevelCommentRef = (ref: RefObject<HTMLElement>) => {
+    console.log(ref);
+    topLevelCommentRefs.push(ref)
+  };
+
   const goToNextComment = () => {
     const firstCommentWithTopVisible = topLevelCommentRefs.filter(e => !topOfElIsVisible(e, 5))[0];
 
@@ -190,7 +189,7 @@ const ItemPage = ({ id }: { id: number }) => {
   return (
     <>
       <Link to="/" className="pl-2">&laquo; home</Link>
-      <Item id={id} />
+      <Item id={id} addTopLevelCommentRef={addTopLevelCommentRef} />
       <Button size="lg" color="primary" className="hnr-floating-button d-md-none" onClick={goToNextComment}>
         &darr;
       </Button>
