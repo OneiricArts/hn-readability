@@ -4,7 +4,7 @@ import smoothscroll from 'smoothscroll-polyfill';
 import './App.css';
 import './skeleton.css';
 import FrontPage from './FrontPage';
-import ItemPage from './item/Item';
+import ItemPage from "./item/ItemPage";
 
 smoothscroll.polyfill();
 
