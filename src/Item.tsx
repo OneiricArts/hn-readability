@@ -207,6 +207,7 @@ const ItemPage = ({ id }: { id: number }) => {
 
   return (
     <>
+      <Link to="/" className="pl-2">&laquo; home</Link>
       <Item id={id} />
       <Button size="lg" color="primary" className="hnr-floating-button d-md-none" onClick={goToNextComment}>
         &darr;
