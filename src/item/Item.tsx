@@ -1,69 +1,23 @@
 import React, { useEffect, useState, useRef, RefObject } from 'react';
 import ReactDOM from 'react-dom';
 import DOMPurify from 'dompurify';
-import { Collapse, Button } from 'reactstrap';
-import Icon from './icons/Icon';
+import { Collapse } from 'reactstrap';
+import Icon from '../icons/Icon';
 import { Link } from 'react-router-dom';
 import Parent from './Parent';
-
-// https://github.com/HackerNews/API#items
-export interface HNItem {
-  id: number;
-  deleted?: boolean;
-  type?: 'job' | 'story' | 'comment' | 'poll' | 'pollopt';
-  by?: string;
-  time?: number; // UNIX time
-  text?: string; // HTML
-  dead?: boolean; // true if the item is dead.
-  parent?: number;
-  poll?: number; // a pollopt's poll
-  kids?: number[]; // in ranked display order
-  url?: string;
-  score?: number;
-  title?: string; // The title of the story, poll or job. HTML.
-  parts?: number[]; // the pollopts of a poll
-  descendants?: number;
-}
+import { HNItem } from '../HNApiTypes';
+import { topOfElIsVisible } from './helpers';
+import { Share } from './Share';
 
 const hNItemLink = (id: number) => `https://news.ycombinator.com/item?id=${id}`;
 
-const buttonBarClasses = "d-inline-flex align-items-center h-border-right py-2 px-2";
-
-const topLevelCommentRefs: RefObject<HTMLElement>[] = [];
-
-const topOfElIsVisible = (el: RefObject<HTMLElement>, buffer = 0) => {
-  const top = el.current?.getBoundingClientRect().top;
-  if (top === undefined) return false;
-  return top < buffer;
-}
+export const buttonBarClasses = "d-inline-flex align-items-center h-border-right py-2 px-2";
 
 const LinkToHN = ({ id }: { id: number }) => (
   <a className={`${buttonBarClasses} hnr-inherit-color`} role="button" href={hNItemLink(id)}>
     <Icon name="link" size={1.5} />
   </a>
 );
-
-const Share = ({ title, url }: { title?: string, url: string }) => {
-  //@ts-ignore
-  if (!navigator?.share) return null;
-
-  const shareTo = async () => {
-    try {
-      //@ts-ignore
-      await navigator.share({ title, url });
-      console.log('shared!')
-    } catch (e) {
-      if (e.name === 'AbortError') console.log('Share aborted')
-      else console.log(e);
-    }
-  };
-
-  return (
-    <div className={`${buttonBarClasses} clickable`} onClick={shareTo}>
-      <Icon name="share" size={1.5} />
-    </div>
-  );
-};
 
 const LinkUrlCard = ({ url }: { url: string }) => (
   <a href={url} className="p-1 mb-2 link-card d-flex align-items-center">
@@ -72,7 +26,7 @@ const LinkUrlCard = ({ url }: { url: string }) => (
   </a>
 );
 
-const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
+export const Item = ({ id, level = 0, addTopLevelCommentRef}: { id: number, level?: number, addTopLevelCommentRef: (r:RefObject<HTMLElement>) => void }) => {
   const [data, setData] = useState<HNItem>({
     id: id,
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -123,7 +77,7 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
   }, [id, level]);
 
   const containerEl = useRef<HTMLDivElement>(null);
-  if (level === 1) topLevelCommentRefs.push(containerEl);
+  if (level === 1) addTopLevelCommentRef(containerEl);
 
   const [isOpen, setIsOpen] = useState(true);
   const toggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -190,31 +144,8 @@ const Item = ({ id, level = 0 }: { id: number, level?: number }) => {
             <Share title={data.title} url={hNItemLink(id)} />
           </div>
         }
-        {data.kids?.map(itemId => <Item id={itemId} key={itemId} level={level + 1} />)}
+        {data.kids?.map(itemId => <Item id={itemId} key={itemId} level={level + 1} addTopLevelCommentRef={addTopLevelCommentRef} />)}
       </Collapse>
     </div>
   );
 }
-
-const ItemPage = ({ id }: { id: number }) => {
-  const goToNextComment = () => {
-    const firstCommentWithTopVisible = topLevelCommentRefs.filter(e => !topOfElIsVisible(e, 5))[0];
-
-    if (firstCommentWithTopVisible && firstCommentWithTopVisible?.current) {
-      window.scrollTo({ top: firstCommentWithTopVisible.current.offsetTop, behavior: 'smooth' });
-    }
-  }
-
-  return (
-    <>
-      <Link to="/" className="pl-2">&laquo; home</Link>
-      <Item id={id} />
-      <Button size="lg" color="primary" className="hnr-floating-button d-md-none" onClick={goToNextComment}>
-        &darr;
-      </Button>
-      <div className="d-md-none" style={{ paddingBottom: '80px' }}></div>
-    </>
-  );
-};
-
-export default ItemPage;
