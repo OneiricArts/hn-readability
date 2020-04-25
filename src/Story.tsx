@@ -39,7 +39,7 @@ const Story = ({ id, rank, onStoryClick, viewedStory }: StoryProps) => {
 
   const loadingClassName = isLoading ? 'loading-skeleton' : '';
 
-  let urlHostName: string|undefined;
+  let urlHostName: string | undefined;
   if (storyData.url) {
     const url = new URL(storyData.url);
     urlHostName = url.hostname;
