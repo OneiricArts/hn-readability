@@ -203,6 +203,24 @@ const getPath = (name: string) => {
           />
         </>
       );
+    case 'time':
+      return (<>
+        <path
+          fill="none"
+          stroke="currentColor"
+          strokeMiterlimit="10"
+          strokeWidth="32"
+          d="M256 64C150 64 64 150 64 256s86 192 192 192 192-86 192-192S362 64 256 64z"
+        ></path>
+        <path
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="32"
+          d="M256 128L256 272 352 272"
+        ></path>
+      </>);
     default:
       return <path />;
   }
@@ -211,7 +229,7 @@ const getPath = (name: string) => {
 interface IconProps {
   size?: number;
   svgClassName?: string;
-  name: 'compass' | 'chat-bubbles' | 'share' | 'link' | 'eye-off' |'return-up' | 'merge';
+  name: 'compass' | 'chat-bubbles' | 'share' | 'link' | 'eye-off' | 'return-up' | 'merge' | 'time';
 }
 // size is in em
 // can use className to color icons, eg: .svgClassName { color: blue }

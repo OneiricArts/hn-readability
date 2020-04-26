@@ -8,6 +8,7 @@ import Parent from './Parent';
 import { HNItem } from '../HNApiTypes';
 import { topOfElIsVisible } from './helpers';
 import { Share } from './Share';
+import { TimeAgo } from '../timeago';
 
 const hNItemLink = (id: number) => `https://news.ycombinator.com/item?id=${id}`;
 
@@ -116,15 +117,17 @@ export const Item = ({ id, level = 0, addTopLevelCommentRef}: { id: number, leve
 
   return (
     <div ref={containerEl} className={`${commentCss} ${level > 0 ? 'h-border-top' : ''} px-0 `} onClick={toggle}>
-      <div className={`${isLoadingClassName} text-muted small py-1 px-2`}>
+      <div className={`${isLoadingClassName} text-muted small py-1 px-2`} style={{ display: 'flex', alignItems: 'center' }}>
         {data.by || '[deleted]'} {/* TODO: Verify what it means if this is empty */}
-        {!topLevel && <span className="float-right">
+        {topLevel && <>&emsp;{data.score && `↑${data.score}`}&emsp;<TimeAgo time={data.time} icon/></>}
+        {!topLevel && <span className="ml-auto">
           <Link to={`/item?id=${data.id}`} className="mr-3 hnr-inherit-color">
             <Icon name="link" svgClassName="ignore"/>
           </Link>
+          <TimeAgo time={data.time} />&nbsp;
           {isOpen ? String.fromCharCode(8593) : String.fromCharCode(8595)}
         </span>}
-        {topLevel && <span className="float-right">
+        {topLevel && <span className="ml-auto">
           {data.parent && <Parent parent={data.parent} />}
         </span>}
       </div>

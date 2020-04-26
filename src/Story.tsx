@@ -4,6 +4,7 @@ import { Row, Container } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import Icon from './icons/Icon';
 import { HNItem } from './HNApiTypes';
+import { TimeAgo } from './timeago';
 
 type HNItemPlaceHolder = Partial<HNItem>;
 
@@ -38,7 +39,7 @@ const Story = ({ id, rank, onStoryClick, viewedStory }: StoryProps) => {
 
   const loadingClassName = isLoading ? 'loading-skeleton' : '';
 
-  let urlHostName: string|undefined;
+  let urlHostName: string | undefined;
   if (storyData.url) {
     const url = new URL(storyData.url);
     urlHostName = url.hostname;
@@ -56,8 +57,8 @@ const Story = ({ id, rank, onStoryClick, viewedStory }: StoryProps) => {
           rel="noopener noreferrer" target="_blank"
         >
           <div className={loadingClassName} dangerouslySetInnerHTML={{ '__html': DOMPurify.sanitize(storyData.title || '') }} />
-          <span className={`${loadingClassName} text-muted story--info pt-1`}>
-            #{rank}&emsp;↑{storyData.score}&emsp;{urlHostName}
+          <span className={`${loadingClassName} text-muted story--info pt-1`} style={{ display: 'flex', alignItems: 'center' }}>
+            #{rank}&emsp;↑{storyData.score}&emsp;<TimeAgo time={storyData.time} icon />&emsp;{urlHostName}
           </span>
         </a>
         <Link
@@ -66,7 +67,7 @@ const Story = ({ id, rank, onStoryClick, viewedStory }: StoryProps) => {
           onClick={onClick}
           rel="noopener noreferrer" target="_blank"
         >
-          <span className={`${loadingClassName} float-right small`} style={{ display:'flex', alignItems: 'center' }}>
+          <span className={`${loadingClassName} float-right small`} style={{ display: 'flex', alignItems: 'center' }}>
             {storyData.descendants}&nbsp;<Icon name="chat-bubbles" />
           </span>
         </Link>
