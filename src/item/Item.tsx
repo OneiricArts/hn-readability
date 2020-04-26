@@ -27,7 +27,7 @@ const LinkUrlCard = ({ url }: { url: string }) => (
   </a>
 );
 
-export const Item = ({ id, level = 0, addTopLevelCommentRef}: { id: number, level?: number, addTopLevelCommentRef: (r:RefObject<HTMLElement>) => void }) => {
+export const Item = ({ id, level = 0, addTopLevelCommentRef }: { id: number, level?: number, addTopLevelCommentRef: (r: RefObject<HTMLElement>) => void }) => {
   const [data, setData] = useState<HNItem>({
     id: id,
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -42,7 +42,7 @@ export const Item = ({ id, level = 0, addTopLevelCommentRef}: { id: number, leve
   useEffect(() => {
     async function getItem() {
       const response = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`);
-      const data:HNItem = await response.json();
+      const data: HNItem = await response.json();
 
       if (level === 0) {
         if (data.title) {
@@ -119,10 +119,10 @@ export const Item = ({ id, level = 0, addTopLevelCommentRef}: { id: number, leve
     <div ref={containerEl} className={`${commentCss} ${level > 0 ? 'h-border-top' : ''} px-0 `} onClick={toggle}>
       <div className={`${isLoadingClassName} text-muted small py-1 px-2`} style={{ display: 'flex', alignItems: 'center' }}>
         {data.by || '[deleted]'} {/* TODO: Verify what it means if this is empty */}
-        {topLevel && <>&emsp;{data.score && `↑${data.score}`}&emsp;<TimeAgo time={data.time} icon/></>}
+        {topLevel && <>&emsp;{data.score && `↑${data.score}`}&emsp;<TimeAgo time={data.time} icon /></>}
         {!topLevel && <span className="ml-auto">
           <Link to={`/item?id=${data.id}`} className="mr-3 hnr-inherit-color">
-            <Icon name="link" svgClassName="ignore"/>
+            <Icon name="link" svgClassName="ignore" />
           </Link>
           <TimeAgo time={data.time} />&nbsp;
           {isOpen ? String.fromCharCode(8593) : String.fromCharCode(8595)}

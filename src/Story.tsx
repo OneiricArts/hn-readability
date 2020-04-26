@@ -57,7 +57,7 @@ const Story = ({ id, rank, onStoryClick, viewedStory }: StoryProps) => {
           rel="noopener noreferrer" target="_blank"
         >
           <div className={loadingClassName} dangerouslySetInnerHTML={{ '__html': DOMPurify.sanitize(storyData.title || '') }} />
-          <span className={`${loadingClassName} text-muted story--info pt-1`} style={{ display: 'flex', alignItems: 'center' }}>
+          <span className={`${loadingClassName} text-muted story--info pt-2`} style={{ display: 'flex', alignItems: 'center' }}>
             #{rank}&emsp;↑{storyData.score}&emsp;<TimeAgo time={storyData.time} icon />&emsp;{urlHostName}
           </span>
         </a>
