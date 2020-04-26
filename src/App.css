@@ -37,7 +37,10 @@ body {
   touch-action: manipulation;
 }
 
-.story--container { border-bottom: 0.1rem solid var(--story-cotainer-border-color) }
+.story--container {
+  background-color: var(--app-container-background-color);
+  border-bottom: 0.1rem solid var(--story-cotainer-border-color);
+}
 .story--comments { border-left: 0.1rem solid var(--story-cotainer-border-color) }
 
 .story--container a {
