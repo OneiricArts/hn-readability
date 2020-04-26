@@ -60,7 +60,7 @@ const FrontPage = ({ url = 'https://hacker-news.firebaseio.com/v0/topstories.jso
     return () => window.removeEventListener('scroll', onScroll);
   }, [stories]);
 
-  const onStoryClick = (id:number) => {
+  const onStoryClick = (id: number) => {
     const currViewedStories = viewedStories;
 
     if (currViewedStories.length > 50) currViewedStories.pop();
@@ -69,7 +69,7 @@ const FrontPage = ({ url = 'https://hacker-news.firebaseio.com/v0/topstories.jso
 
   useEffect(() => localStorage.setItem('HNR_VIEWED_STORIES_CACHE', JSON.stringify(viewedStories)), [viewedStories]);
 
-  const viewedStory = (id:number) => viewedStories.indexOf(id) > -1;
+  const viewedStory = (id: number) => viewedStories.indexOf(id) > -1;
 
   return (
     <Fragment>
