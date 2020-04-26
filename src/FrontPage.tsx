@@ -1,5 +1,6 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import { Button } from 'reactstrap';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Story from './Story';
 import Icon from './icons/Icon';
 
@@ -73,12 +74,23 @@ const FrontPage = ({ url = 'https://hacker-news.firebaseio.com/v0/topstories.jso
 
   return (
     <Fragment>
-      {stories.slice(0, storiesToShow)
-        .map((id, index) =>
-          storiesToHide.indexOf(id) < 0 &&
-          <Story key={id} id={id} rank={index + 1} onStoryClick={onStoryClick} viewedStory={viewedStory(id)} />
-        )
-      }
+      <TransitionGroup>
+        {stories.slice(0, storiesToShow)
+          .map((id, index) =>
+            storiesToHide.indexOf(id) < 0 &&
+            <CSSTransition
+              key={id}
+              in
+              timeout={300}
+              classNames={{
+                exit: 'animated faster fadeOutRight',
+              }}>
+              <Story id={id} rank={index + 1} onStoryClick={onStoryClick} viewedStory={viewedStory(id)} />
+            </CSSTransition>
+          )
+        }
+      </TransitionGroup>
+
       {doneLoading && <div>All Done, time to go outside.</div>}
       <Button
         size="lg"
