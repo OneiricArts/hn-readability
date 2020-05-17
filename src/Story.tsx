@@ -53,7 +53,7 @@ const Story = ({ id, rank, onStoryClick, viewedStory }: StoryProps) => {
   }
 
   const onClick = () => onStoryClick(id);
-  const viewedStoryCss = viewedStory ? 'text-muted' : ''
+  const viewedStoryCss = viewedStory ? 'text-muted' : '';
   const showComments = storyData.descendants !== undefined;
 
   return (
