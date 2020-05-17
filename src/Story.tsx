@@ -26,12 +26,19 @@ const Story = ({ id, rank, onStoryClick, viewedStory }: StoryProps) => {
 
   useEffect(() => {
     async function getItem() {
+      // TODO make an API library for HN that handles returning nullable type (┛ಠ_ಠ)┛彡┻━┻
       const response = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`);
       const data = await response.json();
       // await new Promise(r => setTimeout(r, 200));
 
       setIsLoading(false);
-      setStoryData(data);
+
+      // https://news.ycombinator.com/item?id=23158285
+      // https://hacker-news.firebaseio.com/v0/item/23158285.json
+      setStoryData(data || {
+        title: 'API error :( -- click to view @ news.ycombinator',
+        url: `https://news.ycombinator.com/item?id=${id}`
+      })
     }
 
     getItem();
