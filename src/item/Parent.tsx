@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { HNItem } from "../HNApiTypes";
-import Icon from "../icons/Icon";
+// import Icon from "../icons/Icon";
 
 // TODO track max level?
 async function getOnComment(id: number): Promise<HNItem | null> {
@@ -49,11 +49,11 @@ const Parent = ({ parent }: { parent: number }) => {
         to={`/item?id=${on.id}`}
         className="text-muted"
       >
-        <Icon name="return-up" />&nbsp;
-        {/* on:&nbsp; */}
+        {/* <Icon name="return-up" />&nbsp; */}
+        on:&nbsp;
         <span
           dangerouslySetInnerHTML={{
-            '__html': `${on.title?.substring(0, 50)}${on.title && on.title?.length > 50 ? '...' : ''}` || ''
+            '__html': on.title || ''
           }}
         />
       </Link>

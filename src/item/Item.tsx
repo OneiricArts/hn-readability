@@ -117,7 +117,7 @@ export const Item = ({ id, level = 0, addTopLevelCommentRef }: { id: number, lev
 
   return (
     <div ref={containerEl} className={`${commentCss} ${level > 0 ? 'h-border-top' : ''} px-0 `} onClick={toggle}>
-      <div className={`${isLoadingClassName} text-muted small py-1 px-2`} style={{ display: 'flex', alignItems: 'center' }}>
+      <div className={`${isLoadingClassName} text-muted small pt-1 px-2`} style={{ display: 'flex', alignItems: 'center' }}>
         {data.by || '[deleted]'} {/* TODO: Verify what it means if this is empty */}
         {topLevel && <>&emsp;{data.score && `↑${data.score}`}&emsp;<TimeAgo time={data.time} icon /></>}
         {!topLevel && <span className="ml-auto">
@@ -127,10 +127,11 @@ export const Item = ({ id, level = 0, addTopLevelCommentRef }: { id: number, lev
           <TimeAgo time={data.time} />&nbsp;
           {isOpen ? String.fromCharCode(8593) : String.fromCharCode(8595)}
         </span>}
-        {topLevel && <span className="ml-auto">
-          {data.parent && <Parent parent={data.parent} />}
-        </span>}
       </div>
+
+      {topLevel && <div className="px-2 py-1 text-muted small w-100 text-truncate">
+        {data.parent && <Parent parent={data.parent} />}
+      </div>}
 
       <Collapse isOpen={isOpen}>
         <div className={`${isLoadingClassName} py-1 px-2`} style={{ wordBreak: 'break-word' }}>
