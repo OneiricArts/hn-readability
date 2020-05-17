@@ -53,12 +53,14 @@ const Story = ({ id, rank, onStoryClick, viewedStory }: StoryProps) => {
   }
 
   const onClick = () => onStoryClick(id);
-  const viewedStoryCss = viewedStory ? 'text-muted' : ''
+  const viewedStoryCss = viewedStory ? 'text-muted' : '';
+  const showComments = storyData.descendants !== undefined;
+
   return (
     <Container fluid className="story--container">
       <Row>
         <a
-          className={`px-2 pt-2 col-sm-11 col-10 ${viewedStoryCss}`}
+          className={`px-2 pt-2 ${showComments ? 'col-sm-11 col-10' : 'col-12'} ${viewedStoryCss}`}
           href={storyData.url || `https://news.ycombinator.com/item?id=${id}`}
           onClick={onClick}
           rel="noopener noreferrer" target="_blank"
@@ -68,16 +70,17 @@ const Story = ({ id, rank, onStoryClick, viewedStory }: StoryProps) => {
             #{rank}&emsp;↑{storyData.score}&emsp;<TimeAgo time={storyData.time} icon />&emsp;{urlHostName}
           </span>
         </a>
-        <Link
-          className={`col-sm-1 col-2 pl-1 pr-1 pt-2 story--comments ${viewedStoryCss}`}
-          to={`/item?id=${id}`}
-          onClick={onClick}
-          rel="noopener noreferrer" target="_blank"
-        >
-          <span className={`${loadingClassName} float-right small`} style={{ display: 'flex', alignItems: 'center' }}>
-            {storyData.descendants}&nbsp;<Icon name="chat-bubbles" />
-          </span>
-        </Link>
+        {showComments &&
+          <Link
+            className={`col-sm-1 col-2 pl-1 pr-1 pt-2 story--comments ${viewedStoryCss}`}
+            to={`/item?id=${id}`}
+            onClick={onClick}
+            rel="noopener noreferrer" target="_blank"
+          >
+            <span className={`${loadingClassName} float-right small`} style={{ display: 'flex', alignItems: 'center' }}>
+              {storyData.descendants}&nbsp;<Icon name="chat-bubbles" />
+            </span>
+          </Link>}
       </Row>
     </Container>
   );
