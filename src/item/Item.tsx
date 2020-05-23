@@ -115,6 +115,15 @@ export const Item = ({ id, level = 0, addTopLevelCommentRef }: { id: number, lev
   const commentCss = level > 1 ? `${levelBorderColor()} ml-3` : '';
   const topLevel = level === 0;
 
+  let linksToHn: string[] = [];
+  if (data.text) {
+    let regexp = /news\.ycombinator\.com\S+item\?id=\d*/g;
+    let matches = [...data.text.matchAll(regexp)]
+
+    const ids = matches.map(a => a[0]).map(a => a.split('=')[1]);
+    linksToHn = [...new Set(ids)];
+  }
+
   return (
     <div ref={containerEl} className={`${commentCss} ${level > 0 ? 'h-border-top' : ''} px-0 `} onClick={toggle}>
       <div className={`${isLoadingClassName} text-muted small pt-1 px-2`} style={{ display: 'flex', alignItems: 'center' }}>
@@ -141,6 +150,12 @@ export const Item = ({ id, level = 0, addTopLevelCommentRef }: { id: number, lev
           {data.type === 'poll' && <p>Polls are not supported yet!</p>}
           <div className="item--hn-text" dangerouslySetInnerHTML={{ '__html': DOMPurify.sanitize(data.text || '') }} />
         </div>
+
+        {/* If item contains link to hacker news item, add link cards to dapper version of item */}
+        {linksToHn.map(id => <div className="mt-2 mx-2">
+          <LinkUrlCard url={`https://dapper.dilraj.dev/item?id=${id}`} />
+        </div>)}
+
         {
           topLevel &&
           <div className="h-border-top d-flex align-items-center">
