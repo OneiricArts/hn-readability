@@ -11,7 +11,7 @@ const ItemPage = ({ id }: { id: number; }) => {
   const goToNextComment = () => {
     const firstCommentWithTopVisible = topLevelCommentRefs.filter(e => !topOfElIsVisible(e, 5))[0];
 
-    if (firstCommentWithTopVisible && firstCommentWithTopVisible?.current) {
+    if (firstCommentWithTopVisible?.current) {
       window.scrollTo({ top: firstCommentWithTopVisible.current.offsetTop, behavior: 'smooth' });
     }
   };
