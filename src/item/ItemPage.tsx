@@ -6,10 +6,7 @@ import { Item } from './Item';
 
 const ItemPage = ({ id }: { id: number; }) => {
   const topLevelCommentRefs: RefObject<HTMLElement>[] = [];
-  const addTopLevelCommentRef = (ref: RefObject<HTMLElement>) => {
-    console.log(ref);
-    topLevelCommentRefs.push(ref);
-  };
+  const addTopLevelCommentRef = (ref: RefObject<HTMLElement>) => topLevelCommentRefs.push(ref);
 
   const goToNextComment = () => {
     const firstCommentWithTopVisible = topLevelCommentRefs.filter(e => !topOfElIsVisible(e, 5))[0];
