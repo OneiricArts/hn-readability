@@ -88,9 +88,10 @@ export const Item = ({ id, level = 0, addTopLevelCommentRef }: { id: number, lev
     const selection = window.getSelection();
     if (selection?.type === 'Range') return;
 
-    // do not collapse comment if clicking on link inside div (HTML from api)
+    // do not collapse comment if clicking on link inside div (HTML from api), or link icon, or dapper link at bottom
     const target = e.target as HTMLElement;
     if (target.nodeName === 'A' || target.nodeName === 'svg') return;
+    if (target.parentNode?.nodeName === 'A' || target.parentNode?.nodeName === 'svg') return;
 
     e.stopPropagation();
     setIsOpen(!isOpen);
@@ -114,6 +115,15 @@ export const Item = ({ id, level = 0, addTopLevelCommentRef }: { id: number, lev
   const isLoadingClassName = isLoading ? 'loading-skeleton' : '';
   const commentCss = level > 1 ? `${levelBorderColor()} ml-3` : '';
   const topLevel = level === 0;
+
+  let linksToHn: string[] = [];
+  if (data.text) {
+    let regexp = /news\.ycombinator\.com\S+item\?id=\d*/g;
+    let matches = [...data.text.matchAll(regexp)]
+
+    const ids = matches.map(a => a[0]).map(a => a.split('=')[1]);
+    linksToHn = [...new Set(ids)];
+  }
 
   return (
     <div ref={containerEl} className={`${commentCss} ${level > 0 ? 'h-border-top' : ''} px-0 `} onClick={toggle}>
@@ -141,6 +151,12 @@ export const Item = ({ id, level = 0, addTopLevelCommentRef }: { id: number, lev
           {data.type === 'poll' && <p>Polls are not supported yet!</p>}
           <div className="item--hn-text" dangerouslySetInnerHTML={{ '__html': DOMPurify.sanitize(data.text || '') }} />
         </div>
+
+        {/* If item contains link to hacker news item, add link cards to dapper version of item */}
+        {linksToHn.map(id => <div className="mt-2 mx-2">
+          <LinkUrlCard url={`https://dapper.dilraj.dev/item?id=${id}`} />
+        </div>)}
+
         {
           topLevel &&
           <div className="h-border-top d-flex align-items-center">
