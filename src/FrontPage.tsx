@@ -1,5 +1,5 @@
-import React, { useEffect, useState, Fragment } from 'react';
 import { Button } from 'reactstrap';
+import React, { useEffect, useState } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Story from './Story';
 import Icon from './icons/Icon';
@@ -73,11 +73,11 @@ const FrontPage = ({ url = 'https://hacker-news.firebaseio.com/v0/topstories.jso
   const viewedStory = (id: number) => viewedStories.indexOf(id) > -1;
 
   return (
-    <Fragment>
+    <>
       <TransitionGroup>
         {stories.slice(0, storiesToShow)
+          .filter(id => storiesToHide.indexOf(id) < 0)
           .map((id, index) =>
-            storiesToHide.indexOf(id) < 0 &&
             <CSSTransition
               key={id}
               in
@@ -101,7 +101,7 @@ const FrontPage = ({ url = 'https://hacker-news.firebaseio.com/v0/topstories.jso
       >
         <Icon name="eye-off" />
       </Button>
-    </Fragment>
+    </>
   );
 }
 

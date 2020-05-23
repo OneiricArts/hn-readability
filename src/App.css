@@ -8,6 +8,10 @@
   --story-border-color: gainsboro;
 
   --link-card-text-color: gray;
+
+  --input-text-color: black;
+
+  --link-button-color: #007bff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,6 +26,8 @@
 
 
     --link-card-text-color: rgb(69, 151, 240);
+
+    --input-text-color: white;
   }
 }
 
@@ -97,3 +103,19 @@ body {
 .h-border-top { border-top: 0.01em solid var(--story-border-color) }
 
 .h-border-right { border-right: 0.01em solid var(--story-border-color) }
+
+.search-bar {
+  background-color: var(--app-container-background-color) !important;
+  color: var(--input-text-color) !important;
+  border-radius: 0.3rem;
+  border-color: var(--story-border-color);
+}
+
+.search-bar-inactive {
+  height: 1.5em;
+  filter: brightness(90%);
+}
+
+.hnr-blue {
+  color: var(--link-button-color);
+}

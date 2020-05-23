@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import smoothscroll from 'smoothscroll-polyfill';
 import './App.css';
 import './skeleton.css';
-import FrontPage from './FrontPage';
 import ItemPage from "./item/ItemPage";
+import Home from './Home';
 
 smoothscroll.polyfill();
 
@@ -14,7 +14,7 @@ const App = () => {
       <Router>
         <Switch>
           <Route exact path="/">
-            <FrontPage />
+            <Home />
           </Route>
           <Route path="/item" render={({ location }) => {
             const searchParams = new URLSearchParams(location.search);
