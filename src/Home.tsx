@@ -7,6 +7,7 @@ export default function Home() {
 
   return (
     <>
+      <SearchStories showingSearch={showingSearch} setShowingSearch={setShowingSearch} />
       {!showingSearch && <FrontPage />}
     </>
   );
