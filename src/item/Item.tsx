@@ -88,9 +88,10 @@ export const Item = ({ id, level = 0, addTopLevelCommentRef }: { id: number, lev
     const selection = window.getSelection();
     if (selection?.type === 'Range') return;
 
-    // do not collapse comment if clicking on link inside div (HTML from api)
+    // do not collapse comment if clicking on link inside div (HTML from api), or link icon, or dapper link at bottom
     const target = e.target as HTMLElement;
     if (target.nodeName === 'A' || target.nodeName === 'svg') return;
+    if (target.parentNode?.nodeName === 'A' || target.parentNode?.nodeName === 'svg') return;
 
     e.stopPropagation();
     setIsOpen(!isOpen);
