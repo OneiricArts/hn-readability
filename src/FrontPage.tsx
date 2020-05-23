@@ -84,7 +84,8 @@ const FrontPage = ({ url = 'https://hacker-news.firebaseio.com/v0/topstories.jso
               timeout={300}
               classNames={{
                 exit: 'animated faster fadeOutRight',
-              }}>
+              }}
+            >
               <Story id={id} rank={index + 1} onStoryClick={onStoryClick} viewedStory={viewedStory(id)} />
             </CSSTransition>
           )
