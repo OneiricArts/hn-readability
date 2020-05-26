@@ -26,15 +26,13 @@ const LinkToHN = ({ id }: { id: number }) => (
   </a>
 );
 
-export const Item = ({
-  id,
-  level = 0,
-  addTopLevelCommentRef
-}: {
+interface ItemProps {
   id: number;
   level?: number;
   addTopLevelCommentRef: (r: RefObject<HTMLElement>) => void;
-}) => {
+}
+
+export const Item = ({ id, level = 0, addTopLevelCommentRef }: ItemProps) => {
   const [data, setData] = useState<HNItem>({
     id: id,
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
