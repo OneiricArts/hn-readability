@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { HNItem } from "../HNApiTypes";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { HNItem } from '../HNApiTypes';
 // import Icon from "../icons/Icon";
 
 // TODO track max level?
 async function getOnComment(id: number): Promise<HNItem | null> {
   try {
-    const response = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`);
+    const response = await fetch(
+      `https://hacker-news.firebaseio.com/v0/item/${id}.json`
+    );
     const data: HNItem = await response.json();
 
-    if (data.type === 'comment' && data.parent) return getOnComment(data.parent);
+    if (data.type === 'comment' && data.parent)
+      return getOnComment(data.parent);
     else return data;
-  }
-  catch {
+  } catch {
     return null;
   }
 }
@@ -36,29 +38,25 @@ const Parent = ({ parent }: { parent: number }) => {
 
   return (
     <>
-      {
-        parent !== on.id &&
+      {parent !== on.id && (
         <>
           <Link className="text-muted" to={`/item?id=${parent}`}>
             parent
           </Link>
           &nbsp;&#124;&nbsp;
         </>
-      }
-      <Link
-        to={`/item?id=${on.id}`}
-        className="text-muted"
-      >
+      )}
+      <Link to={`/item?id=${on.id}`} className="text-muted">
         {/* <Icon name="return-up" />&nbsp; */}
         on:&nbsp;
         <span
           dangerouslySetInnerHTML={{
-            '__html': on.title || ''
+            __html: on.title || ''
           }}
         />
       </Link>
     </>
   );
-}
+};
 
 export default Parent;

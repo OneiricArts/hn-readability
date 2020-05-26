@@ -4,8 +4,8 @@
 Cypress.on('uncaught:exception', (err, runnable) => {
   // returning false here prevents Cypress from
   // failing the test
-  return false
-})
+  return false;
+});
 
 describe('Front Page', () => {
   it('Contains clickable stories that are sent to ', function (done) {
@@ -23,14 +23,16 @@ describe('Front Page', () => {
           .invoke('removeAttr', 'target')
           .click()
           .should(() => {
-            expect(localStorage.getItem('HNR_VIEWED_STORIES_CACHE')).to.eq(JSON.stringify([item]));
+            expect(localStorage.getItem('HNR_VIEWED_STORIES_CACHE')).to.eq(
+              JSON.stringify([item])
+            );
           });
 
         cy.url().should('include', `/item?id=${item}`);
         cy.go('back')
           .location()
-          .should((loc) => {
-            expect(loc.pathname).to.eq('/')
+          .should(loc => {
+            expect(loc.pathname).to.eq('/');
           })
           .then(() => done());
       });

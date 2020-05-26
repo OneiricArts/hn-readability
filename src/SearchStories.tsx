@@ -7,14 +7,19 @@ interface SearchStoriesProps {
   setShowingSearch: (b: boolean) => void;
 }
 
-export function SearchStories({ showingSearch, setShowingSearch }: SearchStoriesProps) {
+export function SearchStories({
+  showingSearch,
+  setShowingSearch
+}: SearchStoriesProps) {
   const [searchTerm, setSearchterm] = useState<string>('');
   const [searchResults, setSearchResults] = useState<number[]>([]);
   const [searchBarActive, setSearchBarActive] = useState(false);
 
   useEffect(() => {
     async function getSearchedStories() {
-      const response = await fetch(`https://hn.algolia.com/api/v1/search?query=${searchTerm}&tags=story`);
+      const response = await fetch(
+        `https://hn.algolia.com/api/v1/search?query=${searchTerm}&tags=story`
+      );
       const data = await response.json();
 
       const stories: number[] = data.hits.map((d: any) => d.objectID);
@@ -22,15 +27,14 @@ export function SearchStories({ showingSearch, setShowingSearch }: SearchStories
       if (searchTerm.trim()) {
         setSearchResults(stories);
         setShowingSearch(true);
-      }
-      else {
+      } else {
         setSearchResults([]);
-      };
+      }
     }
 
     try {
       getSearchedStories();
-    } catch { }
+    } catch {}
   }, [searchTerm, setShowingSearch]);
 
   return (
@@ -41,14 +45,20 @@ export function SearchStories({ showingSearch, setShowingSearch }: SearchStories
             placeholder="Search"
             value={searchTerm}
             onChange={e => setSearchterm(e.target.value)}
-            className={`search-bar ${searchBarActive ? '' : 'search-bar-inactive'}`}
+            className={`search-bar ${
+              searchBarActive ? '' : 'search-bar-inactive'
+            }`}
             onSelect={() => setSearchBarActive(true)}
             onBlur={() => setSearchBarActive(false)}
           />
         </Col>
 
-        {showingSearch &&
-          <Col xs={2} sm={1} className="m-0 p-0 text-center d-flex align-items-center">
+        {showingSearch && (
+          <Col
+            xs={2}
+            sm={1}
+            className="m-0 p-0 text-center d-flex align-items-center"
+          >
             <span
               className="clickable hnr-blue"
               onClick={() => {
@@ -58,20 +68,25 @@ export function SearchStories({ showingSearch, setShowingSearch }: SearchStories
             >
               Cancel
             </span>
-          </Col>}
+          </Col>
+        )}
       </Row>
 
-      {
-        showingSearch &&
+      {showingSearch && (
         <>
-          {searchResults.map(id => <Story id={id} key={id} />)}
+          {searchResults.map(id => (
+            <Story id={id} key={id} />
+          ))}
 
-          {searchResults.length === 0 &&
+          {searchResults.length === 0 && (
             <div className="text-center m-3 pb-3">
-              {searchTerm ? 'No Results found :(' : 'Type to search or press cancel to go back.'}
-            </div>}
+              {searchTerm
+                ? 'No Results found :('
+                : 'Type to search or press cancel to go back.'}
+            </div>
+          )}
         </>
-      }
+      )}
     </>
   );
 }

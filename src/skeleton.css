@@ -186,11 +186,11 @@
   from {
     border-color: rgba(206, 217, 224, 0.2);
     background: rgba(206, 217, 224, 0.2);
- }
+  }
   to {
     border-color: rgba(92, 112, 128, 0.2);
     background: rgba(92, 112, 128, 0.2);
- }
+  }
 }
 
 .loading-skeleton {
@@ -206,6 +206,8 @@
   user-select: none;
 }
 
-.loading-skeleton::before, .loading-skeleton::after, .loading-skeleton * {
+.loading-skeleton::before,
+.loading-skeleton::after,
+.loading-skeleton * {
   visibility: hidden !important;
 }
