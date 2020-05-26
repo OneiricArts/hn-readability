@@ -6,13 +6,11 @@ import Icon from '../icons/Icon';
 import { Link } from 'react-router-dom';
 import Parent from './Parent';
 import { HNItem } from '../HNApiTypes';
-import { topOfElIsVisible } from './helpers';
+import { topOfElIsVisible, hNItemLink } from './helpers';
 import { Share } from './Share';
 import { TimeAgo } from '../timeago';
 import LinkUrlCard from './LinkUrlCard';
 import LinksToHn from './linksToHn';
-
-const hNItemLink = (id: number) => `https://news.ycombinator.com/item?id=${id}`;
 
 export const buttonBarClasses =
   'd-inline-flex align-items-center h-border-right py-2 px-2';
