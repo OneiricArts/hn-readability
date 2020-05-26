@@ -10,6 +10,7 @@ import { topOfElIsVisible } from './helpers';
 import { Share } from './Share';
 import { TimeAgo } from '../timeago';
 import LinkUrlCard from './LinkUrlCard';
+import LinksToHn from './linksToHn';
 
 const hNItemLink = (id: number) => `https://news.ycombinator.com/item?id=${id}`;
 
@@ -137,15 +138,6 @@ export const Item = ({ id, level = 0, addTopLevelCommentRef }: ItemProps) => {
   const commentCss = level > 1 ? `${levelBorderColor()} ml-3` : '';
   const topLevel = level === 0;
 
-  let linksToHn: string[] = [];
-  if (data.text) {
-    let regexp = /news\.ycombinator\.com\S+item\?id=\d*/g;
-    let matches = [...data.text.matchAll(regexp)];
-
-    const ids = matches.map(a => a[0]).map(a => a.split('=')[1]);
-    linksToHn = [...new Set(ids)];
-  }
-
   return (
     <div
       ref={containerEl}
@@ -205,12 +197,9 @@ export const Item = ({ id, level = 0, addTopLevelCommentRef }: ItemProps) => {
           />
         </div>
 
-        {/* If item contains link to hacker news item, add link cards to dapper version of item */}
-        {linksToHn.map(id => (
-          <div className="mt-2 mx-2">
-            <LinkUrlCard url={`https://dapper.dilraj.dev/item?id=${id}`} />
-          </div>
-        ))}
+        {/* If item contains link to hacker news item,
+        append link cards to dapper url of item */}
+        {data.text && <LinksToHn text={data.text} />}
 
         {topLevel && (
           <div className="h-border-top d-flex align-items-center">
