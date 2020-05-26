@@ -27,7 +27,7 @@ THE SOFTWARE.
 
 */
 
-import React, { Fragment } from "react";
+import React, { Fragment } from 'react';
 
 const getPath = (name: string) => {
   switch (name) {
@@ -43,8 +43,8 @@ const getPath = (name: string) => {
           ></path>
           <path
             fill="currentColor"
-            d="M350.67 150.93l-117.2 46.88a64 64 0 00-35.66 35.66l-46.88 117.2a8 8 0 0010.4 10.4l117.2-46.88a64 64 0 0035.66-35.66l46.88-117.2a8 8 0 00-10.4-10.4zM256 280a24 24 0 1124-24 24 24 0 01-24 24z">
-          </path>
+            d="M350.67 150.93l-117.2 46.88a64 64 0 00-35.66 35.66l-46.88 117.2a8 8 0 0010.4 10.4l117.2-46.88a64 64 0 0035.66-35.66l46.88-117.2a8 8 0 00-10.4-10.4zM256 280a24 24 0 1124-24 24 24 0 01-24 24z"
+          ></path>
         </Fragment>
       );
     case 'chat-bubbles':
@@ -204,32 +204,42 @@ const getPath = (name: string) => {
         </>
       );
     case 'time':
-      return (<>
-        <path
-          fill="none"
-          stroke="currentColor"
-          strokeMiterlimit="10"
-          strokeWidth="32"
-          d="M256 64C150 64 64 150 64 256s86 192 192 192 192-86 192-192S362 64 256 64z"
-        ></path>
-        <path
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="32"
-          d="M256 128L256 272 352 272"
-        ></path>
-      </>);
+      return (
+        <>
+          <path
+            fill="none"
+            stroke="currentColor"
+            strokeMiterlimit="10"
+            strokeWidth="32"
+            d="M256 64C150 64 64 150 64 256s86 192 192 192 192-86 192-192S362 64 256 64z"
+          ></path>
+          <path
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="32"
+            d="M256 128L256 272 352 272"
+          ></path>
+        </>
+      );
     default:
       return <path />;
   }
-}
+};
 
 interface IconProps {
   size?: number;
   svgClassName?: string;
-  name: 'compass' | 'chat-bubbles' | 'share' | 'link' | 'eye-off' | 'return-up' | 'merge' | 'time';
+  name:
+    | 'compass'
+    | 'chat-bubbles'
+    | 'share'
+    | 'link'
+    | 'eye-off'
+    | 'return-up'
+    | 'merge'
+    | 'time';
 }
 // size is in em
 // can use className to color icons, eg: .svgClassName { color: blue }

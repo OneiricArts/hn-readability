@@ -12,10 +12,15 @@ import { TimeAgo } from '../timeago';
 
 const hNItemLink = (id: number) => `https://news.ycombinator.com/item?id=${id}`;
 
-export const buttonBarClasses = "d-inline-flex align-items-center h-border-right py-2 px-2";
+export const buttonBarClasses =
+  'd-inline-flex align-items-center h-border-right py-2 px-2';
 
 const LinkToHN = ({ id }: { id: number }) => (
-  <a className={`${buttonBarClasses} hnr-inherit-color`} role="button" href={hNItemLink(id)}>
+  <a
+    className={`${buttonBarClasses} hnr-inherit-color`}
+    role="button"
+    href={hNItemLink(id)}
+  >
     <Icon name="link" size={1.5} />
   </a>
 );
@@ -23,11 +28,24 @@ const LinkToHN = ({ id }: { id: number }) => (
 const LinkUrlCard = ({ url }: { url: string }) => (
   <a href={url} className="p-1 mb-2 link-card d-flex align-items-center">
     <Icon size={2} name="compass" />
-    <span className="pl-2 ml-2 pr-2 link-card--text text-truncate" style={{ flex: '1' }}>{url}</span>
+    <span
+      className="pl-2 ml-2 pr-2 link-card--text text-truncate"
+      style={{ flex: '1' }}
+    >
+      {url}
+    </span>
   </a>
 );
 
-export const Item = ({ id, level = 0, addTopLevelCommentRef }: { id: number, level?: number, addTopLevelCommentRef: (r: RefObject<HTMLElement>) => void }) => {
+export const Item = ({
+  id,
+  level = 0,
+  addTopLevelCommentRef
+}: {
+  id: number;
+  level?: number;
+  addTopLevelCommentRef: (r: RefObject<HTMLElement>) => void;
+}) => {
   const [data, setData] = useState<HNItem>({
     id: id,
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -41,19 +59,26 @@ export const Item = ({ id, level = 0, addTopLevelCommentRef }: { id: number, lev
 
   useEffect(() => {
     async function getItem() {
-      const response = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`);
+      const response = await fetch(
+        `https://hacker-news.firebaseio.com/v0/item/${id}.json`
+      );
       const data: HNItem = await response.json();
 
       if (level === 0) {
         if (data.title) {
-          document.getElementsByTagName('title')[0].innerHTML = `${DOMPurify.sanitize(data.title)} | Dapper`;
+          document.getElementsByTagName(
+            'title'
+          )[0].innerHTML = `${DOMPurify.sanitize(data.title)} | Dapper`;
         } else if (data.text) {
-          const div = document.createElement("div");
+          const div = document.createElement('div');
           div.innerHTML = DOMPurify.sanitize(data.text);
           let title = div.textContent;
 
-          if (title && title?.length > 90) { document.title = `${title.substring(0, 90)}... | Dapper`; }
-          else { document.title = `${title} | Dapper`; }
+          if (title && title?.length > 90) {
+            document.title = `${title.substring(0, 90)}... | Dapper`;
+          } else {
+            document.title = `${title} | Dapper`;
+          }
         }
       }
 
@@ -67,11 +92,13 @@ export const Item = ({ id, level = 0, addTopLevelCommentRef }: { id: number, lev
          * - https://news.ycombinator.com/item?id=22360822 shows a valid comment
          * (┛ಠ_ಠ)┛彡┻━┻
          */
-        setData(data || {
-          text: `API error :( <a href="${hNItemLink(id)}">view on hn</a>`,
-          type: 'comment'
-        });
-      })
+        setData(
+          data || {
+            text: `API error :( <a href="${hNItemLink(id)}">view on hn</a>`,
+            type: 'comment'
+          }
+        );
+      });
     }
 
     getItem();
@@ -91,13 +118,20 @@ export const Item = ({ id, level = 0, addTopLevelCommentRef }: { id: number, lev
     // do not collapse comment if clicking on link inside div (HTML from api), or link icon, or dapper link at bottom
     const target = e.target as HTMLElement;
     if (target.nodeName === 'A' || target.nodeName === 'svg') return;
-    if (target.parentNode?.nodeName === 'A' || target.parentNode?.nodeName === 'svg') return;
+    if (
+      target.parentNode?.nodeName === 'A' ||
+      target.parentNode?.nodeName === 'svg'
+    )
+      return;
 
     e.stopPropagation();
     setIsOpen(!isOpen);
 
     if (containerEl?.current && topOfElIsVisible(containerEl))
-      window.scrollTo({ top: containerEl.current.offsetTop - 10, behavior: 'smooth' });
+      window.scrollTo({
+        top: containerEl.current.offsetTop - 10,
+        behavior: 'smooth'
+      });
   };
 
   const levelToColorMap = {
@@ -107,7 +141,7 @@ export const Item = ({ id, level = 0, addTopLevelCommentRef }: { id: number, lev
     5: 'green',
     0: 'orange', // use %, so 0 is last (6th)
     1: 'red' // level 1 does not show any, so this is first used on level 7
-  }
+  };
 
   // @ts-ignore
   const levelBorderColor = () => `level-border-${levelToColorMap[level % 6]}`;
@@ -119,53 +153,93 @@ export const Item = ({ id, level = 0, addTopLevelCommentRef }: { id: number, lev
   let linksToHn: string[] = [];
   if (data.text) {
     let regexp = /news\.ycombinator\.com\S+item\?id=\d*/g;
-    let matches = [...data.text.matchAll(regexp)]
+    let matches = [...data.text.matchAll(regexp)];
 
     const ids = matches.map(a => a[0]).map(a => a.split('=')[1]);
     linksToHn = [...new Set(ids)];
   }
 
   return (
-    <div ref={containerEl} className={`${commentCss} ${level > 0 ? 'h-border-top' : ''} px-0 `} onClick={toggle}>
-      <div className={`${isLoadingClassName} text-muted small pt-1 px-2`} style={{ display: 'flex', alignItems: 'center' }}>
-        {data.by || '[deleted]'} {/* TODO: Verify what it means if this is empty */}
-        {topLevel && <>&emsp;{data.score && `↑${data.score}`}&emsp;<TimeAgo time={data.time} icon /></>}
-        {!topLevel && <span className="ml-auto">
-          <Link to={`/item?id=${data.id}`} className="mr-3 hnr-inherit-color">
-            <Icon name="link" svgClassName="ignore" />
-          </Link>
-          <TimeAgo time={data.time} />&nbsp;
-          {isOpen ? String.fromCharCode(8593) : String.fromCharCode(8595)}
-        </span>}
+    <div
+      ref={containerEl}
+      className={`${commentCss} ${level > 0 ? 'h-border-top' : ''} px-0 `}
+      onClick={toggle}
+    >
+      <div
+        className={`${isLoadingClassName} text-muted small pt-1 px-2`}
+        style={{ display: 'flex', alignItems: 'center' }}
+      >
+        {data.by || '[deleted]'}{' '}
+        {/* TODO: Verify what it means if this is empty */}
+        {topLevel && (
+          <>
+            &emsp;{data.score && `↑${data.score}`}&emsp;
+            <TimeAgo time={data.time} icon />
+          </>
+        )}
+        {!topLevel && (
+          <span className="ml-auto">
+            <Link to={`/item?id=${data.id}`} className="mr-3 hnr-inherit-color">
+              <Icon name="link" svgClassName="ignore" />
+            </Link>
+            <TimeAgo time={data.time} />
+            &nbsp;
+            {isOpen ? String.fromCharCode(8593) : String.fromCharCode(8595)}
+          </span>
+        )}
       </div>
 
-      {topLevel && <div className="px-2 py-1 text-muted small w-100 text-truncate">
-        {data.parent && <Parent parent={data.parent} />}
-      </div>}
+      {topLevel && (
+        <div className="px-2 py-1 text-muted small w-100 text-truncate">
+          {data.parent && <Parent parent={data.parent} />}
+        </div>
+      )}
 
       <Collapse isOpen={isOpen}>
-        <div className={`${isLoadingClassName} py-1 px-2`} style={{ wordBreak: 'break-word' }}>
+        <div
+          className={`${isLoadingClassName} py-1 px-2`}
+          style={{ wordBreak: 'break-word' }}
+        >
           {data.deleted && '[deleted]'}
-          {data.title && <h4 dangerouslySetInnerHTML={{ '__html': DOMPurify.sanitize(data.title) }} />}
+          {data.title && (
+            <h4
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(data.title)
+              }}
+            />
+          )}
           {data.url && <LinkUrlCard url={data.url} />}
           {data.type === 'poll' && <p>Polls are not supported yet!</p>}
-          <div className="item--hn-text" dangerouslySetInnerHTML={{ '__html': DOMPurify.sanitize(data.text || '') }} />
+          <div
+            className="item--hn-text"
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(data.text || '')
+            }}
+          />
         </div>
 
         {/* If item contains link to hacker news item, add link cards to dapper version of item */}
-        {linksToHn.map(id => <div className="mt-2 mx-2">
-          <LinkUrlCard url={`https://dapper.dilraj.dev/item?id=${id}`} />
-        </div>)}
+        {linksToHn.map(id => (
+          <div className="mt-2 mx-2">
+            <LinkUrlCard url={`https://dapper.dilraj.dev/item?id=${id}`} />
+          </div>
+        ))}
 
-        {
-          topLevel &&
+        {topLevel && (
           <div className="h-border-top d-flex align-items-center">
             <LinkToHN id={id} />
             <Share title={data.title} url={hNItemLink(id)} />
           </div>
-        }
-        {data.kids?.map(itemId => <Item id={itemId} key={itemId} level={level + 1} addTopLevelCommentRef={addTopLevelCommentRef} />)}
+        )}
+        {data.kids?.map(itemId => (
+          <Item
+            id={itemId}
+            key={itemId}
+            level={level + 1}
+            addTopLevelCommentRef={addTopLevelCommentRef}
+          />
+        ))}
       </Collapse>
     </div>
   );
-}
+};

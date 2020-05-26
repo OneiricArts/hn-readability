@@ -5,14 +5,16 @@ import Icon from './icons/Icon';
 const formatNumber = (num: number, maxNumOfDec = 0) => {
   if (maxNumOfDec < 1) return Math.floor(num);
 
-  return Math.round((num + Number.EPSILON) * (10 * maxNumOfDec)) / (10 * maxNumOfDec);
-}
+  return (
+    Math.round((num + Number.EPSILON) * (10 * maxNumOfDec)) / (10 * maxNumOfDec)
+  );
+};
 
 /**
  * @param from milliseconds
  * @param to milliseconds, will default to now
  */
-export function timeago(from: number, to = (new Date()).getTime()) {
+export function timeago(from: number, to = new Date().getTime()) {
   const ellapsedMs = to - from;
 
   const years = formatNumber(ellapsedMs / 31536000000, 1);
@@ -42,11 +44,19 @@ export function timeago(from: number, to = (new Date()).getTime()) {
 /**
  * Takes time from in Unix (seconds) time
  */
-export const TimeAgo = ({ time, icon = false }: { time?: number, icon?: boolean }) => {
+export const TimeAgo = ({
+  time,
+  icon = false
+}: {
+  time?: number;
+  icon?: boolean;
+}) => {
   if (!time) return null;
 
-  return (<>
-    {icon && <Icon name="time" />}
-    {timeago(time * 1000)}
-  </>);
-}
+  return (
+    <>
+      {icon && <Icon name="time" />}
+      {timeago(time * 1000)}
+    </>
+  );
+};
