@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 import { HNItem } from '../HNApiTypes';
 // import Icon from "../icons/Icon";
 
@@ -51,7 +52,7 @@ const Parent = ({ parent }: { parent: number }) => {
         on:&nbsp;
         <span
           dangerouslySetInnerHTML={{
-            __html: on.title || ''
+            __html: DOMPurify.sanitize(on.title || '')
           }}
         />
       </Link>
