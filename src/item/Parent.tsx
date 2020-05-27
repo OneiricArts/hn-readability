@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import DOMPurify from 'dompurify';
-import { HNItem } from '../HNApiTypes';
+import { HNItem } from '../api/HNApiTypes';
 // import Icon from "../icons/Icon";
 
 // TODO track max level?

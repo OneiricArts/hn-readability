@@ -3,7 +3,7 @@ import DOMPurify from 'dompurify';
 import { Row, Container } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import Icon from './icons/Icon';
-import { HNItem } from './HNApiTypes';
+import { HNItem } from './api/HNApiTypes';
 import { TimeAgo } from './timeago';
 
 type HNItemPlaceHolder = Partial<HNItem>;

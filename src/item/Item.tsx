@@ -5,7 +5,7 @@ import { Collapse } from 'reactstrap';
 import Icon from '../icons/Icon';
 import { Link } from 'react-router-dom';
 import Parent from './Parent';
-import { HNItem } from '../HNApiTypes';
+import { HNItem } from '../api/HNApiTypes';
 import { topOfElIsVisible, hNItemLink } from './helpers';
 import { Share } from './Share';
 import { TimeAgo } from '../timeago';
