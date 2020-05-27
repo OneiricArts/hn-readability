@@ -11,6 +11,7 @@ import { Share } from './Share';
 import { TimeAgo } from '../timeago';
 import LinkUrlCard from './LinkUrlCard';
 import LinksToHn from './linksToHn';
+import getItemFromApi, { IGetItemFromApi } from '../api/getItemFromApi';
 
 export const buttonBarClasses =
   'd-inline-flex align-items-center h-border-right py-2 px-2';
@@ -29,9 +30,15 @@ interface ItemProps {
   id: number;
   level?: number;
   addTopLevelCommentRef: (r: RefObject<HTMLElement>) => void;
+  getItem?: IGetItemFromApi;
 }
 
-export const Item = ({ id, level = 0, addTopLevelCommentRef }: ItemProps) => {
+export const Item = ({
+  id,
+  level = 0,
+  addTopLevelCommentRef,
+  getItem = getItemFromApi
+}: ItemProps) => {
   const [data, setData] = useState<HNItem>({
     id: id,
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -44,13 +51,10 @@ export const Item = ({ id, level = 0, addTopLevelCommentRef }: ItemProps) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    async function getItem() {
-      const response = await fetch(
-        `https://hacker-news.firebaseio.com/v0/item/${id}.json`
-      );
-      const data: HNItem = await response.json();
+    async function getItemAsync() {
+      const data = await getItem(id);
 
-      if (level === 0) {
+      if (data && level === 0) {
         if (data.title) {
           document.getElementsByTagName(
             'title'
@@ -70,16 +74,10 @@ export const Item = ({ id, level = 0, addTopLevelCommentRef }: ItemProps) => {
 
       ReactDOM.unstable_batchedUpdates(() => {
         setIsLoading(false);
-        /**
-         * Sometimes HN returns null for an item, need this so entire page doesn't break
-         * TODO error boundry?
-         * comment page for: https://news.ycombinator.com/item?id=22359574
-         * - https://hacker-news.firebaseio.com/v0/item/22360822.json returns null
-         * - https://news.ycombinator.com/item?id=22360822 shows a valid comment
-         * (┛ಠ_ಠ)┛彡┻━┻
-         */
+
         setData(
           data || {
+            id,
             text: `API error :( <a href="${hNItemLink(id)}">view on hn</a>`,
             type: 'comment'
           }
@@ -87,8 +85,8 @@ export const Item = ({ id, level = 0, addTopLevelCommentRef }: ItemProps) => {
       });
     }
 
-    getItem();
-  }, [id, level]);
+    getItemAsync();
+  }, [id, level, getItem]);
 
   const containerEl = useRef<HTMLDivElement>(null);
   if (level === 1) addTopLevelCommentRef(containerEl);
