@@ -40,4 +40,5 @@ const ItemPage = ({ id }: { id: number }) => {
     </>
   );
 };
+
 export default ItemPage;

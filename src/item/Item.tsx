@@ -6,11 +6,11 @@ import Icon from '../icons/Icon';
 import { Link } from 'react-router-dom';
 import Parent from './Parent';
 import { HNItem } from '../HNApiTypes';
-import { topOfElIsVisible } from './helpers';
+import { topOfElIsVisible, hNItemLink } from './helpers';
 import { Share } from './Share';
 import { TimeAgo } from '../timeago';
-
-const hNItemLink = (id: number) => `https://news.ycombinator.com/item?id=${id}`;
+import LinkUrlCard from './LinkUrlCard';
+import LinksToHn from './linksToHn';
 
 export const buttonBarClasses =
   'd-inline-flex align-items-center h-border-right py-2 px-2';
@@ -25,27 +25,13 @@ const LinkToHN = ({ id }: { id: number }) => (
   </a>
 );
 
-const LinkUrlCard = ({ url }: { url: string }) => (
-  <a href={url} className="p-1 mb-2 link-card d-flex align-items-center">
-    <Icon size={2} name="compass" />
-    <span
-      className="pl-2 ml-2 pr-2 link-card--text text-truncate"
-      style={{ flex: '1' }}
-    >
-      {url}
-    </span>
-  </a>
-);
-
-export const Item = ({
-  id,
-  level = 0,
-  addTopLevelCommentRef
-}: {
+interface ItemProps {
   id: number;
   level?: number;
   addTopLevelCommentRef: (r: RefObject<HTMLElement>) => void;
-}) => {
+}
+
+export const Item = ({ id, level = 0, addTopLevelCommentRef }: ItemProps) => {
   const [data, setData] = useState<HNItem>({
     id: id,
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -150,15 +136,6 @@ export const Item = ({
   const commentCss = level > 1 ? `${levelBorderColor()} ml-3` : '';
   const topLevel = level === 0;
 
-  let linksToHn: string[] = [];
-  if (data.text) {
-    let regexp = /news\.ycombinator\.com\S+item\?id=\d*/g;
-    let matches = [...data.text.matchAll(regexp)];
-
-    const ids = matches.map(a => a[0]).map(a => a.split('=')[1]);
-    linksToHn = [...new Set(ids)];
-  }
-
   return (
     <div
       ref={containerEl}
@@ -218,12 +195,9 @@ export const Item = ({
           />
         </div>
 
-        {/* If item contains link to hacker news item, add link cards to dapper version of item */}
-        {linksToHn.map(id => (
-          <div className="mt-2 mx-2">
-            <LinkUrlCard url={`https://dapper.dilraj.dev/item?id=${id}`} />
-          </div>
-        ))}
+        {/* If item contains link to hacker news item,
+        append link cards to dapper url of item */}
+        {data.text && <LinksToHn text={data.text} />}
 
         {topLevel && (
           <div className="h-border-top d-flex align-items-center">

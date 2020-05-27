@@ -1,6 +1,7 @@
 import React from 'react';
 import Icon from '../icons/Icon';
 import { buttonBarClasses } from './Item';
+
 export const Share = ({ title, url }: { title?: string; url: string }) => {
   //@ts-ignore
   if (!navigator?.share) return null;
