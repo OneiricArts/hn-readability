@@ -7,24 +7,11 @@ import { Link } from 'react-router-dom';
 import Parent from './Parent';
 import { HNItem } from '../api/HNApiTypes';
 import { topOfElIsVisible, hNItemLink } from './helpers';
-import { Share } from './Share';
+import { ShareBar } from './ShareBar';
 import { TimeAgo } from '../timeago';
 import LinkUrlCard from './LinkUrlCard';
 import LinksToHn from './linksToHn';
 import getItemFromApi, { IGetItemFromApi } from '../api/getItemFromApi';
-
-export const buttonBarClasses =
-  'd-inline-flex align-items-center h-border-right py-2 px-2';
-
-const LinkToHN = ({ id }: { id: number }) => (
-  <a
-    className={`${buttonBarClasses} hnr-inherit-color`}
-    role="button"
-    href={hNItemLink(id)}
-  >
-    <Icon name="link" size={1.5} />
-  </a>
-);
 
 interface ItemProps {
   id: number;
@@ -214,12 +201,7 @@ function ItemCard({
         append link cards to dapper url of item */}
         {data.text && <LinksToHn text={data.text} />}
 
-        {topLevel && (
-          <div className="h-border-top d-flex align-items-center">
-            <LinkToHN id={id} />
-            <Share title={data.title} url={hNItemLink(id)} />
-          </div>
-        )}
+        {topLevel && <ShareBar id={id} title={data.title} />}
 
         {kids}
       </Collapse>
