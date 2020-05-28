@@ -11,17 +11,19 @@ import { TimeAgo } from '../timeago';
 import LinkUrlCard from './LinkUrlCard';
 import LinksToHn from './linksToHn';
 
+interface TitleBarProps {
+  data: HNItem;
+  topLevel: boolean;
+  isOpen: boolean;
+  isLoadingClassName: string;
+}
+
 export const TitleBar = ({
   data,
   topLevel,
   isOpen,
   isLoadingClassName
-}: {
-  data: HNItem;
-  topLevel: boolean;
-  isOpen: boolean;
-  isLoadingClassName: string;
-}) => (
+}: TitleBarProps) => (
   <div
     className={`${isLoadingClassName} text-muted small pt-1 px-2`}
     style={{ display: 'flex', alignItems: 'center' }}
@@ -46,6 +48,15 @@ export const TitleBar = ({
   </div>
 );
 
+interface ItemCardProps {
+  containerEl: React.RefObject<HTMLDivElement>;
+  data: HNItem;
+  isLoading: boolean;
+  level: number;
+  id: number;
+  kids?: React.ReactElement[];
+}
+
 export function ItemCard({
   containerEl,
   data,
@@ -53,14 +64,7 @@ export function ItemCard({
   isLoading,
   id,
   kids
-}: {
-  containerEl: React.RefObject<HTMLDivElement>;
-  data: HNItem;
-  isLoading: boolean;
-  level: number;
-  id: number;
-  kids?: React.ReactElement[];
-}) {
+}: ItemCardProps) {
   const [isOpen, setIsOpen] = useState(true);
   const toggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (level === 0) return;
