@@ -174,29 +174,12 @@ function ItemCard({
       className={`${commentCss} ${level > 0 ? 'h-border-top' : ''} px-0 `}
       onClick={toggle}
     >
-      <div
-        className={`${isLoadingClassName} text-muted small pt-1 px-2`}
-        style={{ display: 'flex', alignItems: 'center' }}
-      >
-        {data.by || '[deleted]'}{' '}
-        {/* TODO: Verify what it means if this is empty */}
-        {topLevel && (
-          <>
-            &emsp;{data.score && `↑${data.score}`}&emsp;
-            <TimeAgo time={data.time} icon />
-          </>
-        )}
-        {!topLevel && (
-          <span className="ml-auto">
-            <Link to={`/item?id=${data.id}`} className="mr-3 hnr-inherit-color">
-              <Icon name="link" svgClassName="ignore" />
-            </Link>
-            <TimeAgo time={data.time} />
-            &nbsp;
-            {isOpen ? String.fromCharCode(8593) : String.fromCharCode(8595)}
-          </span>
-        )}
-      </div>
+      <TitleBar
+        data={data}
+        topLevel={topLevel}
+        isOpen={isOpen}
+        isLoadingClassName={isLoadingClassName}
+      />
 
       {topLevel && (
         <div className="px-2 py-1 text-muted small w-100 text-truncate">
@@ -243,3 +226,38 @@ function ItemCard({
     </div>
   );
 }
+
+const TitleBar = ({
+  data,
+  topLevel,
+  isOpen,
+  isLoadingClassName
+}: {
+  data: HNItem;
+  topLevel: boolean;
+  isOpen: boolean;
+  isLoadingClassName: string;
+}) => (
+  <div
+    className={`${isLoadingClassName} text-muted small pt-1 px-2`}
+    style={{ display: 'flex', alignItems: 'center' }}
+  >
+    {data.by || '[deleted]'} {/* TODO: Verify what it means if this is empty */}
+    {topLevel && (
+      <>
+        &emsp;{data.score && `↑${data.score}`}&emsp;
+        <TimeAgo time={data.time} icon />
+      </>
+    )}
+    {!topLevel && (
+      <span className="ml-auto">
+        <Link to={`/item?id=${data.id}`} className="mr-3 hnr-inherit-color">
+          <Icon name="link" svgClassName="ignore" />
+        </Link>
+        <TimeAgo time={data.time} />
+        &nbsp;
+        {isOpen ? String.fromCharCode(8593) : String.fromCharCode(8595)}
+      </span>
+    )}
+  </div>
+);
