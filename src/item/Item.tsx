@@ -91,6 +91,40 @@ export const Item = ({
   const containerEl = useRef<HTMLDivElement>(null);
   if (level === 1) addTopLevelCommentRef(containerEl);
 
+  return (
+    <ItemCard
+      containerEl={containerEl}
+      data={data}
+      level={level}
+      isLoading={isLoading}
+      id={id}
+      kids={data.kids?.map(itemId => (
+        <Item
+          id={itemId}
+          key={itemId}
+          level={level + 1}
+          addTopLevelCommentRef={addTopLevelCommentRef}
+        />
+      ))}
+    />
+  );
+};
+
+function ItemCard({
+  containerEl,
+  data,
+  level,
+  isLoading,
+  id,
+  kids
+}: {
+  containerEl: React.RefObject<HTMLDivElement>;
+  data: HNItem;
+  isLoading: boolean;
+  level: number;
+  id: number;
+  kids?: React.ReactElement[];
+}) {
   const [isOpen, setIsOpen] = useState(true);
   const toggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (level === 0) return;
@@ -203,15 +237,9 @@ export const Item = ({
             <Share title={data.title} url={hNItemLink(id)} />
           </div>
         )}
-        {data.kids?.map(itemId => (
-          <Item
-            id={itemId}
-            key={itemId}
-            level={level + 1}
-            addTopLevelCommentRef={addTopLevelCommentRef}
-          />
-        ))}
+
+        {kids}
       </Collapse>
     </div>
   );
-};
+}
