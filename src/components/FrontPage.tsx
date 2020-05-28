@@ -2,7 +2,7 @@ import { Button } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Story from './Story';
-import Icon from './icons/Icon';
+import Icon from './Icon';
 
 const LOAD_INCREMENT = 30;
 

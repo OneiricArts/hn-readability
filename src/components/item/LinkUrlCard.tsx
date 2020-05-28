@@ -1,5 +1,5 @@
 import React from 'react';
-import Icon from '../icons/Icon';
+import Icon from '../Icon';
 
 const LinkUrlCard = ({ url }: { url: string }) => (
   <a href={url} className="p-1 mb-2 link-card d-flex align-items-center">

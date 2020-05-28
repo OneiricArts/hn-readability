@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef, RefObject } from 'react';
 import ReactDOM from 'react-dom';
 import DOMPurify from 'dompurify';
-import { HNItem } from '../api/HNApiTypes';
+import { HNItem } from '../../api/HNApiTypes';
 import { hNItemLink } from './helpers';
-import getItemFromApi, { IGetItemFromApi } from '../api/getItemFromApi';
+import getItemFromApi, { IGetItemFromApi } from '../../api/getItemFromApi';
 import { ItemCard } from './ItemCard';
 
 interface ItemProps {
