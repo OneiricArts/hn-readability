@@ -7,6 +7,8 @@ import { HNItem } from '../api/HNApiTypes';
 import { TimeAgo } from './timeago';
 import getItemFromApi from '../api/getItemFromApi';
 
+const noop = () => undefined;
+
 interface StoryProps {
   id: number;
   rank?: number;
@@ -14,12 +16,7 @@ interface StoryProps {
   viewedStory?: boolean;
 }
 
-const Story = ({
-  id,
-  rank,
-  onStoryClick = n => undefined,
-  viewedStory
-}: StoryProps) => {
+const Story = ({ id, rank, onStoryClick = noop, viewedStory }: StoryProps) => {
   const [storyData, setStoryData] = useState<HNItem>({
     id,
     title: 'This is the placeholder story with appr length',
