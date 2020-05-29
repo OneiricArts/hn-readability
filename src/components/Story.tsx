@@ -7,8 +7,6 @@ import { HNItem } from '../api/HNApiTypes';
 import { TimeAgo } from './timeago';
 import getItemFromApi from '../api/getItemFromApi';
 
-type HNItemPlaceHolder = Partial<HNItem>;
-
 interface StoryProps {
   id: number;
   rank?: number;
@@ -22,7 +20,8 @@ const Story = ({
   onStoryClick = n => undefined,
   viewedStory
 }: StoryProps) => {
-  const [storyData, setStoryData] = useState<HNItemPlaceHolder | HNItem>({
+  const [storyData, setStoryData] = useState<HNItem>({
+    id,
     title: 'This is the placeholder story with appr length',
     descendants: 555,
     url: ''
@@ -39,6 +38,7 @@ const Story = ({
 
       setStoryData(
         data || {
+          id: id,
           title: 'API error :( -- click to view @ news.ycombinator',
           url: `https://news.ycombinator.com/item?id=${id}`
         }
