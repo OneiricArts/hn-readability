@@ -1,5 +1,5 @@
 import React from 'react';
-import { Item } from '../item/Item';
+import { Item } from '../components/item/Item';
 import { render, act, RenderResult } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import sinon from 'sinon';

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import DOMPurify from 'dompurify';
 import { Collapse } from 'reactstrap';
-import Icon from '../icons/Icon';
+import Icon from '../Icon';
 import { Link } from 'react-router-dom';
 import Parent from './Parent';
-import { HNItem } from '../api/HNApiTypes';
+import { HNItem } from '../../api/HNApiTypes';
 import { topOfElIsVisible } from './helpers';
 import { ShareBar } from './ShareBar';
 import { TimeAgo } from '../timeago';

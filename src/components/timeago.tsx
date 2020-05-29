@@ -1,5 +1,5 @@
 import React from 'react';
-import Icon from './icons/Icon';
+import Icon from './Icon';
 
 // https://stackoverflow.com/questions/11832914/round-to-at-most-2-decimal-places-only-if-necessary/11832950#11832950
 const formatNumber = (num: number, maxNumOfDec = 0) => {

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import DOMPurify from 'dompurify';
 import { Row, Container } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import Icon from './icons/Icon';
-import { HNItem } from './api/HNApiTypes';
+import Icon from './Icon';
+import { HNItem } from '../api/HNApiTypes';
 import { TimeAgo } from './timeago';
 
 type HNItemPlaceHolder = Partial<HNItem>;
