@@ -2,17 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import { HNItem } from '../../api/HNApiTypes';
+import getItemFromApi from '../../api/getItemFromApi';
 // import Icon from "../icons/Icon";
 
 // TODO track max level?
 async function getOnComment(id: number): Promise<HNItem | null> {
   try {
-    const response = await fetch(
-      `https://hacker-news.firebaseio.com/v0/item/${id}.json`
-    );
-    const data: HNItem = await response.json();
+    const data = await getItemFromApi(id);
 
-    if (data.type === 'comment' && data.parent)
+    if (data?.type === 'comment' && data.parent)
       return getOnComment(data.parent);
     else return data;
   } catch {
