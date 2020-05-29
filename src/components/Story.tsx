@@ -5,8 +5,9 @@ import { Link } from 'react-router-dom';
 import Icon from './Icon';
 import { HNItem } from '../api/HNApiTypes';
 import { TimeAgo } from './timeago';
+import getItemFromApi from '../api/getItemFromApi';
 
-type HNItemPlaceHolder = Partial<HNItem>;
+const noop = () => undefined;
 
 interface StoryProps {
   id: number;
@@ -15,13 +16,9 @@ interface StoryProps {
   viewedStory?: boolean;
 }
 
-const Story = ({
-  id,
-  rank,
-  onStoryClick = n => undefined,
-  viewedStory
-}: StoryProps) => {
-  const [storyData, setStoryData] = useState<HNItemPlaceHolder | HNItem>({
+const Story = ({ id, rank, onStoryClick = noop, viewedStory }: StoryProps) => {
+  const [storyData, setStoryData] = useState<HNItem>({
+    id,
     title: 'This is the placeholder story with appr length',
     descendants: 555,
     url: ''
@@ -31,19 +28,14 @@ const Story = ({
 
   useEffect(() => {
     async function getItem() {
-      // TODO make an API library for HN that handles returning nullable type (┛ಠ_ಠ)┛彡┻━┻
-      const response = await fetch(
-        `https://hacker-news.firebaseio.com/v0/item/${id}.json`
-      );
-      const data = await response.json();
+      const data = await getItemFromApi(id);
       // await new Promise(r => setTimeout(r, 200));
 
       setIsLoading(false);
 
-      // https://news.ycombinator.com/item?id=23158285
-      // https://hacker-news.firebaseio.com/v0/item/23158285.json
       setStoryData(
         data || {
+          id: id,
           title: 'API error :( -- click to view @ news.ycombinator',
           url: `https://news.ycombinator.com/item?id=${id}`
         }

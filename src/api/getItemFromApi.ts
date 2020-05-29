@@ -1,6 +1,6 @@
 import { HNItem } from './HNApiTypes';
 
-export type IGetItemFromApi = (id: number) => Promise<HNItem | undefined>;
+export type IGetItemFromApi = (id: number) => Promise<HNItem | null>;
 
 /**
  * Sometimes HN returns null for an item, need this so entire page doesn't break
@@ -8,6 +8,11 @@ export type IGetItemFromApi = (id: number) => Promise<HNItem | undefined>;
  * comment page for: https://news.ycombinator.com/item?id=22359574
  * - https://hacker-news.firebaseio.com/v0/item/22360822.json returns null
  * - https://news.ycombinator.com/item?id=22360822 shows a valid comment
+ *
+ * https://news.ycombinator.com/item?id=23158285
+ * https://hacker-news.firebaseio.com/v0/item/23158285.json
+ *
+ *
  * (┛ಠ_ಠ)┛彡┻━┻
  */
 
@@ -16,7 +21,7 @@ const getItemFromApi: IGetItemFromApi = async (id: number) => {
     `https://hacker-news.firebaseio.com/v0/item/${id}.json`
   );
 
-  const data: HNItem | undefined = await response.json();
+  const data: HNItem | null = await response.json();
   return data;
 };
 
