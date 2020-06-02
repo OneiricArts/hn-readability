@@ -28,7 +28,7 @@ export const TitleBar = ({
     className={`${isLoadingClassName} text-muted small pt-1 px-2`}
     style={{ display: 'flex', alignItems: 'center' }}
   >
-    {data.by || '[deleted]'} {/* TODO: Verify what it means if this is empty */}
+    {data.by} {/*TOOD remove this breaks snapshot test*/}
     {topLevel && (
       <>
         &emsp;{data.score && `↑${data.score}`}&emsp;
@@ -132,7 +132,6 @@ export function ItemCard({
           className={`${isLoadingClassName} py-1 px-2`}
           style={{ wordBreak: 'break-word' }}
         >
-          {data.deleted && '[deleted]'}
           {data.title && (
             <h4
               dangerouslySetInnerHTML={{
