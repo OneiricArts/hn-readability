@@ -149,7 +149,7 @@ export function ItemCard({
           />
         </div>
 
-        {data.text && <LinksToHn text={data.text} />}
+        {data.text && !data.error && <LinksToHn text={data.text} />}
 
         {topLevel && <ShareBar id={id} title={data.title} />}
 
