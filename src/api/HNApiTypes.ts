@@ -16,4 +16,9 @@ export interface HNItem {
   title?: string; // The title of the story, poll or job. HTML.
   parts?: number[]; // the pollopts of a poll
   descendants?: number;
+
+  /**
+   * ADDED BY ME
+   */
+  error?: boolean;
 }

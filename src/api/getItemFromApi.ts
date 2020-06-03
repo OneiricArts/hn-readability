@@ -22,6 +22,23 @@ const getItemFromApi: IGetItemFromApi = async (id: number) => {
   );
 
   const data: HNItem | null = await response.json();
+
+  if (!data) return null;
+
+  if (data.deleted) {
+    return {
+      id: id,
+      by: '[deleted]',
+      text: '[deleted]',
+      deleted: true
+    };
+  }
+
+  // TODO: Verify what it means if this is empty
+  // if (!data.by) {
+  //   data.by = '[deleted]';
+  // }
+
   return data;
 };
 

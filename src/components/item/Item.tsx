@@ -59,7 +59,7 @@ export const Item = ({
           data || {
             id,
             text: `API error :( <a href="${hNItemLink(id)}">view on hn</a>`,
-            type: 'comment'
+            error: true
           }
         );
       });
