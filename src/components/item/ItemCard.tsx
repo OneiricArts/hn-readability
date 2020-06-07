@@ -53,7 +53,6 @@ interface ItemCardProps {
   data: HNItem;
   isLoading: boolean;
   level: number;
-  id: number;
   kids?: React.ReactElement[];
 }
 
@@ -62,7 +61,6 @@ export function ItemCard({
   data,
   level,
   isLoading,
-  id,
   kids
 }: ItemCardProps) {
   const [isOpen, setIsOpen] = useState(true);
@@ -151,7 +149,7 @@ export function ItemCard({
 
         {data.text && !data.error && <LinksToHn text={data.text} />}
 
-        {topLevel && <ShareBar id={id} title={data.title} />}
+        {topLevel && <ShareBar id={data.id} title={data.title} />}
 
         {kids}
       </Collapse>

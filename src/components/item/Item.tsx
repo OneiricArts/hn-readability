@@ -77,7 +77,6 @@ export const Item = ({
       data={data}
       level={level}
       isLoading={isLoading}
-      id={id}
       kids={data.kids?.map(itemId => (
         <Item
           id={itemId}
