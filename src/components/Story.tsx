@@ -29,7 +29,7 @@ const Story = ({ id, rank, onStoryClick = noop, viewedStory }: StoryProps) => {
   useEffect(() => {
     async function getItem() {
       const data = await getItemFromApi(id);
-      // await new Promise(r => setTimeout(r, 200));
+      // await sleep(200)
 
       setIsLoading(false);
 

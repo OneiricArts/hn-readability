@@ -28,3 +28,13 @@ export const setDocumentTitleWithData = (data: HNItem) => {
     }
   }
 };
+
+/**
+ * ONLY FOR DEVELOPMENT USE
+ * @param ms time to "sleep" (wait) in milliseconds
+ *
+ * usage: await sleep()
+ */
+export const sleep = async (ms: number = 1000) => {
+  await new Promise(r => setTimeout(r, ms));
+};
