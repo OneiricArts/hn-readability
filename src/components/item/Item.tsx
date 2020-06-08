@@ -1,22 +1,20 @@
-import React, { useEffect, useState, useRef, RefObject } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import ReactDOM from 'react-dom';
-import DOMPurify from 'dompurify';
 import { HNItem } from '../../api/HNApiTypes';
-import { hNItemLink } from './helpers';
+import { hNItemLink, setDocumentTitleWithData } from './helpers';
 import getItemFromApi, { IGetItemFromApi } from '../../api/getItemFromApi';
 import { ItemCard } from './ItemCard';
+import { CommentRefContext } from './ItemPage';
 
 interface ItemProps {
   id: number;
   level?: number;
-  addTopLevelCommentRef: (r: RefObject<HTMLElement>) => void;
   getItem?: IGetItemFromApi;
 }
 
 export const Item = ({
   id,
   level = 0,
-  addTopLevelCommentRef,
   getItem = getItemFromApi
 }: ItemProps) => {
   const [data, setData] = useState<HNItem>({
@@ -34,23 +32,7 @@ export const Item = ({
     async function getItemAsync() {
       const data = await getItem(id);
 
-      if (data && level === 0) {
-        if (data.title) {
-          document.getElementsByTagName(
-            'title'
-          )[0].innerHTML = `${DOMPurify.sanitize(data.title)} | Dapper`;
-        } else if (data.text) {
-          const div = document.createElement('div');
-          div.innerHTML = DOMPurify.sanitize(data.text);
-          let title = div.textContent;
-
-          if (title && title?.length > 90) {
-            document.title = `${title.substring(0, 90)}... | Dapper`;
-          } else {
-            document.title = `${title} | Dapper`;
-          }
-        }
-      }
+      if (data && level === 0) setDocumentTitleWithData(data);
 
       ReactDOM.unstable_batchedUpdates(() => {
         setIsLoading(false);
@@ -68,6 +50,7 @@ export const Item = ({
     getItemAsync();
   }, [id, level, getItem]);
 
+  const { addTopLevelCommentRef } = useContext(CommentRefContext);
   const containerEl = useRef<HTMLDivElement>(null);
   if (level === 1) addTopLevelCommentRef(containerEl);
 
@@ -77,14 +60,8 @@ export const Item = ({
       data={data}
       level={level}
       isLoading={isLoading}
-      id={id}
       kids={data.kids?.map(itemId => (
-        <Item
-          id={itemId}
-          key={itemId}
-          level={level + 1}
-          addTopLevelCommentRef={addTopLevelCommentRef}
-        />
+        <Item id={itemId} key={itemId} level={level + 1} />
       ))}
     />
   );
