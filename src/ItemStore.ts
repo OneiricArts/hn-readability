@@ -1,6 +1,7 @@
 import { observable, computed, action } from 'mobx';
 import { HNItem } from './api/HNApiTypes';
 import getItemFromApi, { IGetItemFromApi } from './api/getItemFromApi';
+import { sleep } from './components/item/helpers';
 
 type ItemStoreInit = {
   id: number;
@@ -38,26 +39,30 @@ class ItemStore {
     return this.parent?.kids !== undefined && this.parent.kids[0] === this;
   }
 
+  // private promises: Promise<any>[] = [];
+  @action async hydrate() {}
+
   @action async loadData(depth = 0) {
     const responseData = await this.api(this.id);
+    await sleep(1000);
 
     this.data = responseData || {
       id: this.id,
       error: true
     };
 
+    const kidsLoadingPromises: Promise<any>[] = [];
+
     this.kids = this.data?.kids?.map(
       k => new ItemStore({ id: k, parent: this, currLevel: this.currLevl + 1 })
     );
 
-    const kidsLoadingPromises: Promise<any>[] = [];
-
     if (depth > this.currLevl && this.kids) {
       this.kids.forEach(kid => {
-        kidsLoadingPromises.push(kid.loadData());
+        kidsLoadingPromises.push(kid.loadData(depth));
       });
 
-      return Promise.all(kidsLoadingPromises);
+      return await Promise.all(kidsLoadingPromises);
     }
   }
 }

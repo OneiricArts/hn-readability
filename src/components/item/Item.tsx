@@ -1,68 +1,54 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
-import ReactDOM from 'react-dom';
-import { HNItem } from '../../api/HNApiTypes';
-import { hNItemLink, setDocumentTitleWithData } from './helpers';
-import getItemFromApi, { IGetItemFromApi } from '../../api/getItemFromApi';
-import { ItemCard } from './ItemCard';
+import { setDocumentTitleWithData } from './helpers';
 import { CommentRefContext } from './ItemPage';
+import { ItemCard } from './ItemCard';
+import ItemStore from '../../ItemStore';
+import { observer } from 'mobx-react-lite';
 
 interface ItemProps {
-  id: number;
-  level?: number;
-  getItem?: IGetItemFromApi;
+  store: ItemStore;
 }
 
-export const Item = ({
-  id,
-  level = 0,
-  getItem = getItemFromApi
-}: ItemProps) => {
-  const [data, setData] = useState<HNItem>({
-    id: id,
+export const Item = observer(({ store }: ItemProps) => {
+  const data = store.data || {
+    id: store.id,
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     title: 'Lorem ipsum dolor sit amet',
     descendants: 55,
     url: '',
     type: 'comment'
-  });
+  };
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    async function getItemAsync() {
-      const data = await getItem(id);
+  // useEffect(() => {
+  //   if (!store.data) {
+  //     setIsLoading(true);
+  //     console.log('fetching');
 
-      if (data && level === 0) setDocumentTitleWithData(data);
+  //     store.loadData().then(() => setIsLoading(false));
+  //   } else {
+  //     setIsLoading(false);
+  //   }
+  // }, [store]);
 
-      ReactDOM.unstable_batchedUpdates(() => {
-        setIsLoading(false);
-
-        setData(
-          data || {
-            id,
-            text: `API error :( <a href="${hNItemLink(id)}">view on hn</a>`,
-            error: true
-          }
-        );
-      });
-    }
-
-    getItemAsync();
-  }, [id, level, getItem]);
+  if (store.data && store.currLevl === 0) setDocumentTitleWithData(store.data);
 
   const { addTopLevelCommentRef } = useContext(CommentRefContext);
   const containerEl = useRef<HTMLDivElement>(null);
-  if (level === 1) addTopLevelCommentRef(containerEl);
+  if (store.currLevl === 1) addTopLevelCommentRef(containerEl);
 
   return (
     <ItemCard
       containerEl={containerEl}
       data={data}
-      level={level}
+      level={store.currLevl}
       isLoading={isLoading}
-      kids={data.kids?.map(itemId => (
-        <Item id={itemId} key={itemId} level={level + 1} />
-      ))}
+      kids={store.kids
+        ?.filter(k => k.data)
+        .map(kid => (
+          <Item store={kid} key={kid.id} />
+        ))}
     />
   );
-};
+});

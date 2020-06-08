@@ -1,8 +1,9 @@
-import React, { RefObject, createContext } from 'react';
+import React, { RefObject, createContext, useState, useEffect } from 'react';
 import { Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { topOfElIsVisible } from './helpers';
 import { Item } from './Item';
+import ItemStore from '../../ItemStore';
 
 export const CommentRefContext = createContext<{
   addTopLevelCommentRef: (ref: RefObject<HTMLElement>) => void;
@@ -26,6 +27,17 @@ const ItemPage = ({ id }: { id: number }) => {
     }
   };
 
+  const store = new ItemStore({ id: id });
+  console.log(store);
+
+  const [loaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    store.loadData(10).then(() => setIsLoaded(true));
+  });
+
+  if (!loaded) return <div>loading...</div>;
+
   return (
     <>
       <Link to="/" className="pl-2">
@@ -35,7 +47,7 @@ const ItemPage = ({ id }: { id: number }) => {
       <CommentRefContext.Provider
         value={{ addTopLevelCommentRef: addTopLevelCommentRef }}
       >
-        <Item id={id} />
+        <Item store={store} />
       </CommentRefContext.Provider>
       <Button
         size="lg"
