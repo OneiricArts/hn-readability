@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import DOMPurify from 'dompurify';
-import { Row, Container } from 'reactstrap';
+import { Row, Container, Badge } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import Icon from './Icon';
 import { HNItem } from '../api/HNApiTypes';
@@ -69,12 +69,19 @@ const Story = ({ id, rank, onStoryClick = noop, viewedStory }: StoryProps) => {
           rel="noopener noreferrer"
           target="_blank"
         >
-          <div
-            className={loadingClassName}
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(storyData.title || '')
-            }}
-          />
+          <div className="align-middle">
+            {storyData.type === 'job' && (
+              <Badge color="warning" className="mr-2 align-middle" pill>
+                Job
+              </Badge>
+            )}
+            <span
+              className={`${loadingClassName} align-middle`}
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(storyData.title || '')
+              }}
+            />
+          </div>
           <span
             className={`${loadingClassName} text-muted story--info pt-2`}
             style={{ display: 'flex', alignItems: 'center' }}
