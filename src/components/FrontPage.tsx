@@ -1,8 +1,8 @@
-import { Button } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Story from './Story';
 import Icon from './Icon';
+import { FloatingButton } from './FloatingButton';
 
 const LOAD_INCREMENT = 30;
 
@@ -112,14 +112,9 @@ const FrontPage = ({
       </TransitionGroup>
 
       {doneLoading && <div>All Done, time to go outside.</div>}
-      <Button
-        size="lg"
-        color="primary"
-        className="hnr-floating-button ml-auto d-inline-flex"
-        onClick={hideViewedStories}
-      >
+      <FloatingButton onClick={hideViewedStories}>
         <Icon name="eye-off" />
-      </Button>
+      </FloatingButton>
     </>
   );
 };

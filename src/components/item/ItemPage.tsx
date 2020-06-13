@@ -1,8 +1,8 @@
 import React, { RefObject, createContext } from 'react';
-import { Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { topOfElIsVisible } from './helpers';
 import { Item } from './Item';
+import { FloatingButton } from '../FloatingButton';
 
 export const CommentRefContext = createContext<{
   addTopLevelCommentRef: (ref: RefObject<HTMLElement>) => void;
@@ -37,14 +37,9 @@ const ItemPage = ({ id }: { id: number }) => {
       >
         <Item id={id} />
       </CommentRefContext.Provider>
-      <Button
-        size="lg"
-        color="primary"
-        className="hnr-floating-button d-md-none"
-        onClick={goToNextComment}
-      >
+      <FloatingButton onClick={goToNextComment} className="d-md-none">
         &darr;
-      </Button>
+      </FloatingButton>
       <div className="d-md-none" style={{ paddingBottom: '80px' }}></div>
     </>
   );
