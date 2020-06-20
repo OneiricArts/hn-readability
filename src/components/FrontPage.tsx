@@ -3,6 +3,8 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Story from './Story';
 import Icon from './Icon';
 import { FloatingButton } from './FloatingButton';
+import useDelayedLoading from './useDelayedLoading';
+import { Spinner } from 'reactstrap';
 import getItemsFromApi, { StoryTypes } from '../api/getItemsFromApi';
 
 const LOAD_INCREMENT = 30;
@@ -22,15 +24,25 @@ const FrontPage = ({ storyType = 'top' }: { storyType?: StoryTypes }) => {
   const [storiesToHide, setStoriesToHide] = useState<number[]>([]);
   const hideViewedStories = () => setStoriesToHide(viewedStories);
 
+  const [setIsLoading, showSpinner, isLoading] = useDelayedLoading();
+
   useEffect(() => {
     async function getStories() {
+      console.log('>>');
+      setIsLoading(true);
+
       const data = await getItemsFromApi(storyType);
 
+      setIsLoading(false);
       setStories(data);
     }
 
     getStories();
-  }, [storyType]);
+  }, [
+    storyType,
+    //
+    setIsLoading
+  ]);
 
   useEffect(() => {
     // TODO change to calculating on this document vs. App div
@@ -83,6 +95,16 @@ const FrontPage = ({ storyType = 'top' }: { storyType?: StoryTypes }) => {
   );
 
   const viewedStory = (id: number) => viewedStories.indexOf(id) > -1;
+
+  console.log('__rendering__');
+
+  if (isLoading && !showSpinner) return <></>; // no need for this
+  if (showSpinner)
+    return (
+      <div className="d-flex justify-content-center">
+        <Spinner />
+      </div>
+    );
 
   return (
     <>
