@@ -3,12 +3,11 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Story from './Story';
 import Icon from './Icon';
 import { FloatingButton } from './FloatingButton';
+import getItemsFromApi, { StoryTypes } from '../api/getItemsFromApi';
 
 const LOAD_INCREMENT = 30;
 
-const FrontPage = ({
-  url = 'https://hacker-news.firebaseio.com/v0/topstories.json'
-}) => {
+const FrontPage = ({ storyType = 'top' }: { storyType?: StoryTypes }) => {
   const [stories, setStories] = useState<number[]>([]);
   const [storiesToShow, setStoriesToShow] = useState<number>(LOAD_INCREMENT);
 
@@ -25,14 +24,13 @@ const FrontPage = ({
 
   useEffect(() => {
     async function getStories() {
-      const response = await fetch(url);
-      const data: number[] = await response.json();
+      const data = await getItemsFromApi(storyType);
 
       setStories(data);
     }
 
     getStories();
-  }, [url]);
+  }, [storyType]);
 
   useEffect(() => {
     // TODO change to calculating on this document vs. App div
