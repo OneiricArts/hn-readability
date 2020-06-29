@@ -1,4 +1,9 @@
-import React, { useEffect, useState, FunctionComponent } from 'react';
+import React, {
+  useEffect,
+  useState,
+  FunctionComponent,
+  useReducer
+} from 'react';
 import {
   Input,
   Row,
@@ -31,6 +36,48 @@ interface SearchParamsI {
   tags: TagType[];
 }
 
+const initSearchParams: SearchParamsI = {
+  base: 'https://hn.algolia.com/api/v1',
+  popularityOrRecent: 'search_by_date',
+  tags: ['story'],
+  query: ''
+};
+
+type SearchParamAction =
+  | { type: 'togglePopularityOrRecent' }
+  | { type: 'setQuery'; query: string }
+  | { type: 'toggleTag'; tag: TagType };
+
+type SearchParamReducer = (
+  prevState: SearchParamsI,
+  action: SearchParamAction
+) => SearchParamsI;
+
+const searchParamReducer: SearchParamReducer = (prevState, action) => {
+  switch (action.type) {
+    case 'togglePopularityOrRecent':
+      if (prevState.popularityOrRecent === 'search')
+        return { ...prevState, popularityOrRecent: 'search_by_date' };
+
+      return { ...prevState, popularityOrRecent: 'search' };
+
+    case 'setQuery':
+      return { ...prevState, query: action.query };
+
+    case 'toggleTag':
+      if (prevState.tags.includes(action.tag))
+        return {
+          ...prevState,
+          tags: prevState.tags.filter(e => e !== action.tag)
+        };
+
+      return { ...prevState, tags: [...prevState.tags, action.tag] };
+
+    default:
+      throw new Error('Not supported action type for searchParamReducer.');
+  }
+};
+
 const FilterContainer: FunctionComponent = ({ children }) => {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -62,12 +109,10 @@ export function SearchStories({
   const [searchResults, setSearchResults] = useState<number[]>([]);
   const [searchBarActive, setSearchBarActive] = useState(false);
 
-  const [searchParams, setSearchParams] = useState<SearchParamsI>({
-    base: 'https://hn.algolia.com/api/v1',
-    popularityOrRecent: 'search_by_date',
-    tags: ['story'],
-    query: ''
-  });
+  const [searchParams, searchParamDispatch] = useReducer(
+    searchParamReducer,
+    initSearchParams
+  );
 
   useEffect(() => {
     const formulateUrl = () =>
@@ -103,9 +148,7 @@ export function SearchStories({
             value={searchParams.query}
             onChange={e => {
               const newQuery = e.target.value;
-              setSearchParams(curr => {
-                return { ...curr, query: newQuery };
-              });
+              searchParamDispatch({ type: 'setQuery', query: newQuery });
             }}
             className={`search-bar ${
               searchBarActive || showingSearch ? '' : 'search-bar-inactive'
@@ -124,9 +167,7 @@ export function SearchStories({
             <span
               className="clickable hnr-blue"
               onClick={() => {
-                setSearchParams(curr => {
-                  return { ...curr, query: '' };
-                });
+                searchParamDispatch({ type: 'setQuery', query: '' });
                 setShowingSearch(false);
               }}
             >
@@ -145,12 +186,7 @@ export function SearchStories({
               label="By Recent"
               checked={searchParams.popularityOrRecent === 'search_by_date'}
               onChange={() =>
-                setSearchParams(curr => {
-                  if (curr.popularityOrRecent === 'search')
-                    return { ...curr, popularityOrRecent: 'search_by_date' };
-
-                  return { ...curr, popularityOrRecent: 'search' };
-                })
+                searchParamDispatch({ type: 'togglePopularityOrRecent' })
               }
             />
           </FormGroup>
@@ -158,24 +194,16 @@ export function SearchStories({
           <FormGroup>
             <span>Filter By Type</span>
             <InputGroup>
-              {(['story', 'comment', 'front_page'] as const).map(type => (
+              {(['story', 'comment', 'front_page'] as const).map(tagType => (
                 <CustomInput
                   type="checkbox"
-                  id={`${type}-filter-checkbox`}
+                  id={`${tagType}-filter-checkbox`}
                   className="mr-2"
-                  label={type}
-                  checked={searchParams.tags.includes(type)}
-                  onChange={() => {
-                    setSearchParams(curr => {
-                      if (curr.tags.includes(type))
-                        return {
-                          ...curr,
-                          tags: curr.tags.filter(e => e !== type)
-                        };
-
-                      return { ...curr, tags: [...curr.tags, type] };
-                    });
-                  }}
+                  label={tagType}
+                  checked={searchParams.tags.includes(tagType)}
+                  onChange={() =>
+                    searchParamDispatch({ type: 'toggleTag', tag: tagType })
+                  }
                 />
               ))}
             </InputGroup>
