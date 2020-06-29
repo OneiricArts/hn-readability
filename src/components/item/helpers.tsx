@@ -8,6 +8,12 @@ export const topOfElIsVisible = (el: RefObject<HTMLElement>, buffer = 0) => {
   return top < buffer;
 };
 
+export const elipsify = (text: string, maxLen: number) => {
+  if (text.length > maxLen) return `${text.substring(0, maxLen)}...`;
+
+  return text;
+};
+
 export const hNItemLink = (id: number) =>
   `https://news.ycombinator.com/item?id=${id}`;
 
@@ -21,11 +27,7 @@ export const setDocumentTitleWithData = (data: HNItem) => {
     div.innerHTML = DOMPurify.sanitize(data.text);
     let title = div.textContent;
 
-    if (title && title?.length > 90) {
-      document.title = `${title.substring(0, 90)}... | Dapper`;
-    } else {
-      document.title = `${title} | Dapper`;
-    }
+    if (title) document.title = `${elipsify(title, 90)} | Dapper`;
   }
 };
 

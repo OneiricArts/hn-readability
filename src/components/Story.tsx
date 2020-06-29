@@ -6,6 +6,7 @@ import Icon from './Icon';
 import { HNItem } from '../api/HNApiTypes';
 import { TimeAgo } from './timeago';
 import getItemFromApi from '../api/getItemFromApi';
+import { elipsify } from './item/helpers';
 
 const noop = () => undefined;
 
@@ -55,7 +56,8 @@ const Story = ({ id, rank, onStoryClick = noop, viewedStory }: StoryProps) => {
 
   const onClick = () => onStoryClick(id);
   const viewedStoryCss = viewedStory ? 'text-muted' : '';
-  const showComments = storyData.descendants !== undefined;
+  const showComments =
+    storyData.descendants !== undefined || storyData.kids !== undefined;
 
   return (
     <Container fluid className="story--container">
@@ -64,7 +66,7 @@ const Story = ({ id, rank, onStoryClick = noop, viewedStory }: StoryProps) => {
           className={`px-2 pt-2 ${
             showComments ? 'col-sm-11 col-10' : 'col-12'
           } ${viewedStoryCss}`}
-          href={storyData.url || `https://news.ycombinator.com/item?id=${id}`}
+          href={storyData.url || `https://dapper.dilraj.dev/item?id=${id}`}
           onClick={onClick}
           rel="noopener noreferrer"
           target="_blank"
@@ -75,6 +77,14 @@ const Story = ({ id, rank, onStoryClick = noop, viewedStory }: StoryProps) => {
               __html: DOMPurify.sanitize(storyData.title || '')
             }}
           />
+          {!storyData.title && storyData.text && (
+            <div
+              className={loadingClassName}
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(elipsify(storyData.text.trim(), 200))
+              }}
+            />
+          )}
           <span
             className={`${loadingClassName} text-muted story--info pt-2`}
             style={{ display: 'flex', alignItems: 'center' }}
@@ -96,7 +106,7 @@ const Story = ({ id, rank, onStoryClick = noop, viewedStory }: StoryProps) => {
               className={`${loadingClassName} float-right small`}
               style={{ display: 'flex', alignItems: 'center' }}
             >
-              {storyData.descendants}&nbsp;
+              {storyData.descendants ?? storyData.kids?.length}&nbsp;
               <Icon name="chat-bubbles" />
             </span>
           </Link>
