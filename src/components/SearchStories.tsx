@@ -204,6 +204,9 @@ export function SearchStories({
     } catch {}
   }, [searchParams, setShowingSearch]);
 
+  if (searchParams.query)
+    document.title = `${searchParams.query} - Dapper Search`;
+
   return (
     <>
       <Row className="p-0 m-0 w-100 py-2">
@@ -234,6 +237,7 @@ export function SearchStories({
               onClick={() => {
                 searchParamDispatch({ type: 'setQuery', query: '' });
                 setShowingSearch(false);
+                document.title = 'Dapper | a Hacker News Client'; // TODO place in <Helmet> in App
               }}
             >
               Cancel
