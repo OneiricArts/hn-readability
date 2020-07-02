@@ -2,7 +2,8 @@ import React, {
   useEffect,
   useState,
   FunctionComponent,
-  useReducer
+  useReducer,
+  useMemo
 } from 'react';
 import {
   Input,
@@ -44,6 +45,35 @@ const initSearchParams: SearchParamsI = {
   popularityOrRecent: 'search_by_date',
   tags: ['story'],
   query: ''
+};
+
+const readUrlSearchParams = () => {
+  const params = new URLSearchParams(window.location.search);
+
+  // Do not add key: undefined to this object or it will override init state
+  // https://stackoverflow.com/a/54497408
+  // https://github.com/Microsoft/TypeScript/issues/13195
+  const mergeSearchParams: Partial<Omit<SearchParamsI, 'base'>> = {};
+
+  const isTagType = (input: string): input is TagType =>
+    (tagTypes as ReadonlyArray<string>).includes(input);
+
+  // TODO with current approach, you cannot bookmark a link with no tags
+  const tags = params.getAll('tags')?.filter(isTagType);
+  if (tags.length) mergeSearchParams.tags = tags;
+
+  const popularityOrRecentParam = params.get('popularityOrRecent');
+  if (
+    popularityOrRecentParam === 'search' ||
+    popularityOrRecentParam === 'search_by_date'
+  ) {
+    mergeSearchParams.popularityOrRecent = popularityOrRecentParam;
+  }
+
+  const query = params.get('query');
+  if (query) mergeSearchParams.query = query;
+
+  return mergeSearchParams;
 };
 
 const setUrlSearchParams = (state: Omit<SearchParamsI, 'base'>) => {
@@ -137,9 +167,16 @@ export function SearchStories({
   const [searchResults, setSearchResults] = useState<number[]>([]);
   const [searchBarActive, setSearchBarActive] = useState(false);
 
+  const mergedInitAndUrlSearchParams = useMemo(() => {
+    return {
+      ...initSearchParams,
+      ...readUrlSearchParams()
+    };
+  }, []);
+
   const [searchParams, searchParamDispatch] = useReducer(
     searchParamReducer,
-    initSearchParams
+    mergedInitAndUrlSearchParams
   );
 
   useEffect(() => {
