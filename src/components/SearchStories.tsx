@@ -54,28 +54,33 @@ type SearchParamReducer = (
 ) => SearchParamsI;
 
 const searchParamReducer: SearchParamReducer = (prevState, action) => {
+  let newState: SearchParamsI;
+
   switch (action.type) {
     case 'togglePopularityOrRecent':
       if (prevState.popularityOrRecent === 'search')
-        return { ...prevState, popularityOrRecent: 'search_by_date' };
-
-      return { ...prevState, popularityOrRecent: 'search' };
+        newState = { ...prevState, popularityOrRecent: 'search_by_date' };
+      else newState = { ...prevState, popularityOrRecent: 'search' };
+      break;
 
     case 'setQuery':
-      return { ...prevState, query: action.query };
+      newState = { ...prevState, query: action.query };
+      break;
 
     case 'toggleTag':
       if (prevState.tags.includes(action.tag))
-        return {
+        newState = {
           ...prevState,
           tags: prevState.tags.filter(e => e !== action.tag)
         };
-
-      return { ...prevState, tags: [...prevState.tags, action.tag] };
+      else newState = { ...prevState, tags: [...prevState.tags, action.tag] };
+      break;
 
     default:
       throw new Error('Not supported action type for searchParamReducer.');
   }
+
+  return newState;
 };
 
 const FilterContainer: FunctionComponent = ({ children }) => {
