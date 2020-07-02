@@ -196,6 +196,7 @@ export function SearchStories({
             <InputGroup>
               {(['story', 'comment', 'front_page'] as const).map(tagType => (
                 <CustomInput
+                  key={tagType}
                   type="checkbox"
                   id={`${tagType}-filter-checkbox`}
                   className="mr-2"
