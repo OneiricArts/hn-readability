@@ -46,6 +46,23 @@ const initSearchParams: SearchParamsI = {
   query: ''
 };
 
+const setUrlSearchParams = (state: Omit<SearchParamsI, 'base'>) => {
+  const { tags, ...stateWithoutTags } = state;
+
+  const params = new URLSearchParams({ ...stateWithoutTags });
+  tags.map(tag => params.append('tags', tag));
+
+  if (state.query === '') {
+    window.history.replaceState({}, '', document.location.pathname);
+  } else {
+    window.history.replaceState(
+      {},
+      '',
+      `${document.location.pathname}?${params}`
+    );
+  }
+};
+
 type SearchParamAction =
   | { type: 'togglePopularityOrRecent' }
   | { type: 'setQuery'; query: string }
@@ -82,6 +99,9 @@ const searchParamReducer: SearchParamReducer = (prevState, action) => {
     default:
       throw new Error('Not supported action type for searchParamReducer.');
   }
+
+  const { base, ...urlParams } = newState;
+  setUrlSearchParams(urlParams);
 
   return newState;
 };
