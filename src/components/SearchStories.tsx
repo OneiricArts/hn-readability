@@ -20,14 +20,17 @@ interface SearchStoriesProps {
   setShowingSearch: (b: boolean) => void;
 }
 
-type TagType =
-  | 'story'
-  | 'comment'
-  | 'poll'
-  | 'pollopt'
-  | 'show_hn'
-  | 'ask_hn'
-  | 'front_page';
+const tagTypes = [
+  'story',
+  'comment',
+  'poll',
+  'pollopt',
+  'show_hn',
+  'ask_hn',
+  'front_page'
+] as const;
+
+type TagType = typeof tagTypes[number];
 
 interface SearchParamsI {
   base: 'https://hn.algolia.com/api/v1';
