@@ -87,26 +87,27 @@ const FrontPage = ({ storyType = 'top' }: { storyType?: StoryTypes }) => {
   return (
     <>
       <TransitionGroup>
-        {stories
-          .slice(0, storiesToShow)
-          .filter(id => storiesToHide.indexOf(id) < 0)
-          .map((id, index) => (
-            <CSSTransition
-              key={id}
-              in
-              timeout={300}
-              classNames={{
-                exit: 'animated faster fadeOutRight'
-              }}
-            >
-              <Story
-                id={id}
-                rank={index + 1}
-                onStoryClick={onStoryClick}
-                viewedStory={viewedStory(id)}
-              />
-            </CSSTransition>
-          ))}
+        {stories.slice(0, storiesToShow).map(
+          (id, index) =>
+            // Do not filter array, want to maintain rank via index
+            storiesToHide.indexOf(id) < 0 && (
+              <CSSTransition
+                key={id}
+                in
+                timeout={300}
+                classNames={{
+                  exit: 'animated faster fadeOutRight'
+                }}
+              >
+                <Story
+                  id={id}
+                  rank={index + 1}
+                  onStoryClick={onStoryClick}
+                  viewedStory={viewedStory(id)}
+                />
+              </CSSTransition>
+            )
+        )}
       </TransitionGroup>
 
       {doneLoading && <div>All Done, time to go outside.</div>}
