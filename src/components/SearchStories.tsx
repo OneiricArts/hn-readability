@@ -2,7 +2,8 @@ import React, {
   useEffect,
   useState,
   FunctionComponent,
-  useReducer
+  useReducer,
+  useMemo
 } from 'react';
 import {
   Input,
@@ -20,14 +21,17 @@ interface SearchStoriesProps {
   setShowingSearch: (b: boolean) => void;
 }
 
-type TagType =
-  | 'story'
-  | 'comment'
-  | 'poll'
-  | 'pollopt'
-  | 'show_hn'
-  | 'ask_hn'
-  | 'front_page';
+const tagTypes = [
+  'story',
+  'comment',
+  'poll',
+  'pollopt',
+  'show_hn',
+  'ask_hn',
+  'front_page'
+] as const;
+
+type TagType = typeof tagTypes[number];
 
 interface SearchParamsI {
   base: 'https://hn.algolia.com/api/v1';
@@ -43,6 +47,52 @@ const initSearchParams: SearchParamsI = {
   query: ''
 };
 
+const readUrlSearchParams = () => {
+  const params = new URLSearchParams(window.location.search);
+
+  // Do not add key: undefined to this object or it will override init state
+  // https://stackoverflow.com/a/54497408
+  // https://github.com/Microsoft/TypeScript/issues/13195
+  const mergeSearchParams: Partial<Omit<SearchParamsI, 'base'>> = {};
+
+  const isTagType = (input: string): input is TagType =>
+    (tagTypes as ReadonlyArray<string>).includes(input);
+
+  // TODO with current approach, you cannot bookmark a link with no tags
+  const tags = params.getAll('tags')?.filter(isTagType);
+  if (tags.length) mergeSearchParams.tags = tags;
+
+  const popularityOrRecentParam = params.get('popularityOrRecent');
+  if (
+    popularityOrRecentParam === 'search' ||
+    popularityOrRecentParam === 'search_by_date'
+  ) {
+    mergeSearchParams.popularityOrRecent = popularityOrRecentParam;
+  }
+
+  const query = params.get('query');
+  if (query) mergeSearchParams.query = query;
+
+  return mergeSearchParams;
+};
+
+const setUrlSearchParams = (state: Omit<SearchParamsI, 'base'>) => {
+  const { tags, ...stateWithoutTags } = state;
+
+  const params = new URLSearchParams({ ...stateWithoutTags });
+  tags.map(tag => params.append('tags', tag));
+
+  if (state.query === '') {
+    window.history.replaceState({}, '', document.location.pathname);
+  } else {
+    window.history.replaceState(
+      {},
+      '',
+      `${document.location.pathname}?${params}`
+    );
+  }
+};
+
 type SearchParamAction =
   | { type: 'togglePopularityOrRecent' }
   | { type: 'setQuery'; query: string }
@@ -54,28 +104,36 @@ type SearchParamReducer = (
 ) => SearchParamsI;
 
 const searchParamReducer: SearchParamReducer = (prevState, action) => {
+  let newState: SearchParamsI;
+
   switch (action.type) {
     case 'togglePopularityOrRecent':
       if (prevState.popularityOrRecent === 'search')
-        return { ...prevState, popularityOrRecent: 'search_by_date' };
-
-      return { ...prevState, popularityOrRecent: 'search' };
+        newState = { ...prevState, popularityOrRecent: 'search_by_date' };
+      else newState = { ...prevState, popularityOrRecent: 'search' };
+      break;
 
     case 'setQuery':
-      return { ...prevState, query: action.query };
+      newState = { ...prevState, query: action.query };
+      break;
 
     case 'toggleTag':
       if (prevState.tags.includes(action.tag))
-        return {
+        newState = {
           ...prevState,
           tags: prevState.tags.filter(e => e !== action.tag)
         };
-
-      return { ...prevState, tags: [...prevState.tags, action.tag] };
+      else newState = { ...prevState, tags: [...prevState.tags, action.tag] };
+      break;
 
     default:
       throw new Error('Not supported action type for searchParamReducer.');
   }
+
+  const { base, ...urlParams } = newState;
+  setUrlSearchParams(urlParams);
+
+  return newState;
 };
 
 const FilterContainer: FunctionComponent = ({ children }) => {
@@ -109,9 +167,16 @@ export function SearchStories({
   const [searchResults, setSearchResults] = useState<number[]>([]);
   const [searchBarActive, setSearchBarActive] = useState(false);
 
+  const mergedInitAndUrlSearchParams = useMemo(() => {
+    return {
+      ...initSearchParams,
+      ...readUrlSearchParams()
+    };
+  }, []);
+
   const [searchParams, searchParamDispatch] = useReducer(
     searchParamReducer,
-    initSearchParams
+    mergedInitAndUrlSearchParams
   );
 
   useEffect(() => {
@@ -138,6 +203,9 @@ export function SearchStories({
       getSearchedStories();
     } catch {}
   }, [searchParams, setShowingSearch]);
+
+  if (searchParams.query)
+    document.title = `${searchParams.query} - Dapper Search`;
 
   return (
     <>
@@ -169,6 +237,7 @@ export function SearchStories({
               onClick={() => {
                 searchParamDispatch({ type: 'setQuery', query: '' });
                 setShowingSearch(false);
+                document.title = 'Dapper | a Hacker News Client'; // TODO place in <Helmet> in App
               }}
             >
               Cancel
@@ -196,6 +265,7 @@ export function SearchStories({
             <InputGroup>
               {(['story', 'comment', 'front_page'] as const).map(tagType => (
                 <CustomInput
+                  key={tagType}
                   type="checkbox"
                   id={`${tagType}-filter-checkbox`}
                   className="mr-2"
