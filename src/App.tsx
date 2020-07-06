@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import smoothscroll from 'smoothscroll-polyfill';
-import './App.css';
+import './App.scss';
 import './skeleton.css';
 import ItemPage from './components/item/ItemPage';
 import Home from './components/Home';

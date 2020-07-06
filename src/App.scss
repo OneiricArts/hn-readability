@@ -69,23 +69,19 @@ body {
   color: inherit;
 }
 
-.level-border-orange {
-  border-left: 0.16rem solid rgb(252, 183, 127);
-}
-.level-border-red {
-  border-left: 0.16rem solid rgb(230, 151, 151);
-}
-.level-border-blue {
-  border-left: 0.16rem solid rgba(102, 102, 221, 0.801);
-}
-.level-border-gray {
-  border-left: 0.16rem solid rgb(189, 186, 186);
-}
-.level-border-purple {
-  border-left: 0.16rem solid rgb(208, 151, 230);
-}
-.level-border-green {
-  border-left: 0.16rem solid rgba(23, 216, 184, 0.616);
+$border-colors: (
+  orange: rgb(252, 183, 127),
+  red: rgb(230, 151, 151),
+  blue: rgba(102, 102, 221, 0.801),
+  gray: rgb(189, 186, 186),
+  purple: rgb(208, 151, 230),
+  green: rgba(23, 216, 184, 0.616)
+);
+
+@each $name, $color in $border-colors {
+  .level-border-#{$name} {
+    border-left: 0.16rem solid $color;
+  }
 }
 
 .link-card {
@@ -125,12 +121,10 @@ body {
   color: inherit;
 }
 
-.h-border-top {
-  border-top: 0.01em solid var(--story-border-color);
-}
-
-.h-border-right {
-  border-right: 0.01em solid var(--story-border-color);
+@each $side in top, right {
+  .h-border-#{$side} {
+    border-#{$side}: 0.01em solid var(--story-border-color);
+  }
 }
 
 .search-bar {
