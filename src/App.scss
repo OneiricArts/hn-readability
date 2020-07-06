@@ -121,12 +121,10 @@ $border-colors: (
   color: inherit;
 }
 
-.h-border-top {
-  border-top: 0.01em solid var(--story-border-color);
-}
-
-.h-border-right {
-  border-right: 0.01em solid var(--story-border-color);
+@each $side in top, right {
+  .h-border-#{$side} {
+    border-#{$side}: 0.01em solid var(--story-border-color);
+  }
 }
 
 .search-bar {
