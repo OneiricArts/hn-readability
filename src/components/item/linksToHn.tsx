@@ -17,7 +17,7 @@ export default function LinksToHn({ text }: { text: string }) {
   return (
     <>
       {linksToHn.map(id => (
-        <div className="mt-2 mx-2" key={id}>
+        <div className="py-2 mx-2" key={id}>
           <LinkUrlCard url={`https://dapper.dilraj.dev/item?id=${id}`} />
         </div>
       ))}
