@@ -9,7 +9,7 @@ type LinkUrlCardProps = {
 const LinkUrlCard: FC<LinkUrlCardProps> = ({ url, className }) => (
   <a
     href={url}
-    className={`p-1 link-card d-flex align-items-center ${className}`}
+    className={`p-1 link-card d-flex align-items-center ${className ?? ''}`}
   >
     <Icon size={2} name="compass" />
     <span
