@@ -52,7 +52,7 @@ exports[`Item snapshot tests 1`] = `
         My YC app: Dropbox - Throw away your USB drive
       </h4>
       <a
-        class="p-1 mb-2 link-card d-flex align-items-center"
+        class="p-1 link-card d-flex align-items-center mb-2"
         href="http://www.getdropbox.com/u/2/screencast.html"
       >
         <svg
@@ -292,10 +292,10 @@ exports[`Item snapshot tests 3`] = `
       </div>
     </div>
     <div
-      class="mt-2 mx-2"
+      class="py-2 mx-2"
     >
       <a
-        class="p-1 mb-2 link-card d-flex align-items-center"
+        class="p-1 link-card d-flex align-items-center "
         href="https://dapper.dilraj.dev/item?id=23317570"
       >
         <svg
@@ -326,10 +326,10 @@ exports[`Item snapshot tests 3`] = `
       </a>
     </div>
     <div
-      class="mt-2 mx-2"
+      class="py-2 mx-2"
     >
       <a
-        class="p-1 mb-2 link-card d-flex align-items-center"
+        class="p-1 link-card d-flex align-items-center "
         href="https://dapper.dilraj.dev/item?id=23223219"
       >
         <svg
@@ -360,10 +360,10 @@ exports[`Item snapshot tests 3`] = `
       </a>
     </div>
     <div
-      class="mt-2 mx-2"
+      class="py-2 mx-2"
     >
       <a
-        class="p-1 mb-2 link-card d-flex align-items-center"
+        class="p-1 link-card d-flex align-items-center "
         href="https://dapper.dilraj.dev/item?id=23221264"
       >
         <svg
