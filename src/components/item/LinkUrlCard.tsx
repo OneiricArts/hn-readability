@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Icon from '../Icon';
 
-const LinkUrlCard = ({ url }: { url: string }) => (
-  <a href={url} className="p-1 mb-2 link-card d-flex align-items-center">
+type LinkUrlCardProps = {
+  url: string;
+  className?: string;
+};
+
+const LinkUrlCard: FC<LinkUrlCardProps> = ({ url, className }) => (
+  <a
+    href={url}
+    className={`p-1 link-card d-flex align-items-center ${className}`}
+  >
     <Icon size={2} name="compass" />
     <span
       className="pl-2 ml-2 pr-2 link-card--text text-truncate"

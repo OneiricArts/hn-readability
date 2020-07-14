@@ -137,7 +137,7 @@ export function ItemCard({
               }}
             />
           )}
-          {data.url && <LinkUrlCard url={data.url} />}
+          {data.url && <LinkUrlCard url={data.url} className="mb-2" />}
           {data.type === 'poll' && <p>Polls are not supported yet!</p>}
           <div
             className="item--hn-text"
