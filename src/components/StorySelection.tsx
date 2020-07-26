@@ -55,6 +55,11 @@ export const StorySelection: FunctionComponent<{
 
   const activeStoryType = storyTypes.find(s => s.active);
 
+  document.title =
+    activeStoryType?.value === 'top'
+      ? 'Dapper | a Hacker News Client'
+      : `Dapper - ${activeStoryType?.label}`;
+
   return (
     <>
       <div className="ml-2 pb-1 h-border-bottom">
