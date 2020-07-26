@@ -5,6 +5,7 @@ import './App.scss';
 import './skeleton.css';
 import ItemPage from './components/item/ItemPage';
 import Home from './components/Home';
+import { StoryTypes, storyTypes } from './api/getItemsFromApi';
 
 smoothscroll.polyfill();
 
@@ -16,6 +17,16 @@ const App = () => {
           <Route exact path="/">
             <Home />
           </Route>
+
+          <Route
+            path={storyTypes.map(s => `/${s}`)}
+            render={({ location }) => (
+              <Home
+                initStoryType={location.pathname.split('/')[1] as StoryTypes}
+              />
+            )}
+          />
+
           <Route
             path="/item"
             render={({ location }) => {

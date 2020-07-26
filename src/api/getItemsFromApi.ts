@@ -1,4 +1,12 @@
-export type StoryTypes = 'top' | 'best' | 'new' | 'ask' | 'show' | 'jobs';
+export const storyTypes = [
+  'top',
+  'best',
+  'new',
+  'ask',
+  'show',
+  'jobs'
+] as const;
+export type StoryTypes = typeof storyTypes[number];
 
 const typeToUrl = {
   top: 'https://hacker-news.firebaseio.com/v0/topstories.json',
