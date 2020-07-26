@@ -121,7 +121,7 @@ $border-colors: (
   color: inherit;
 }
 
-@each $side in top, right {
+@each $side in top, bottom, right {
   .h-border-#{$side} {
     border-#{$side}: 0.01em solid var(--story-border-color);
   }

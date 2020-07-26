@@ -83,13 +83,10 @@ const setUrlSearchParams = (state: Omit<SearchParamsI, 'base'>) => {
   tags.map(tag => params.append('tags', tag));
 
   if (state.query === '') {
-    window.history.replaceState({}, '', document.location.pathname);
+    window.history.replaceState({}, '', '/');
   } else {
-    window.history.replaceState(
-      {},
-      '',
-      `${document.location.pathname}?${params}`
-    );
+    window.history.replaceState({}, '', `/?${params}`);
+    // window.history.replaceState({}, '', `/search?${params}`);
   }
 };
 
