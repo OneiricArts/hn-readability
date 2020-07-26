@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
 import ReactDOM from 'react-dom';
 import { HNItem } from '../../api/HNApiTypes';
-import { hNItemLink, setDocumentTitleWithData } from './helpers';
+import { elipsify, hNItemLink } from './helpers';
 import getItemFromApi, { IGetItemFromApi } from '../../api/getItemFromApi';
 import { ItemCard } from './ItemCard';
 import { CommentRefContext } from './ItemPage';
+import { Helmet } from 'react-helmet';
 
 interface ItemProps {
   id: number;
@@ -32,8 +33,6 @@ export const Item = ({
     async function getItemAsync() {
       const data = await getItem(id);
 
-      if (data && level === 0) setDocumentTitleWithData(data);
-
       ReactDOM.unstable_batchedUpdates(() => {
         setIsLoading(false);
 
@@ -55,14 +54,23 @@ export const Item = ({
   if (level === 1) addTopLevelCommentRef(containerEl);
 
   return (
-    <ItemCard
-      containerEl={containerEl}
-      data={data}
-      level={level}
-      isLoading={isLoading}
-      kids={data.kids?.map(itemId => (
-        <Item id={itemId} key={itemId} level={level + 1} />
-      ))}
-    />
+    <>
+      {/* TODO remove !isLoading when placeholder data no longer needed */}
+      {!isLoading && (data.title || data.text) && level === 0 && (
+        <Helmet titleTemplate="%s | Dapper">
+          <title>{data.title || (data.text && elipsify(data.text, 90))}</title>
+        </Helmet>
+      )}
+
+      <ItemCard
+        containerEl={containerEl}
+        data={data}
+        level={level}
+        isLoading={isLoading}
+        kids={data.kids?.map(itemId => (
+          <Item id={itemId} key={itemId} level={level + 1} />
+        ))}
+      />
+    </>
   );
 };

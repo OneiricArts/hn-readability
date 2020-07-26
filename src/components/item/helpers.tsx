@@ -17,20 +17,6 @@ export const elipsify = (text: string, maxLen: number) => {
 export const hNItemLink = (id: number) =>
   `https://news.ycombinator.com/item?id=${id}`;
 
-export const setDocumentTitleWithData = (data: HNItem) => {
-  if (data.title) {
-    document.getElementsByTagName('title')[0].innerHTML = `${DOMPurify.sanitize(
-      data.title
-    )} | Dapper`;
-  } else if (data.text) {
-    const div = document.createElement('div');
-    div.innerHTML = DOMPurify.sanitize(data.text);
-    let title = div.textContent;
-
-    if (title) document.title = `${elipsify(title, 90)} | Dapper`;
-  }
-};
-
 /**
  * ONLY FOR DEVELOPMENT USE
  * @param ms time to "sleep" (wait) in milliseconds
