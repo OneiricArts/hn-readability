@@ -1,6 +1,4 @@
 import { RefObject } from 'react';
-import { HNItem } from '../../api/HNApiTypes';
-import DOMPurify from 'dompurify';
 
 export const topOfElIsVisible = (el: RefObject<HTMLElement>, buffer = 0) => {
   const top = el.current?.getBoundingClientRect().top;
