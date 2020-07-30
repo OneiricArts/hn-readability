@@ -1,0 +1,90 @@
+name: Bundle Size Comparison
+
+on:
+  push:
+  # Its not just what you install, but what (and how) you import
+  # paths:
+  #   - '**/package.json'
+  pull_request:
+    types: [opened]
+
+jobs:
+  calculate:
+    runs-on: ubuntu-latest
+
+    # https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjobs_idoutputs
+    outputs:
+      BUNDLE_SIZE__MASTER: ${{ steps.export-step.outputs.MASTER }}
+      BUNDLE_SIZE__CUR_BRANCH: ${{ steps.export-step.outputs.CUR }}
+
+    strategy:
+      fail-fast: true
+      matrix:
+        branch: ['MASTER', 'CUR']
+        include:
+          - branch: 'MASTER'
+            branch-name: 'master'
+          - branch: 'CUR'
+            branch-name: ''
+
+    steps:
+      - name: Bundle size for ${{ matrix.branch }} branch
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ matrix.branch-name }}
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - run: npm install
+      - run: npm run build
+
+      - id: export-step
+        run: |
+          export TOTAL_BUNDLE_SIZE=$(npm run bundle-size | tail -1)
+          echo "::set-output name=${{matrix.branch}}::$TOTAL_BUNDLE_SIZE"
+
+  comment:
+    runs-on: ubuntu-latest
+    needs: calculate
+
+    steps:
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+
+      #####
+      # Comment if different
+      #####
+      - name: Bundle size change comment
+        if: needs.calculate.outputs.BUNDLE_SIZE__MASTER !=
+          needs.calculate.outputs.BUNDLE_SIZE__CUR_BRANCH
+        uses: unsplash/comment-on-pr@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          msg: |
+            :warning: Size of included libs (from node_modules) changed in this pr:
+
+            master: ${{ needs.calculate.outputs.BUNDLE_SIZE__MASTER }}
+            vs.
+            this pr: ${{ needs.calculate.outputs.BUNDLE_SIZE__CUR_BRANCH }}
+
+            (un-gzipped)
+
+            Run `npm run bundle-analyze` to see why.
+
+          check_for_duplicate_msg: true
+
+      #####
+      # Comment if same
+      #####
+      - name: No bundle size change comment
+        if: needs.calculate.outputs.BUNDLE_SIZE__MASTER ==
+          needs.calculate.outputs.BUNDLE_SIZE__CUR_BRANCH
+        uses: unsplash/comment-on-pr@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          msg: ':sunny: Size of included libs (from node_modules) did not change in this pr.'
+          check_for_duplicate_msg: true
