@@ -42,7 +42,8 @@
     "prettier": "./node_modules/prettier/bin-prettier.js --write .",
     "eject": "react-scripts eject",
     "cypress": "./node_modules/.bin/cypress open",
-    "bundle-analyze": "./node_modules/source-map-explorer/dist/cli.js ./build/static/js/*.js"
+    "bundle-analyze": "./node_modules/source-map-explorer/dist/cli.js ./build/static/js/*.js",
+    "bundle-size": "node ./scripts/bundle-size.js"
   },
   "eslintConfig": {
     "extends": "react-app"
