@@ -15,6 +15,13 @@ export const elipsify = (text: string, maxLen: number) => {
 export const hNItemLink = (id: number) =>
   `https://news.ycombinator.com/item?id=${id}`;
 
+export function decode(html: string) {
+  const decoder = document.createElement('div');
+  decoder.innerHTML = html;
+
+  return decoder.textContent;
+}
+
 /**
  * ONLY FOR DEVELOPMENT USE
  * @param ms time to "sleep" (wait) in milliseconds

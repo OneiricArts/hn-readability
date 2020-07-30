@@ -1,12 +1,11 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
 import ReactDOM from 'react-dom';
 import { HNItem } from '../../api/HNApiTypes';
-import { elipsify, hNItemLink } from './helpers';
+import { decode, elipsify, hNItemLink } from './helpers';
 import getItemFromApi, { IGetItemFromApi } from '../../api/getItemFromApi';
 import { ItemCard } from './ItemCard';
 import { CommentRefContext } from './ItemPage';
 import { Helmet } from 'react-helmet';
-import { decode } from 'he';
 
 interface ItemProps {
   id: number;
