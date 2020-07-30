@@ -30,6 +30,7 @@
     "reactstrap": "^8.4.1",
     "sinon": "^9.0.2",
     "smoothscroll-polyfill": "^0.4.4",
+    "source-map-explorer": "^2.4.2",
     "typescript": "^3.7.5"
   },
   "scripts": {
@@ -40,7 +41,9 @@
     "lint": "./node_modules/prettier/bin-prettier.js --check .",
     "prettier": "./node_modules/prettier/bin-prettier.js --write .",
     "eject": "react-scripts eject",
-    "cypress": "./node_modules/.bin/cypress open"
+    "cypress": "./node_modules/.bin/cypress open",
+    "bundle-analyze": "./node_modules/source-map-explorer/dist/cli.js ./build/static/js/*.js",
+    "bundle-size": "node ./scripts/bundle-size.js"
   },
   "eslintConfig": {
     "extends": "react-app"
