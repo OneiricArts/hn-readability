@@ -53,17 +53,19 @@ jobs:
         with:
           node-version: '12.x'
 
+      - uses: actions/checkout@v2
+
       #####
       # Comment if different
       #####
       - name: Bundle size change comment
         if: needs.calculate.outputs.BUNDLE_SIZE__MASTER !=
           needs.calculate.outputs.BUNDLE_SIZE__CUR_BRANCH
-        uses: unsplash/comment-on-pr@master
+        uses: ./.github/actions/comment-on-pr
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          msg: |
+          comment: |
             :warning: Size of included libs (from node_modules) changed in this pr:
 
             master: ${{ needs.calculate.outputs.BUNDLE_SIZE__MASTER }}
@@ -74,17 +76,14 @@ jobs:
 
             Run `npm run bundle-analyze` to see why.
 
-          check_for_duplicate_msg: true
-
       #####
       # Comment if same
       #####
       - name: No bundle size change comment
         if: needs.calculate.outputs.BUNDLE_SIZE__MASTER ==
           needs.calculate.outputs.BUNDLE_SIZE__CUR_BRANCH
-        uses: unsplash/comment-on-pr@master
+        uses: ./.github/actions/comment-on-pr
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          msg: ':sunny: Size of included libs (from node_modules) did not change in this pr.'
-          check_for_duplicate_msg: true
+          comment: ':sunny: Size of included libs (from node_modules) did not change in this pr.'

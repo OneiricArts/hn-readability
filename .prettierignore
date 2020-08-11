@@ -1,2 +1,4 @@
 build/
 package-lock.json
+
+**/dist/index.js

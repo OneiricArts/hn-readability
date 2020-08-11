@@ -1,0 +1,12 @@
+name: 'Comment on pull request.'
+description: 'Adds and updates a comment on the pull request.'
+inputs:
+  comment:
+    required: true
+    description: 'Comment to post to PR'
+  repo-token:
+    required: false
+    description: Either set env GITHUB_TOKEN _or_ pass in repo-token
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
