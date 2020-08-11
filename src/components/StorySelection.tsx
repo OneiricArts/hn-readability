@@ -1,6 +1,7 @@
 import React, { FunctionComponent, ReactNode, useReducer } from 'react';
 import { StoryTypes } from '../api/getItemsFromApi';
 import { Button } from 'reactstrap';
+import { Helmet } from 'react-helmet';
 
 type StoryTypeOptions = {
   active: boolean;
@@ -55,13 +56,14 @@ export const StorySelection: FunctionComponent<{
 
   const activeStoryType = storyTypes.find(s => s.active);
 
-  document.title =
-    activeStoryType?.value === 'top'
-      ? 'Dapper | a Hacker News Client'
-      : `Dapper - ${activeStoryType?.label}`;
-
   return (
     <>
+      <Helmet>
+        <title>
+          {activeStoryType?.value === 'top' && activeStoryType?.label}
+        </title>
+      </Helmet>
+
       <div className="ml-2 pb-1 h-border-bottom">
         {storyTypes.map(e => (
           <Button

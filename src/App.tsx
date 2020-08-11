@@ -6,12 +6,18 @@ import './skeleton.css';
 import ItemPage from './components/item/ItemPage';
 import Home from './components/Home';
 import { StoryTypes, storyTypes } from './api/getItemsFromApi';
+import { Helmet } from 'react-helmet';
 
 smoothscroll.polyfill();
 
 const App = () => {
   return (
     <div className="app-container mx-auto">
+      <Helmet
+        titleTemplate="Dapper - %s"
+        defaultTitle="Dapper | a Hacker News Client"
+      />
+
       <Router>
         <Switch>
           <Route exact path="/">
