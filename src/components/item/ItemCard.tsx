@@ -13,6 +13,7 @@ import LinksToHn from './linksToHn';
 
 interface TitleBarProps {
   data: HNItem;
+  originalPoster?: string;
   topLevel: boolean;
   isOpen: boolean;
   isLoadingClassName: string;
@@ -20,6 +21,7 @@ interface TitleBarProps {
 
 export const TitleBar = ({
   data,
+  originalPoster,
   topLevel,
   isOpen,
   isLoadingClassName
@@ -28,6 +30,18 @@ export const TitleBar = ({
     className={`${isLoadingClassName} text-muted small pt-1 px-2`}
     style={{ display: 'flex', alignItems: 'center' }}
   >
+    {originalPoster === data.by && !topLevel && (
+      <span
+        style={{
+          borderRadius: '5px',
+          fontSize: '0.7rem'
+        }}
+        className="px-1 py-0 op-indicator"
+      >
+        op
+      </span>
+    )}
+    &nbsp;
     {data.by} {/*TOOD remove this breaks snapshot test*/}
     {topLevel && (
       <>
@@ -51,6 +65,7 @@ export const TitleBar = ({
 interface ItemCardProps {
   containerEl: React.RefObject<HTMLDivElement>;
   data: HNItem;
+  originalPoster?: string;
   isLoading: boolean;
   level: number;
   kids?: React.ReactElement[];
@@ -59,6 +74,7 @@ interface ItemCardProps {
 export function ItemCard({
   containerEl,
   data,
+  originalPoster,
   level,
   isLoading,
   kids
@@ -114,6 +130,7 @@ export function ItemCard({
     >
       <TitleBar
         data={data}
+        originalPoster={originalPoster}
         topLevel={topLevel}
         isOpen={isOpen}
         isLoadingClassName={isLoadingClassName}
