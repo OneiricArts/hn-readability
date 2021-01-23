@@ -12,6 +12,8 @@
   --input-text-color: black;
 
   --link-button-color: #007bff;
+
+  --op-indicator-border-color: rgb(69, 151, 240);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -27,6 +29,8 @@
     --link-card-text-color: rgb(69, 151, 240);
 
     --input-text-color: white;
+
+    --op-indicator-border-color: rgb(69, 151, 240);
   }
 }
 
@@ -141,4 +145,8 @@ $border-colors: (
 
 .hnr-blue {
   color: var(--link-button-color);
+}
+
+.op-indicator {
+  border: solid var(--op-indicator-border-color) 0.1px;
 }

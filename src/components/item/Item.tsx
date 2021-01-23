@@ -50,14 +50,16 @@ export const Item = ({
     getItemAsync();
   }, [id, level, getItem]);
 
-  const { addTopLevelCommentRef } = useContext(CommentRefContext);
+  const { addTopLevelCommentRef, opContainer } = useContext(CommentRefContext);
   const containerEl = useRef<HTMLDivElement>(null);
   if (level === 1) addTopLevelCommentRef(containerEl);
+  if (level === 0) opContainer.setOriginalPoster(data.by);
 
   return (
     <ItemCard
       containerEl={containerEl}
       data={data}
+      originalPoster={opContainer.originalPoster}
       level={level}
       isLoading={isLoading}
       kids={data.kids?.map(itemId => (

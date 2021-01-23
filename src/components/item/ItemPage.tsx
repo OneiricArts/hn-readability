@@ -4,9 +4,21 @@ import { topOfElIsVisible } from './helpers';
 import { Item } from './Item';
 import { FloatingButton } from '../FloatingButton';
 
+type OpContainerI = {
+  originalPoster?: string;
+  setOriginalPoster: (op?: string) => void;
+};
+
 export const CommentRefContext = createContext<{
   addTopLevelCommentRef: (ref: RefObject<HTMLElement>) => void;
-}>({ addTopLevelCommentRef: () => {} });
+  opContainer: OpContainerI;
+}>({
+  addTopLevelCommentRef: () => {},
+  opContainer: {
+    originalPoster: undefined,
+    setOriginalPoster: () => {}
+  }
+});
 
 const ItemPage = ({ id }: { id: number }) => {
   const topLevelCommentRefs: RefObject<HTMLElement>[] = [];
@@ -26,6 +38,11 @@ const ItemPage = ({ id }: { id: number }) => {
     }
   };
 
+  const opContainer: OpContainerI = {
+    originalPoster: undefined,
+    setOriginalPoster: (op?: string) => (opContainer.originalPoster = op)
+  };
+
   return (
     <>
       <Link to="/" className="pl-2">
@@ -33,7 +50,7 @@ const ItemPage = ({ id }: { id: number }) => {
       </Link>
       {/* Verify render side effects https://reactjs.org/docs/context.html#caveats */}
       <CommentRefContext.Provider
-        value={{ addTopLevelCommentRef: addTopLevelCommentRef }}
+        value={{ addTopLevelCommentRef, opContainer }}
       >
         <Item id={id} />
       </CommentRefContext.Provider>
