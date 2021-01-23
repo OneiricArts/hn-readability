@@ -168,7 +168,21 @@ export function ItemCard({
 
         {topLevel && <ShareBar id={data.id} title={data.title} />}
 
-        {kids}
+        {kids && level > 5 ? (
+          <div className={`pl-2 pt-2`}>
+            ---
+            <br />
+            <Link
+              rel="noopener noreferrer"
+              target="_blank"
+              to={`/item?id=${data.id}`}
+            >
+              Load more replies {'>>'}
+            </Link>
+          </div>
+        ) : (
+          kids
+        )}
       </Collapse>
     </div>
   );
