@@ -19,3 +19,29 @@ Some highlights:
   - floating button to navigate to next top-level commment
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Switch between dapper and hacker news with a browser bookmarklet
+
+```
+/**
+ * Switch between dapper and hacker news articles
+ */
+
+const href = document.location.href;
+const id = href.split('=')[1];
+
+const url = (a) => `https://${a}/item?id=`;
+
+const hn     = url('news.ycombinator.com');
+const dapper = url('dapper.dilraj.dev');
+
+if      (href.includes(hn))     document.location.href = `${dapper}${id}`;
+else if (href.includes(dapper)) document.location.href = `${hn}${id}`;
+```
+
+minified bookmarklet via https://chriszarate.github.io/bookmarkleter/
+(wrapped in IIFE to protect global environment and minified)
+
+```
+javascript:void%20function(){const%20a=document.location.href,b=a.split(%22=%22)[1],c=b=%3E`https://${b}/item%3Fid=`,d=c(%22news.ycombinator.com%22),e=c(%22dapper.dilraj.dev%22);a.includes(d)%3Fdocument.location.href=`${e}${b}`:a.includes(e)%26%26(document.location.href=`${d}${b}`)}();
+```
