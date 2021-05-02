@@ -14,6 +14,7 @@ import {
   InputGroup,
   FormGroup
 } from 'reactstrap';
+import { Select } from './Select';
 import Story from './Story';
 
 interface SearchStoriesProps {
@@ -38,13 +39,15 @@ interface SearchParamsI {
   popularityOrRecent: 'search' | 'search_by_date';
   query: string;
   tags: TagType[];
+  range: TimeRangeType;
 }
 
 const initSearchParams: SearchParamsI = {
   base: 'https://hn.algolia.com/api/v1',
   popularityOrRecent: 'search_by_date',
   tags: ['story'],
-  query: ''
+  query: '',
+  range: 'All time'
 };
 
 const readUrlSearchParams = () => {
@@ -73,6 +76,12 @@ const readUrlSearchParams = () => {
   const query = params.get('query');
   if (query) mergeSearchParams.query = query;
 
+  const isRangeType = (input: string): input is TimeRangeType =>
+    TIME_RANGE_OPTIONS.includes(input as any);
+
+  const timeRange = params.get('range');
+  if (timeRange && isRangeType(timeRange)) mergeSearchParams.range = timeRange;
+
   return mergeSearchParams;
 };
 
@@ -90,10 +99,21 @@ const setUrlSearchParams = (state: Omit<SearchParamsI, 'base'>) => {
   }
 };
 
+const TIME_RANGE_OPTIONS = [
+  'All time',
+  'Last 24h',
+  'Past Week',
+  'Past Month',
+  'Past Year'
+] as const;
+
+type TimeRangeType = typeof TIME_RANGE_OPTIONS[number];
+
 type SearchParamAction =
   | { type: 'togglePopularityOrRecent' }
   | { type: 'setQuery'; query: string }
-  | { type: 'toggleTag'; tag: TagType };
+  | { type: 'toggleTag'; tag: TagType }
+  | { type: 'setTimeRange'; range: TimeRangeType };
 
 type SearchParamReducer = (
   prevState: SearchParamsI,
@@ -123,6 +143,10 @@ const searchParamReducer: SearchParamReducer = (prevState, action) => {
       else newState = { ...prevState, tags: [...prevState.tags, action.tag] };
       break;
 
+    case 'setTimeRange':
+      newState = { ...prevState, range: action.range };
+      break;
+
     default:
       throw new Error('Not supported action type for searchParamReducer.');
   }
@@ -132,6 +156,34 @@ const searchParamReducer: SearchParamReducer = (prevState, action) => {
 
   return newState;
 };
+
+function calculateTimeRange(range: TimeRangeType) {
+  const date = new Date();
+
+  switch (range) {
+    case 'All time':
+      return 0;
+
+    case 'Last 24h':
+      date.setDate(date.getDate() - 1);
+      return date.getTime() / 1000;
+
+    case 'Past Month':
+      date.setMonth(date.getMonth() - 1);
+      return date.getTime() / 1000;
+
+    case 'Past Week':
+      date.setDate(date.getDate() - 7);
+      return date.getTime() / 1000;
+
+    case 'Past Year':
+      date.setFullYear(date.getFullYear() - 1);
+      return date.getTime() / 1000;
+
+    default:
+      throw new Error('Not supported Range');
+  }
+}
 
 const FilterContainer: FunctionComponent = ({ children }) => {
   const [isOpen, setIsOpen] = useState(true);
@@ -180,7 +232,11 @@ export function SearchStories({
     const formulateUrl = () =>
       `${searchParams.base}/${searchParams.popularityOrRecent}?query=${
         searchParams.query
-      }&tags=(${searchParams.tags.join(',')})`;
+      }&tags=(${searchParams.tags.join(
+        ','
+      )})&numericFilters=created_at_i>${calculateTimeRange(
+        searchParams.range
+      )}`;
 
     async function getSearchedStories() {
       const response = await fetch(formulateUrl());
@@ -273,6 +329,22 @@ export function SearchStories({
                   }
                 />
               ))}
+            </InputGroup>
+          </FormGroup>
+
+          <FormGroup>
+            <InputGroup>
+              <span className="mr-2">Date Range</span>
+              <Select
+                value={searchParams.range}
+                options={TIME_RANGE_OPTIONS}
+                onChange={e =>
+                  searchParamDispatch({
+                    type: 'setTimeRange',
+                    range: e
+                  })
+                }
+              />
             </InputGroup>
           </FormGroup>
 
