@@ -44,7 +44,7 @@ interface SearchParamsI {
 
 const initSearchParams: SearchParamsI = {
   base: 'https://hn.algolia.com/api/v1',
-  popularityOrRecent: 'search_by_date',
+  popularityOrRecent: 'search',
   tags: ['story'],
   query: '',
   range: 'All time'
