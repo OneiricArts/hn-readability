@@ -89,7 +89,7 @@ const setUrlSearchParams = (state: Omit<SearchParamsI, 'base'>) => {
   const { tags, ...stateWithoutTags } = state;
 
   const params = new URLSearchParams({ ...stateWithoutTags });
-  tags.map(tag => params.append('tags', tag));
+  tags.forEach(tag => params.append('tags', tag));
 
   if (state.query === '') {
     window.history.replaceState({}, '', '/');
