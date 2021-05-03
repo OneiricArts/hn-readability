@@ -11,7 +11,8 @@ describe('Front Page', () => {
   it('Contains clickable stories that are sent to ', function (done) {
     cy.visit('/');
 
-    cy.get('a')
+    // visit first comment page
+    cy.get('.story--container a')
       .eq(1)
       .invoke('attr', 'href')
       .then(href => {

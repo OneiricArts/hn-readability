@@ -6,6 +6,7 @@ import './skeleton.css';
 import ItemPage from './components/item/ItemPage';
 import Home from './components/Home';
 import { StoryTypes, storyTypes } from './api/getItemsFromApi';
+import { Contact } from './components/item/Contact';
 
 smoothscroll.polyfill();
 
@@ -17,6 +18,8 @@ const App = () => {
           <Route exact path="/">
             <Home />
           </Route>
+
+          <Route exacty path="/contact" render={Contact} />
 
           <Route
             path={storyTypes.map(s => `/${s}`)}
