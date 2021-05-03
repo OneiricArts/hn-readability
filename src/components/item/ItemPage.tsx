@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { topOfElIsVisible } from './helpers';
 import { Item } from './Item';
 import { FloatingButton } from '../FloatingButton';
+import { Footer } from './Footer';
 
 type OpContainerI = {
   originalPoster?: string;
@@ -54,6 +55,9 @@ const ItemPage = ({ id }: { id: number }) => {
       >
         <Item id={id} />
       </CommentRefContext.Provider>
+
+      <Footer />
+
       <FloatingButton onClick={goToNextComment} className="d-md-none">
         &darr;
       </FloatingButton>

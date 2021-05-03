@@ -4,6 +4,7 @@ import Story from './Story';
 import Icon from './Icon';
 import { FloatingButton } from './FloatingButton';
 import getItemsFromApi, { StoryTypes } from '../api/getItemsFromApi';
+import { Footer } from './item/Footer';
 
 const LOAD_INCREMENT = 30;
 
@@ -110,7 +111,15 @@ const FrontPage = ({ storyType = 'top' }: { storyType?: StoryTypes }) => {
         )}
       </TransitionGroup>
 
-      {doneLoading && <div>All Done, time to go outside.</div>}
+      {doneLoading && (
+        <div className="text-center" style={{ padding: '30px' }}>
+          All Done, time to go outside.
+        </div>
+      )}
+      <div className="pb-3">
+        <Footer />
+      </div>
+
       <FloatingButton onClick={hideViewedStories}>
         <Icon name="eye-off" />
       </FloatingButton>
